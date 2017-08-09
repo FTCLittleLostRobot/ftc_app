@@ -1,18 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
-
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
- * Created by Nicholas on 2017-07-16. My first Android Studio Opmode.
+ * Created by Nicholas on 2017-07-16.
  */
 
 
-@TeleOp(name="Template: Iterative OpMode", group="Iterative Opmode")  // @Autonomous(...) is the other common choice
-@Disabled
+@TeleOp(name="Telemetry", group="Iterative Opmode")  // @Autonomous(...) is the other common choice
 public class Telemetry extends OpMode
 {
     /* Declare OpMode members. */
@@ -21,10 +18,12 @@ public class Telemetry extends OpMode
     /*
      * Code to run ONCE when the driver hits INIT
      */
-    @Override
+
     public void init() {
         telemetry.addData("Status", "Initialized");
         telemetry.addData("Run Time",runtime);
+        telemetry.addData("Hello" , "World!");
+        telemetry.update();
 
         /* eg: Initialize the hardware variables. Note that the strings used here as parameters
          * to 'get' must correspond to the names assigned during the robot configuration
@@ -41,19 +40,21 @@ public class Telemetry extends OpMode
     }
 
 
-    @Override
+
     public void start()
     {
         runtime.reset();
         telemetry.addData("Status", "Go Time!");
+        telemetry.addData("Hello" , "World!");
     }
 
     /*
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
-    @Override
+
     public void loop() {
         telemetry.addData("Status", "Running: " + runtime.toString());
+        telemetry.addData("Hello" , "World!");
 
         // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
     }
@@ -61,10 +62,12 @@ public class Telemetry extends OpMode
     /*
      * Code to run ONCE after the driver hits STOP
      */
-    @Override
+
     public void stop()
     {
         telemetry.addData("Status", "All Done. Goodbye.");
+        telemetry.addData("Hello" , "World!");
     }
+
 
 }
