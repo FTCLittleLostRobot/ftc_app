@@ -12,4 +12,5 @@ public class ConstUtil
     public static final double oneDegree = 123.244; //Auto gyro turn
     public static final double oneInch = 117.79; //Auto gyro straight
     public static final double driveCoefficient = 0.00001; //Auto gyro straight
+    public static final double rampUpRate = 0.025; //The rate the shooter motor ramps up (Teleop)
 }

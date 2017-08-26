@@ -5,40 +5,36 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
 /**
  * Created by Nicholas on 2017-08-04. This is similar to teleop but with using threads
  */
 
 @TeleOp(name = "Threads", group ="Iterative OpMode" )
-@Disabled
+
 public class RobotDrive extends OpMode
 {
-    private DcMotor right = null;
-    private DcMotor left = null;;
+
+    HardwareLLR robot = new HardwareLLR();
 
     DriveThrd t1;
     DriveThrd t2;
 
     public void init()
     {
-        right.setDirection(DcMotorSimple.Direction.REVERSE);
-        left.setDirection(DcMotorSimple.Direction.FORWARD);
-        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.init(hardwareMap);
         telemetry.addData("Status" , "Ready");
         telemetry.update();
     }
 
     public void start()
     {
-        right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addData("Status" , "Go Time!");
         telemetry.update();
-        t1 = new DriveThrd ( DriveThrd.CONST_LEFT , gamepad1 ); //make different threads
-        t2 = new DriveThrd( DriveThrd.CONST_RIGHT , gamepad1);
+        t1 = new DriveThrd ( DriveThrd.CONST_LEFT , gamepad1 , robot.left); //make different threads
+        t2 = new DriveThrd( DriveThrd.CONST_RIGHT , gamepad1 , robot.right);
         Thread thrd1 = new Thread(t1);
         Thread thrd2 = new Thread(t2);
         thrd1.start();
@@ -47,7 +43,10 @@ public class RobotDrive extends OpMode
 
     public void loop()
     {
-
+        telemetry.addData("Right Pos" , robot.right.getCurrentPosition());
+        telemetry.addData("Right Power" , robot.right.getPower());
+        telemetry.addData("Left Pos" , robot.left.getCurrentPosition());
+        telemetry.addData("Left Power" , robot.left.getPower());
     }
 
     public void stop()

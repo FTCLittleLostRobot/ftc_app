@@ -12,17 +12,18 @@ public class DriveThrd implements Runnable
     public static final int CONST_LEFT = 1; //constants
     public static final int CONST_RIGHT = 2; //constants
 
-    private DcMotor right;//motors
-    private DcMotor left;//another motor
     private Gamepad pad; //gamepad
+    private DcMotor mtr; //motor
     private int side; //depending on CONST_LEFT and CONST_RIGHT.
     private boolean stopThrd; //The boolean to stop the thread
 
-    public DriveThrd(int side , Gamepad pad) //constructor
+    public DriveThrd(int side , Gamepad pad , DcMotor m) //constructor
     {
         this.side = side;
         this.pad = pad;
         stopThrd = false;
+        this.mtr = m;
+
     }
 
     public void stopThread(boolean flag) //method to stop the thread
@@ -37,7 +38,7 @@ public class DriveThrd implements Runnable
 
         while(!stopThrd)
         {
-            boost = pad.right_trigger; //get the trigger value
+            boost = pad.right_trigger; //ge t the trigger value
             switch (side)
             {
                 case CONST_LEFT: //this runs if this thread is for the left side
@@ -47,7 +48,7 @@ public class DriveThrd implements Runnable
                     {
                         stkVal = 0.0;
                     }
-                    left.setPower(boostFactor(boost , stkVal)); //send power to the motors
+                    mtr.setPower(boostFactor(boost , stkVal)); //send power to the motors
 
                     break;
 
@@ -58,7 +59,7 @@ public class DriveThrd implements Runnable
                     {
                         stkVal = 0.0;
                     }
-                    right.setPower(boostFactor(boost , stkVal));
+                    mtr.setPower(boostFactor(boost , stkVal));
                     break;
 
                 default:
@@ -84,7 +85,7 @@ public class DriveThrd implements Runnable
     {
         double ret = stkVal*-1; //this is negative because if you push the stick up, the value is negative.
 
-        if(boost < 1.0)
+        if(boost < ConstUtil.boostCons)
         {
             ret = ret*ConstUtil.spdMulty;
         }

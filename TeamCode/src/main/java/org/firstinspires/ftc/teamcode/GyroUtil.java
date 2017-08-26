@@ -6,15 +6,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
- * Created by Nicholas on 2017-08-02.
+ * Created by Nicholas on 2017-08-02. NOW WE CAN ADD THE HARDWARE PART LATER
  */
 
-@Disabled
 public class GyroUtil
 {
 
-    DcMotor rightMid = null;
-    DcMotor leftMid = null;
+    DcMotor right;
+    DcMotor left;
     private ModernRoboticsI2cGyro gyro;
     double rMem;
     double lMem;
@@ -29,31 +28,27 @@ public class GyroUtil
 
     void changeMode()
     {
-        rightMid.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftMid.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     void setDist(double distanceINCHES)
     {
-        /**
-         * This method will make the robot go a certain amount of inches, specified with the variable "distINCHES" at a certain
-           power specified by the variable called "pwr"
-         */
-          distanceToMove = distanceINCHES * ConstUtil.oneInch; //distanceINCHES is a parameter
+        distanceToMove = distanceINCHES * ConstUtil.oneInch; //distanceINCHES is a parameter
         distanceToMoveInt = (int)Math.round(distanceToMove);
-        rMem = rightMid.getCurrentPosition();
-        lMem = leftMid.getCurrentPosition();
-        rightMid.setTargetPosition(distanceToMoveInt);
-        leftMid.setTargetPosition(distanceToMoveInt);
+        rMem = right.getCurrentPosition();
+        lMem = left.getCurrentPosition();
+        right.setTargetPosition(distanceToMoveInt);
+        left.setTargetPosition(distanceToMoveInt);
     }
     void motorPwrs(double pwr)
     {
-        while( (rightMid.getCurrentPosition() < rightMid.getTargetPosition()) || (leftMid.getCurrentPosition() < leftMid.getTargetPosition() ) )
+        while( (right.getCurrentPosition() < right.getTargetPosition()) || (left.getCurrentPosition() < left.getTargetPosition() ) )
         {
             currentZ = gyro.getIntegratedZValue();
             error = targetZ - currentZ;
             steer = error * ConstUtil.driveCoefficient;
-            if ((rightMid.getTargetPosition() < rMem) && (leftMid.getTargetPosition() == lMem))
+            if ((right.getTargetPosition() < rMem) && (left.getTargetPosition() == lMem))
             {
                 steer = steer * -1;
             }
@@ -102,8 +97,8 @@ public class GyroUtil
 
     void turnGyro(double turnDegrees , double speed)
     {
-        rightMid.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftMid.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         turnDegrees = turnDegrees * ConstUtil.oneDegree;
 
         if (turnDegrees > gyro.getIntegratedZValue())
@@ -129,8 +124,8 @@ public class GyroUtil
     }
     private void setMtrPwr(double Left , double Right)
     {
-        rightMid.setPower(Right);
-        leftMid.setPower(Left);
+        right.setPower(Right);
+        left.setPower(Left);
     }
 
 }
