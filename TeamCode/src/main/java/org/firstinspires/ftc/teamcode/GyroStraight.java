@@ -18,25 +18,25 @@ public class GyroStraight extends LinearOpMode
     private double distanceToMove = 0;
     private int distanceToMoveInt = 0;
 
-    DcMotor rightMid = null;
-    DcMotor leftMid = null;
+    DcMotor right = null;
+    DcMotor left = null;
     ModernRoboticsI2cGyro Gyro;
 
     //Combine the 2 set motor power methods into 1 method with parameters for both the right and left side later.
     private void rMotorPower(double power)
     {
-        rightMid.setPower(power);
+        right.setPower(power);
     }
 
     private void lMotorPower(double power)
     {
-        leftMid.setPower(power);
+        left.setPower(power);
     }
 
     private void initMotors()
     {
-        rightMid.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftMid.setDirection(DcMotorSimple.Direction.FORWARD);
+        right.setDirection(DcMotorSimple.Direction.REVERSE);
+        left.setDirection(DcMotorSimple.Direction.FORWARD);
         rMotorPower(0);
         lMotorPower(0);
     }
@@ -51,14 +51,14 @@ public class GyroStraight extends LinearOpMode
         double error = 0;
         double rPwr = 0;
         double lPwr = 0;
-        rightMid.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftMid.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         distanceToMove = distanceINCHES * ConstUtil.oneInch;
         distanceToMoveInt = (int)Math.round(distanceToMove);
-        rMem = rightMid.getCurrentPosition();
-        lMem = leftMid.getCurrentPosition();
-        rightMid.setTargetPosition(distanceToMoveInt);
-        leftMid.setTargetPosition(distanceToMoveInt);
+        rMem = right.getCurrentPosition();
+        lMem = left.getCurrentPosition();
+        right.setTargetPosition(distanceToMoveInt);
+        left.setTargetPosition(distanceToMoveInt);
 
 
 

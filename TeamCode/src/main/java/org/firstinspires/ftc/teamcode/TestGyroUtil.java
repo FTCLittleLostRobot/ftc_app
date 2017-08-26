@@ -6,15 +6,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
- * Created by Nicholas on 2017-08-04.
+ * Created by Nicholas on 2017-08-04. NOW WE CAN ADD THE HARDWARE PART LATER
  */
 
 @Autonomous(name = "TestGyroUtil" , group = "Linear Opmode")
 public class TestGyroUtil extends LinearOpMode
 {
 
-    private DcMotor rightMid = null;
-    DcMotor leftMid = null;
+    private DcMotor right;
+    DcMotor left;
     ModernRoboticsI2cGyro Gyro;
 
     public void runOpMode()
