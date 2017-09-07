@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
- * Created by Nicholas on 2017-08-02. NOW WE CAN ADD THE HARDWARE PART LATER
+ * Created by Nicholas on 2017-08-02.
  */
 
 public class GyroUtil
