@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
- * Created by Nicholas on 2017-07-20.
+ * Created by Nicholas on 2017-07-20. todo remove the comments for the shooter, collector, and ballgate.
  */
 
 @TeleOp(name="ShooterTest", group="Iterative Opmode")
@@ -38,7 +38,7 @@ public class ShooterTest extends OpMode
 
     public void start()
     {
-        robot.shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //robot.shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);  //remove comment later
         lastTime = timestamp;
         lstTicks = crntTicks;
     }
@@ -46,7 +46,7 @@ public class ShooterTest extends OpMode
     public void loop()
     {
         timestamp = getRuntime();
-        crntTicks = robot.shooter.getCurrentPosition();
+        //crntTicks = robot.shooter.getCurrentPosition();  //remove comment later
         timeGonBi = timestamp - lastTime;
         tksGonBi = crntTicks - lstTicks;
         tksRPM = tksGonBi / timeGonBi;
@@ -72,25 +72,25 @@ public class ShooterTest extends OpMode
             {
                 if (gamepad2.left_bumper = true)
                 {
-                    robot.collect.setPower(-0.5);
+                    //robot.collect.setPower(-0.5);  //remove comment later
                 }
                     else
                     {
-                        robot.collect.setPower(1);
+                        //robot.collect.setPower(1);  //remove comment later
                     }
             }
             else
             {
-                robot.collect.setPower(0);
+                //robot.collect.setPower(0);  //remove comment later
             }
 
             if (gamepad2.y = (rampUpDone = true) && (rBump = true))
             {
-                robot.ballGate.setPosition(0.6);
+                //robot.ballGate.setPosition(0.6);  //remove comment later
             }
             else
             {
-                robot.ballGate.setPosition(0.9);
+                //robot.ballGate.setPosition(0.9);  //remove comment later
             }
 
             if (aBtnCrnt = true)
@@ -109,8 +109,8 @@ public class ShooterTest extends OpMode
             {
                 shootCounter = 0;
             }
-        robot.shooter.setPower(shootCounter);
-        telemetry.addData("Shooter Power" , robot.shooter.getPower());
+        //robot.shooter.setPower(shootCounter);  //remove comment later
+        //telemetry.addData("Shooter Power" , robot.shooter.getPower());  //remove comment later
         telemetry.addData("Ticks" , tksRPM);
         telemetry.update();
         lstTicks = crntTicks;

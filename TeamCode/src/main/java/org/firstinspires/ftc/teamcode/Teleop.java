@@ -13,11 +13,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Teleop extends OpMode
 {
 
-    double spdMulty = 0.25;
     double rStk;
     double lStk;
     double boost;
-    double deadZone = 0.15;
+    double lTrig;
     double rMtrPwr;
     double lMtrPwr;
 
@@ -33,8 +32,8 @@ public class Teleop extends OpMode
 
     public void start()
     {
-        robot.right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER );
+        robot.left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         telemetry.addData("Status" , "Go Time!");
         telemetry.update();
     }
@@ -44,28 +43,36 @@ public class Teleop extends OpMode
         rStk = gamepad1.right_stick_y;
         lStk = gamepad1.left_stick_y;
         boost = gamepad1.right_trigger;
-        if(Math.abs(rStk) < deadZone)
-            rStk = 0.0;
-
-        if(Math.abs(lStk) < deadZone)
-            lStk = 0.0;
-
-
-        if (boost == ConstUtil.boostCons)
+        lTrig = gamepad1.left_trigger;
+        telemetry.addData("R trigger val after read" , boost);
+        telemetry.addData("R stk after read" , rStk);
+        telemetry.addData("L stk after read" , lStk);
+        if (lTrig == 1.0)
         {
-            rMtrPwr = rStk;
-            lMtrPwr = lStk;
+            rMtrPwr = 0.0;
+            lMtrPwr = 0.0;
         }
         else
         {
-            rMtrPwr = rStk * spdMulty;
-            lMtrPwr = lStk * spdMulty;
+            if (boost == ConstUtil.boostCons )
+            {
+                rMtrPwr = rStk;
+                lMtrPwr = lStk;
+            }
+            else
+            {
+                rMtrPwr = rStk * ConstUtil.spdMulty;
+                lMtrPwr = lStk * ConstUtil.spdMulty;
+            }
         }
+        telemetry.addData("rMtrPwr Value" , rMtrPwr);
+        telemetry.addData("lMtrPwr Value" , lMtrPwr);
         setMtrPwr(lMtrPwr , rMtrPwr);
         telemetry.addData("Right Motor Power" , robot.right.getPower());
-        telemetry.addData("Right Motor POSITION" , robot.right.getCurrentPosition());
+        //telemetry.addData("Right Motor POSITION" , robot.right.getCurrentPosition());
         telemetry.addData("Left Motor Power" , robot.left.getPower());
-        telemetry.addData("Left Motor POSITION" , robot.left.getCurrentPosition());
+        //telemetry.addData("Left Motor POSITION" , robot.left.getCurrentPosition());
+        telemetry.addData("R Trigger Value" , boost);
         telemetry.update();
     }
 
