@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 /**
- * Created by Nicholas on 2017-08-08.
+ * Created by Nicholas on 2017-08-08. The drive thread for the RobotDrive class.
  */
 
 public class DriveThrd implements Runnable
