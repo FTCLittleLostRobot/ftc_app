@@ -29,8 +29,8 @@ public class RobotDrive extends OpMode
 
     public void start()
     {
-        robot.right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         telemetry.addData("Status" , "Go Time!");
         telemetry.update();
         t1 = new DriveThrd ( DriveThrd.CONST_LEFT , gamepad1 , robot.left); //make different threads

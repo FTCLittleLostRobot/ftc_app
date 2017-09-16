@@ -47,10 +47,10 @@ public class Teleop extends OpMode
         telemetry.addData("R trigger val after read" , boost);
         telemetry.addData("R stk after read" , rStk);
         telemetry.addData("L stk after read" , lStk);
-        if (lTrig == 1.0)
+        if (lTrig == ConstUtil.leftTrigCons)
         {
-            rMtrPwr = 0.0;
-            lMtrPwr = 0.0;
+            rMtrPwr = rStk * ConstUtil.slowMulty;
+            lMtrPwr = lStk * ConstUtil.slowMulty;
         }
         else
         {

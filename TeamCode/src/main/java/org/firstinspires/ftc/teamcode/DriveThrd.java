@@ -35,10 +35,12 @@ public class DriveThrd implements Runnable
     {
         double stkVal = 0.0; //variable for reading joystick values
         double boost = 0.0; //variable for reading trigger button variables
+        double lTrig = 0.0;
 
         while(!stopThrd)
         {
-            boost = pad.right_trigger; //ge t the trigger value
+            boost = pad.right_trigger; //get the right trigger value
+            lTrig = pad.left_trigger; //get the left trigger value
             switch (side)
             {
                 case CONST_LEFT: //this runs if this thread is for the left side
@@ -48,7 +50,7 @@ public class DriveThrd implements Runnable
                     {
                         stkVal = 0.0;
                     }
-                    mtr.setPower(boostFactor(boost , stkVal)); //send power to the motors
+                    mtr.setPower(boostFactor(boost , stkVal , lTrig)); //send power to the motors
 
                     break;
 
@@ -59,7 +61,7 @@ public class DriveThrd implements Runnable
                     {
                         stkVal = 0.0;
                     }
-                    mtr.setPower(boostFactor(boost , stkVal));
+                    mtr.setPower(boostFactor(boost , stkVal , lTrig));
                     break;
 
                 default:
@@ -81,13 +83,19 @@ public class DriveThrd implements Runnable
         return returnVal;
     }
 
-    private double boostFactor(double boost , double stkVal) //this checks the boost button
+    private double boostFactor(double boost , double stkVal , double lTrig) //this checks the boost button and the slow button
     {
-        double ret = stkVal*-1; //this is negative because if you push the stick up, the value is negative.
-
-        if(boost < ConstUtil.boostCons)
+        double ret = stkVal;
+        if (lTrig == ConstUtil.leftTrigCons)
         {
-            ret = ret*ConstUtil.spdMulty;
+            ret = ret * ConstUtil.slowMulty;
+        }
+        else
+        {
+            if(boost < ConstUtil.boostCons)
+            {
+                ret = ret*ConstUtil.spdMulty;
+            }
         }
         return ret;
     }
