@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * This is NOT an opmode.
  *
  * This class can be used to define all the specific hardware for a single robot.
- * In this case that robot is our Little Lost Robot.
+ * In this case that robot is our BabyBot. If we remove the comments, this class will be for our Little Lost Robot.
  *
  * This hardware class assumes the following device names have been configured on the robot:
  * Note:  All names are lower case and some have single spaces between words.
