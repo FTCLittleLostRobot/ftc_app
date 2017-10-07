@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -19,6 +20,7 @@ public class Teleop extends OpMode
     double lTrig;
     double rMtrPwr;
     double lMtrPwr;
+    ModernRoboticsI2cGyro gyro = null;
 
     HardwareLLR robot = new HardwareLLR();
 
@@ -26,27 +28,27 @@ public class Teleop extends OpMode
     public void init()
     {
       robot.init(hardwareMap);
+      gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
+      gyro.calibrate();
+      gyro.resetZAxisIntegrator();
       telemetry.addData("Status" , "Ready");
       telemetry.update();
     }
 
     public void start()
     {
-        robot.right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER );
-        robot.left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.right_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER );
+        robot.left_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         telemetry.addData("Status" , "Go Time!");
         telemetry.update();
     }
 
     public void loop()
     {
-        rStk = gamepad1.right_stick_y;
-        lStk = gamepad1.left_stick_y;
+        rStk = gamepad1.right_stick_y*-1;
+        lStk = gamepad1.left_stick_y*-1;
         boost = gamepad1.right_trigger;
         lTrig = gamepad1.left_trigger;
-        telemetry.addData("R trigger val after read" , boost);
-        telemetry.addData("R stk after read" , rStk);
-        telemetry.addData("L stk after read" , lStk);
         if (lTrig == ConstUtil.leftTrigCons)
         {
             rMtrPwr = rStk * ConstUtil.slowMulty;
@@ -65,20 +67,20 @@ public class Teleop extends OpMode
                 lMtrPwr = lStk * ConstUtil.spdMulty;
             }
         }
-        telemetry.addData("rMtrPwr Value" , rMtrPwr);
-        telemetry.addData("lMtrPwr Value" , lMtrPwr);
+
         setMtrPwr(lMtrPwr , rMtrPwr);
-        telemetry.addData("Right Motor Power" , robot.right.getPower());
-        //telemetry.addData("Right Motor POSITION" , robot.right.getCurrentPosition());
-        telemetry.addData("Left Motor Power" , robot.left.getPower());
-        //telemetry.addData("Left Motor POSITION" , robot.left.getCurrentPosition());
+        telemetry.addData("Right Motor Power" , robot.right_drive.getPower());
+        telemetry.addData("Right Motor POSITION" , robot.right_drive.getCurrentPosition());
+        telemetry.addData("Left Motor Power" , robot.left_drive.getPower());
+        telemetry.addData("Left Motor POSITION" , robot.left_drive.getCurrentPosition());
         telemetry.addData("R Trigger Value" , boost);
+        telemetry.addData("Gyro Z" , gyro.getIntegratedZValue());
         telemetry.update();
     }
 
     public void setMtrPwr(double Left , double Right)
     {
-        robot.right.setPower(Right);
-        robot.left.setPower(Left);
+        robot.right_drive.setPower(Right);
+        robot.left_drive.setPower(Left);
     }
 }

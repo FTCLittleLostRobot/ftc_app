@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
- * Created by Nicholas on 2017-07-20. todo remove the comments for the shooter, collector, and ballgate.
+ * Created by Nicholas on 2017-07-20.
  */
 
 @TeleOp(name="ShooterTest", group="Iterative Opmode")
