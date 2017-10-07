@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 /**
  * Created by Nicholas on 2017-08-04. This is similar to teleop but with using threads
@@ -29,12 +27,12 @@ public class RobotDrive extends OpMode
 
     public void start()
     {
-        robot.right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.right_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.left_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         telemetry.addData("Status" , "Go Time!");
         telemetry.update();
-        t1 = new DriveThrd ( DriveThrd.CONST_LEFT , gamepad1 , robot.left); //make different threads
-        t2 = new DriveThrd( DriveThrd.CONST_RIGHT , gamepad1 , robot.right);
+        t1 = new DriveThrd ( DriveThrd.CONST_LEFT , gamepad1 , robot.left_drive); //make different threads
+        t2 = new DriveThrd( DriveThrd.CONST_RIGHT , gamepad1 , robot.right_drive);
         Thread thrd1 = new Thread(t1);
         Thread thrd2 = new Thread(t2);
         thrd1.start();
@@ -43,10 +41,10 @@ public class RobotDrive extends OpMode
 
     public void loop()
     {
-        telemetry.addData("Right Pos" , robot.right.getCurrentPosition());
-        telemetry.addData("Right Power" , robot.right.getPower());
-        telemetry.addData("Left Pos" , robot.left.getCurrentPosition());
-        telemetry.addData("Left Power" , robot.left.getPower());
+        telemetry.addData("Right Pos" , robot.right_drive.getCurrentPosition());
+        telemetry.addData("Right Power" , robot.right_drive.getPower());
+        telemetry.addData("Left Pos" , robot.left_drive.getCurrentPosition());
+        telemetry.addData("Left Power" , robot.left_drive.getPower());
     }
 
     public void stop()
