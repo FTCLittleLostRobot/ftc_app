@@ -29,6 +29,7 @@ public class HardwareLLR
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
+    private ElapsedTime waitTime = new ElapsedTime();
 
     /* Constructor */
     public HardwareLLR(){
@@ -56,20 +57,6 @@ public class HardwareLLR
 
         // Define and initialize ALL installed servos.
         colorServ = hwMap.servo.get("colorServ");
-        if (colorServ.getPosition() < ConstUtil.clrServUp) //if less, then move up
-        {
-            while (colorServ.getPosition() < ConstUtil.clrServUp) //0.5 down to 0
-            {
-                colorServ.setPosition(colorServ.getPosition() + ConstUtil.clrServRate);
-            }
-        }
-        else if (colorServ.getPosition() > ConstUtil.clrServUp) //if more, then move down
-        {
-            while (colorServ.getPosition() > ConstUtil.clrServUp)
-            {
-                colorServ.setPosition(colorServ.getPosition() - ConstUtil.clrServRate);
-            }
-        }
     }
     /***
      *
