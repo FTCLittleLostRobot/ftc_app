@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Const;
+
 /**
  * Created by Nicholas on 2017-09-30. Right now, I'm running the motors by time.
  */
@@ -18,6 +20,7 @@ public class KnockJewel extends LinearOpMode
     public ModernRoboticsI2cColorSensor colorSensor = null;
     public ModernRoboticsI2cGyro gyro = null;
     private ElapsedTime runTime = new ElapsedTime();
+    private double clrServPos = 1.0;
 
     public void runOpMode()
     {
@@ -30,9 +33,12 @@ public class KnockJewel extends LinearOpMode
         telemetry.addData("Program Place" , "Ready To Run");
         telemetry.update();
         waitForStart();
-        while (robot.colorServ.getPosition() > ConstUtil.clrServDown) //0.5 down to 0
+        while (clrServPos > ConstUtil.clrServDown) //1 down to 0
         {
-            robot.colorServ.setPosition(robot.colorServ.getPosition() - ConstUtil.clrServRate );
+            clrServPos -= ConstUtil.clrServRate;
+            robot.colorServ.setPosition(clrServPos);
+            sleep(50);
+            idle();
         }
 
         /*while (colorSensor.red() == 0 && (colorSensor.blue() == 0))
@@ -79,9 +85,12 @@ public class KnockJewel extends LinearOpMode
             telemetry.update();
         }
         sleep(500);
-        while (robot.colorServ.getPosition() < ConstUtil.clrServUp) //0  to 0.5
+        while (clrServPos < ConstUtil.clrServUp) //0.0 up to 1.0
         {
-            robot.colorServ.setPosition(robot.colorServ.getPosition() + ConstUtil.clrServRate);
+            clrServPos += ConstUtil.clrServRate;
+            robot.colorServ.setPosition(clrServPos);
+            sleep(50);
+            idle();
         }
         telemetry.addData("Program Place" , "DONE");
         telemetry.update();
