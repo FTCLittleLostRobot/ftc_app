@@ -23,6 +23,7 @@ public class TestBotAutoMoveUtil extends LinearOpMode
     double lPwr;
     double distanceToMove;
     int distanceToMoveInt;
+    private double targetHeading = 0.0;
     HardwareLLR robot = new HardwareLLR();
     ModernRoboticsI2cGyro gyro = null;
 
@@ -36,160 +37,87 @@ public class TestBotAutoMoveUtil extends LinearOpMode
         BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro , robot.right_drive , robot.left_drive);
         botMove.calibrateGyro();
         botMove.changeMode();
-        telemetry.addData("->" , "Ready to run");
+        telemetry.addData("Program Place" , "Ready to run");
         telemetry.update();
-        waitForStart(); //stuff
-        /*telemetry.addData("->" , "just started running");
+        waitForStart(); //The code above is init
+        /*telemetry.addData("Program Place" , "just started running");
         telemetry.update();
         botMove.setDist(12);
-        telemetry.addData("->" , "just set distance");
+        telemetry.addData("Program Place" , "just set distance");
         telemetry.update();
         botMove.motorPwrs(0.3);
-        telemetry.addData("->" , "just finished running motors");
+        telemetry.addData("Program Place" , "just finished running motors");
         telemetry.update();
         sleep(500);
-        telemetry.addData("->" , "just slept");
-        telemetry.update();
+        telemetry.addData("Program Place" , "just slept");
+        telemetry.update();*/
+        botMove.turnGyro(-90 , 0.2);
+        telemetry.addData("Program Place" , "Just finished turning right");
         botMove.turnGyro(90 , 0.2);
-        telemetry.addData("->" , "Just finished turning left");
-        sleep(500);
-        botMove.turnGyro(0 , 0.2);
-        telemetry.addData("->" , "finished turning right");
+        telemetry.addData("Program Place" , "finished turning left");
         telemetry.update();
-        botMove.setDist(-12);
-        botMove.motorPwrs(0.3);
-        telemetry.addData("->" , "Just finished moving backwards");
-        */
-        botMove.setDist(-12);
-        telemetry.addData("Counter" , botMove.counter);
-        telemetry.update();
-        botMove.motorPwrs(0.3);
-        sleep(500);
-        botMove.setDist(12);
-        telemetry.addData("Counter" , botMove.counter);
-        telemetry.update();
-        botMove.motorPwrs(0.3);
+        telemetry.addData("Program Place" , "Just finished moving backwards");
     }
 
-   /* public void changeMode()
-    {
-        robot.right_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.left_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-
-    public void setDist(double distanceINCHES)
-    {
-        distanceToMove = distanceINCHES * ConstUtil.oneInch; //distanceINCHES is a parameter
-        distanceToMoveInt = (int)Math.round(distanceToMove);
-        rMem = robot.right_drive.getCurrentPosition();
-        lMem = robot.left_drive.getCurrentPosition();
-        robot.right_drive.setTargetPosition(distanceToMoveInt);
-        robot.left_drive.setTargetPosition(distanceToMoveInt);
-    }
-    public void motorPwrs(double pwr)
-    {
-        targetZ = gyro.getIntegratedZValue();
-        while( (robot.right_drive.getCurrentPosition() < robot.right_drive.getTargetPosition()) && (robot.left_drive.getCurrentPosition() < robot.left_drive.getTargetPosition() ) )
-        {
-            currentZ = gyro.getIntegratedZValue();
-            error = targetZ - currentZ;
-            steer = error * ConstUtil.driveCoefficient;
-            if ((robot.right_drive.getTargetPosition() < rMem) && (robot.left_drive.getTargetPosition() == lMem))
-            {
-                steer = steer * -1;
-            }
-            rPwr = pwr + steer;
-            lPwr = pwr - steer;
-            if (rPwr > 1)
-            {
-                rPwr = 1;
-            }
-            else if (rPwr < -1)
-            {
-                rPwr = 0;
-        }
-            if (lPwr > 1)
-            {
-                lPwr = 1;
-            }
-            else if (lPwr < -1)
-            {
-                lPwr = 0;
-            }
-            setMtrPwr(lPwr , rPwr);
-            telemetry.addData("Gyro Z" , gyro.getIntegratedZValue());
-            telemetry.addData("rmem" , rMem);
-            telemetry.addData("lmem" , lMem);
-            telemetry.addData("target dist" , distanceToMoveInt);
-            telemetry.addData("Current Right" , robot.right_drive.getCurrentPosition());
-            telemetry.addData("Current Left" , robot.left_drive.getCurrentPosition());
-            telemetry.update();
-        }
-        setMtrPwr(0,0);
-    }
-
-    public void correctHeading(int tgtHeading)
-    {
-        if (gyro.getIntegratedZValue() > tgtHeading)
-        {
-            while (gyro.getIntegratedZValue() > tgtHeading)
-            {
-                setMtrPwr(0.1 , -0.1);
-            }
-        }
-        else if (gyro.getIntegratedZValue() < tgtHeading)
-        {
-            while (gyro.getIntegratedZValue() < tgtHeading)
-            {
-                setMtrPwr(-0.1 , 0.1);
-            }
-        }
-        else
-        {
-            setMtrPwr(0,0);
-        }
-        setMtrPwr(0,0);
-
-    }
-
-    public void turnGyro(int turnDegrees , double speed)
+   /* public void turnGyro(int turnDegrees , double speed)
     {
         robot.right_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.left_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         turnDegrees = turnDegrees * ConstUtil.oneDegree;
+        targetHeading = gyro.getIntegratedZValue() + turnDegrees;
 
-        if (turnDegrees > gyro.getIntegratedZValue()) //If it's more, then you need to turn right
+        if (targetHeading > gyro.getIntegratedZValue()) //If it's more, then you need to turn left
         {
-            while (turnDegrees > gyro.getIntegratedZValue())
+            while (targetHeading > gyro.getIntegratedZValue())
             {
                 setMtrPwr(-speed , speed);
-                telemetry.addData("Current Z" , gyro.getIntegratedZValue());
-                telemetry.addData("TargetZ" , turnDegrees);
-                setMtrPwr(0,0);
-                sleep(500);
                 correctHeading(turnDegrees);
             }
             setMtrPwr(0,0);
         }
-        else if(gyro.getIntegratedZValue() == turnDegrees)
+        else if(gyro.getIntegratedZValue() == targetHeading)
         {
             setMtrPwr(0,0);
         }
-        else
+        else if (targetHeading < gyro.getIntegratedZValue())
         {
-            while (turnDegrees < gyro.getIntegratedZValue()) //If it's less, then you need to turn left
+            while (targetHeading < gyro.getIntegratedZValue()) //If it's less, then you need to turn right
             {
                 setMtrPwr(speed , -speed);
+                correctHeading(turnDegrees);
             }
             setMtrPwr(0,0);
-            sleep(500);
-            correctHeading(turnDegrees);
+            //correctHeading(turnDegrees);
         }
         setMtrPwr(0,0);
     }
-    public void setMtrPwr(double LeftPwr , double RightPwr)
+    public void setMtrPwr(double lPower , double rPower)
     {
-        robot.right_drive.setPower(RightPwr);
-        robot.left_drive.setPower(LeftPwr);
+        robot.right_drive.setPower(rPower);
+        robot.left_drive.setPower(lPower);
+    }
+
+    public void correctHeading(int tgtHeading)
+    {
+        if (tgtHeading > gyro.getIntegratedZValue()) //tgtHeading > gyro.getIntegratedZValue() //gyro.getIntegratedZValue() > tgtHeading
+        {
+            while (tgtHeading > gyro.getIntegratedZValue())
+            {
+                setMtrPwr(-0.1, 0.1);
+            }
+        }
+        else if (tgtHeading < gyro.getIntegratedZValue()) //tgtHeading < gyro.getIntegratedZValue() //gyro.getIntegratedZValue() < tgtHeading
+        {
+            while (tgtHeading < gyro.getIntegratedZValue())
+            {
+                setMtrPwr(0.1, -0.1);
+            }
+        }
+        else
+        {
+            setMtrPwr(0,0);
+        }
+        setMtrPwr(0,0);
+
     }*/
 }

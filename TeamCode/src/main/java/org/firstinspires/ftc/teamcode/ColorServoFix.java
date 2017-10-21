@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -8,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by Nicholas on 2017-10-11.
  */
 @Autonomous (name = "Color Servo Fix" , group = "Linear Opmode")
-
+@Disabled
 public class ColorServoFix extends LinearOpMode
 {
     Servo colorServ = null;
