@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 public class BotAutoMoveUtil
 {
     public int counter = 500;
+    private double targetHeading = 0.0;
     double rMem;
     double lMem;
     int rMemRound = 0;
@@ -23,6 +24,8 @@ public class BotAutoMoveUtil
     double lPwr;
     double distanceToMove;
     int distanceToMoveInt;
+    double turnCrntZ = 0;
+    double turnStrtZ = 0.0;
     ModernRoboticsI2cGyro gyro = null;
     DcMotor rDrive = null;
     DcMotor lDrive = null;
@@ -136,20 +139,20 @@ public class BotAutoMoveUtil
         counter = 500;
     }//mtrPwrs method
 
-    public void correctHeading(int tgtHeading)
+    public void correctHeading(double tgtHeading)
     {
-        if (gyro.getIntegratedZValue() > tgtHeading)
+        if (tgtHeading > gyro.getIntegratedZValue()) //tgtHeading > gyro.getIntegratedZValue() //gyro.getIntegratedZValue() > tgtHeading
         {
-            while (gyro.getIntegratedZValue() > tgtHeading)
+            while (tgtHeading > gyro.getIntegratedZValue())
             {
-                setMtrPwr(0.1 , -0.1);
+                setMtrPwr(-0.1, 0.1);
             }
         }
-        else if (gyro.getIntegratedZValue() < tgtHeading)
+        else if (tgtHeading < gyro.getIntegratedZValue()) //tgtHeading < gyro.getIntegratedZValue() //gyro.getIntegratedZValue() < tgtHeading
         {
-            while (gyro.getIntegratedZValue() < tgtHeading)
+            while (tgtHeading < gyro.getIntegratedZValue())
             {
-                setMtrPwr(-0.1 , 0.1);
+                setMtrPwr(0.1, -0.1);
             }
         }
         else
@@ -162,31 +165,37 @@ public class BotAutoMoveUtil
 
     public void turnGyro(int turnDegrees , double speed)
     {
+        turnStrtZ = gyro.getIntegratedZValue();
         rDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         turnDegrees = turnDegrees * ConstUtil.oneDegree;
+        targetHeading = turnStrtZ + turnDegrees;
+        turnCrntZ = gyro.getIntegratedZValue();
 
-        if (turnDegrees > gyro.getIntegratedZValue()) //If it's more, then you need to turn right
+        if (targetHeading > turnCrntZ) //If it's more, then you need to turn left
         {
-            while (turnDegrees > gyro.getIntegratedZValue())
+            while (targetHeading > turnCrntZ)
             {
                 setMtrPwr(-speed , speed);
-                correctHeading(turnDegrees);
+                turnCrntZ = gyro.getIntegratedZValue();
             }
             setMtrPwr(0,0);
+            correctHeading(targetHeading);
         }
-        else if(gyro.getIntegratedZValue() == turnDegrees)
+        else if(gyro.getIntegratedZValue() == targetHeading)
         {
             setMtrPwr(0,0);
         }
-        else
+        else if (targetHeading < turnCrntZ)
         {
-            while (turnDegrees < gyro.getIntegratedZValue()) //If it's less, then you need to turn left
+            while (targetHeading < turnCrntZ) //If it's less, then you need to turn right
             {
                 setMtrPwr(speed , -speed);
+                turnCrntZ = gyro.getIntegratedZValue();
+
             }
             setMtrPwr(0,0);
-            correctHeading(turnDegrees);
+            correctHeading(targetHeading);
         }
         setMtrPwr(0,0);
     }
