@@ -11,11 +11,25 @@ public class ConstUtil
     public static final double boostCons = 1.0; //Teleop
     public static final double slowMulty = 0.20; //Teleop
     public static final double leftTrigCons = 1.0; //Teleop
+
     public static final int oneDegree = 1; //Auto gyro turn
     public static final double oneInch = 65.169579812478296099085542308138; //Auto gyro straight WAS 117.79
     public static final double driveCoefficient = 0.00001; //Auto gyro straight
+
     public static final double rampUpRate = 0.025; //The rate the shooter motor ramps up (Teleop)
+
+    public static final double offRampDist10_27 = 14.0; //10/27/17 Good offRampDist for MedBot. Bot must be placed near front of balance
+
     public static final double clrServUp = 1.0; //Color Servo Up position
     public static final double clrServDown = 0.0; //Color Servo Down position
     public static final double clrServRate = 0.01; //rate for moving the servo
+
+    public static final int blueLeftAngL = 12; //Angle for Blue left side left row of the block box WAS 72
+    public static final int blueLeftAngC = 46; //Angle for Blue left side center row of the block box
+    public static final int blueLeftAngR = 51; //Angle for Blue left side right row of the block box WAS 47
+
+    public static final double blueLeftDistL = 15.0; //Distance to move to Blue left side left row of block box WAS 18.4
+    public static final double blueLeftDistC = 16.58; //Distance to move to Blue left side center row of block box
+    public static final double blueLeftDistR = 22.0; //Distance to move to Blue left side right row of block box WAS 23
+
 }
