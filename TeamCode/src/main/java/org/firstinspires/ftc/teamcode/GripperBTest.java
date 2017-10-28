@@ -26,7 +26,7 @@ public class GripperBTest extends OpMode
         telemetry.update();
     }
 
-    public void loop()
+    public void loop() //Forward closes the gripper, Reverse opens the gripper. Use a gamepad to set power too
     {
         trigger = gamepad2.right_trigger;
         if (gamepad2.right_bumper)
@@ -58,4 +58,3 @@ public class GripperBTest extends OpMode
     }
 
 }
-//Forward closes the gripper, Reverse opens the gripper. Use a gamepad to set power too
