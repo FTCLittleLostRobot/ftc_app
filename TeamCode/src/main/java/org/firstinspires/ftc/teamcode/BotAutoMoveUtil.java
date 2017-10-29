@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 /**
- * Created by Nicholas on 2017-08-02.
+ * Created by Nicholas on 2017-08-02. TODO: When the robot is built, add new motors that are going to be on the competition robot.
  */
 
 public class BotAutoMoveUtil
