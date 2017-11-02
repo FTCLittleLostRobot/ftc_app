@@ -68,26 +68,26 @@ public class BlueLeftAuto extends LinearOpMode
         botMove.turnGyro(-ConstUtil.blueLeftAngR , 0.1);
         telemetry.addData("Program Place" , "Done");
         telemetry.update();
-        /*
-        if (vuMark == "LEFT")
+
+        /*if (vuMark == "LEFT")
         {
             botMove.turnGyro(-72.36 , 0.2); //Negative numbers turn the robot right
             botMove.setDist(12.59);
-            botMove.mtrPowers(0.3);
+            botMove.motorPowers(0.3);
             botMove.turnGyro(72.36 , 0.2); //Positive numbers turn the robot left
         }
         else if (vuMark == "CENTER")
         {
             botMove.turnGyro(-46.36 , 0.2);
             botMove.setDist(16.58);
-            botMove.mtrPowers(0.3);
+            botMove.motorPowers(0.3);
             botMove.turnGyro(46.36 , 0.2);
         }
         else if (vuMark == "RIGHT")
         {
-            botMove.turnGyro(-32.17 , 0.2);
+            botMove.turnGyro(-32 , 0.2);
             botMove.setDist(22.54);
-            botMove.mtrPowers(0.3);
+            botMove.motorPowers(0.3);
             botMove.turnGyro(32.17 , 0.2);
         }
 

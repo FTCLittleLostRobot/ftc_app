@@ -33,7 +33,7 @@ public class GripperBTest extends OpMode
         {
             if (trigger == 1)
             {
-                gripperB.setPower(-0.15);
+                gripperB.setPower(-0.1);
             }
             else
             {
@@ -44,7 +44,7 @@ public class GripperBTest extends OpMode
         {
             if(trigger == 1)
             {
-                gripperB.setPower(0.15);
+                gripperB.setPower(0.1);
             }
             else
             {
