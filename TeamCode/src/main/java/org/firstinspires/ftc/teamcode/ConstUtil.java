@@ -52,6 +52,7 @@ public class ConstUtil
 
     // Red Left angles and distances
   //  public static final double after90TurnDist = 11; //Was 14
+    public static final double baseToGlyDistRedLeft = -30.5; //WAS 30.25
     public static final double redLeftDistL = baseToGlyDist + (glyBoxColW/2); //Distance to move to Blue Right side left row of block box WAS 18.4
     public static final double redLeftDistC = baseToGlyDist + (glyBoxColW * 1.5); //Distance to move to Blue Right side center row of block box
     public static final double redLeftDistR = baseToGlyDist + (glyBoxColW * 2.5); //Distance to move to Blue RIght side right row of block box WAS 23

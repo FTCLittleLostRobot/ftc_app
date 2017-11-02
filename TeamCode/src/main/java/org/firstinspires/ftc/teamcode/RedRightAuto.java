@@ -26,7 +26,7 @@ public class RedRightAuto extends LinearOpMode
         waitForStart();
         botMove.changeMode();
         botMove.setDist(-25); //TODO: Change this value later.
-        botMove.motorPwrs(0.5);
+        botMove.motorPwrs(0.3);
         botMove.turnGyro(180 , 0.2); //positive turnDegrees turns the bot to the left, negative to the right.
         botMove.turnGyro(ConstUtil.redRightAngR , 0.2);
         botMove.setDist(ConstUtil.redRightDistR);

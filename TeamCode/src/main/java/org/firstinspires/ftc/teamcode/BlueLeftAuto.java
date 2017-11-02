@@ -61,7 +61,7 @@ public class BlueLeftAuto extends LinearOpMode
             telemetry.update();
         }*/
         botMove.setDist(ConstUtil.offRampDist10_27);
-        botMove.motorPwrs(0.5);
+        botMove.motorPwrs(0.3);
         botMove.turnGyro(ConstUtil.blueLeftAngR , 0.2);
         botMove.setDist(ConstUtil.blueLeftDistR);
         botMove.motorPwrs(0.3);
