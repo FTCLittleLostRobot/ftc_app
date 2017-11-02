@@ -26,7 +26,7 @@ public class BlueRightAuto extends LinearOpMode
         waitForStart();
         botMove.changeMode();
         botMove.setDist(ConstUtil.blueRightDistR);
-        botMove.motorPwrs(0.5);
+        botMove.motorPwrs(0.3);
         botMove.turnGyro(90, 0.2);
         botMove.setDist(ConstUtil.after90TurnDist);
         botMove.motorPwrs(0.3);
