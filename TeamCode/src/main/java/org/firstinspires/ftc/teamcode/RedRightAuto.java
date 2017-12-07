@@ -2,13 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /**
  * Created by Nicholas on 2017-10-27.
  */
 @Autonomous(name = "RED Right Auto" , group = "Linear OpMode")
-
+@Disabled
 public class RedRightAuto extends LinearOpMode
 {
     HardwareLLR robot = new HardwareLLR();
@@ -16,24 +17,26 @@ public class RedRightAuto extends LinearOpMode
 
     public void runOpMode()
     {
-        robot.init(hardwareMap);
+        robot.teleInit(hardwareMap);
+        /*robot.glyphElevator.setPower(1);
+        sleep(2000);
+        robot.glyphElevator.setPower(0);*/
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
-        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro , robot.right_drive , robot.left_drive );
+        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro , robot.right_frnt , robot.right_rear , robot.left_frnt , robot.left_rear);
         gyro.calibrate();
         gyro.resetZAxisIntegrator();
         telemetry.addData("Program Place" , "Ready to Run");
         telemetry.update();
         waitForStart();
         botMove.changeMode();
-        botMove.setDist(-25); //TODO: Change this value later.
-        botMove.motorPwrs(0.3);
-        botMove.turnGyro(180 , 0.2); //positive turnDegrees turns the bot to the left, negative to the right.
-        botMove.turnGyro(ConstUtil.redRightAngR , 0.2);
-        botMove.setDist(ConstUtil.redRightDistR);
-        botMove.motorPwrs(0.3);
-        botMove.turnGyro(-ConstUtil.redRightAngR , 0.1);
+        //positive turnDegrees turns the bot to the left, negative to the right.
+        botMove.setDist(ConstUtil.offRampDist10_27);
+        botMove.motorPwrs(0.05);
+        //botMove.turnGyro(4 ,0.2); //4 is correct. no need to worry
+        botMove.setDist(ConstUtil.blueLeftDistL);
+        botMove.motorPwrs(0.2);
+        //botMove.turnGyro(-ConstUtil.blueLeftAngL , 0.3);
         telemetry.addData("Program Place" , "Done");
         telemetry.update();
-
     }
 }

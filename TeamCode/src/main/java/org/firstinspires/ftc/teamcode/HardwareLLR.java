@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -14,17 +16,35 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * This hardware class assumes the following device names have been configured on the robot:
  * Note:  All names are lower case and some have single spaces between words.
  *
- * Motor channel:  left  drive motor:        "left"
- * Motor channel:  right drive motor:        "right"
+ * Hub 2:
+ *          Motor Port 0: rightfrnt
+ *          Motor Port 1: rightrear
+ *          Motor Port 2: gripperB
+ *
+ * Hub 1:
+ *          Motor Port 0: leftfrnt
+ *          Motor Port 1: leftrear
+ *          Motor Port 2: glyphElevator
+ *          I2c Port 1: gyro
  *
  *
  */
 public class HardwareLLR
 {
     /* Public OpMode members. */
-    public DcMotor right_drive = null;
-    public DcMotor left_drive = null;
+    public DcMotor right_frnt = null;
+    public DcMotor right_rear = null;
+    public DcMotor left_frnt = null;
+    public DcMotor left_rear = null;
+    public DcMotor gripperB = null;
+    public DcMotor glyphElevator = null;
     public Servo colorServ = null;
+
+    public DigitalChannel touchSensor = null;
+    public DigitalChannel limitSwitch = null;
+    private int gripInitCheck = 0;
+    private boolean limitSwitchCheck = false;
+
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -36,27 +56,149 @@ public class HardwareLLR
 
     }
 
+    public void teleInit(HardwareMap ahwMap)
+    {
+        hwMap = ahwMap;
+        // Define and Initialize Motors
+        left_frnt = hwMap.dcMotor.get("leftfrnt");
+        left_rear = hwMap.dcMotor.get("leftrear");
+        right_frnt = hwMap.dcMotor.get("rightfrnt");
+        right_rear = hwMap.dcMotor.get("rightrear");
+        left_frnt.setDirection(DcMotor.Direction.FORWARD);
+        left_rear.setDirection(DcMotorSimple.Direction.FORWARD);
+        right_frnt.setDirection(DcMotor.Direction.REVERSE);
+        right_rear.setDirection(DcMotor.Direction.REVERSE);
+
+        gripperB = hwMap.dcMotor.get("gripperB");
+        gripperB.setDirection(DcMotorSimple.Direction.REVERSE);
+        glyphElevator = hwMap.dcMotor.get("glyphElevator");
+        glyphElevator.setDirection(DcMotorSimple.Direction.REVERSE); //forward moves the elevator down, reverse moves it up
+
+        // Set all motors to zero power
+        left_frnt.setPower(0);
+        left_rear.setPower(0);
+        right_frnt.setPower(0);
+        right_rear.setPower(0);
+        gripperB.setPower(0);
+        glyphElevator.setPower(0.0);
+
+        gripperB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        left_rear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        right_rear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        right_frnt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        right_rear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        left_frnt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        left_rear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        gripperB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        /*touchSensor = hwMap.get(DigitalChannel.class, "touchSensor");
+        touchSensor.setMode(DigitalChannel.Mode.INPUT);
+        limitSwitch = hwMap.get(DigitalChannel.class, "limitSwitch");
+        limitSwitch.setMode(DigitalChannel.Mode.INPUT);
+        gripperB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        limitSwitchCheck = limitSwitch.getState();
+        while(limitSwitchCheck == false)
+        {
+            gripperB.setPower(0.4);
+            limitSwitchCheck = limitSwitch.getState();
+        }
+        gripperB.setPower(0.0);
+        gripperB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        gripperB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        gripInitCheck = gripperB.getCurrentPosition();
+        while(gripInitCheck > ConstUtil.gripperOutCons)
+        {
+            gripperB.setPower(-0.4);
+            gripInitCheck = gripperB.getCurrentPosition();
+            //telemetry.addData("GripInitCheck" , gripInitCheck);
+            //telemetry.update();
+        }
+        gripperB.setPower(0);*/
+
+        // Define and initialize ALL installed servos.
+        //colorServ = hwMap.servo.get("colorServ");
+    }
+
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        left_drive = hwMap.dcMotor.get("left");
-        right_drive = hwMap.dcMotor.get("right");
-        left_drive.setDirection(DcMotor.Direction.REVERSE);
-        right_drive.setDirection(DcMotor.Direction.FORWARD);
+        left_frnt = hwMap.dcMotor.get("leftfrnt");
+        left_rear = hwMap.dcMotor.get("leftrear");
+        right_frnt = hwMap.dcMotor.get("rightfrnt");
+        right_rear = hwMap.dcMotor.get("rightrear");
+        left_frnt.setDirection(DcMotor.Direction.FORWARD);
+        left_rear.setDirection(DcMotorSimple.Direction.FORWARD);
+        right_frnt.setDirection(DcMotor.Direction.REVERSE);
+        right_rear.setDirection(DcMotor.Direction.REVERSE);
+
+        gripperB = hwMap.dcMotor.get("gripperB");
+        gripperB.setDirection(DcMotorSimple.Direction.REVERSE);
+        glyphElevator = hwMap.dcMotor.get("glyphElevator");
+        glyphElevator.setDirection(DcMotorSimple.Direction.REVERSE); //forward moves the elevator down, reverse moves it up
 
 
         // Set all motors to zero power
-        left_drive.setPower(0);
-        right_drive.setPower(0);
+        left_frnt.setPower(0);
+        left_rear.setPower(0);
+        right_frnt.setPower(0);
+        right_rear.setPower(0);
+        gripperB.setPower(0);
+        glyphElevator.setPower(0.0);
 
-        left_drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        right_drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        gripperB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        left_rear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        right_rear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        right_frnt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        right_rear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        left_frnt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        left_rear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        gripperB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Define and initialize ALL installed servos.
-        colorServ = hwMap.servo.get("colorServ");
+        //colorServ = hwMap.servo.get("colorServ");
+
+        touchSensor = hwMap.get(DigitalChannel.class, "touchSensor");
+        touchSensor.setMode(DigitalChannel.Mode.INPUT);
+        limitSwitch = hwMap.get(DigitalChannel.class, "limitSwitch");
+        limitSwitch.setMode(DigitalChannel.Mode.INPUT);
+        gripperB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        limitSwitchCheck = limitSwitch.getState();
+        while(limitSwitchCheck == false)
+        {
+            gripperB.setPower(0.02);
+            limitSwitchCheck = limitSwitch.getState();
+        }
+        gripperB.setPower(0.0);
+        gripperB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        gripperB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        gripInitCheck = gripperB.getCurrentPosition();
+        while(gripInitCheck > ConstUtil.gripperOutCons)
+        {
+            gripperB.setPower(-0.1);
+            gripInitCheck = gripperB.getCurrentPosition();
+            //telemetry.addData("GripInitCheck" , gripInitCheck);
+            //telemetry.update();
+        }
+        gripperB.setPower(0);
+        while(touchSensor.getState() == true)
+        {
+            //telemetry.addData("Program Place" , "You can press the button now");
+            //telemetry.update();
+        }
+        gripInitCheck = gripperB.getCurrentPosition();
+        while(gripInitCheck < ConstUtil.gripperCloseCons)
+        {
+            gripperB.setPower(0.13);
+            gripInitCheck = gripperB.getCurrentPosition();
+            //telemetry.addData("GripInitCheck" , gripInitCheck);
+            //telemetry.update();
+        }
+        gripperB.setPower(0);
     }
     /***
      *

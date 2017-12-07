@@ -1,10 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.Const;
 
 /**
  * Created by Nicholas on 2017-10-25.
@@ -13,27 +17,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class InitGripperTest extends LinearOpMode
 {
-    private DcMotor gripper = null;
-    ElapsedTime initClock = new ElapsedTime();
+    HardwareLLR robot = new HardwareLLR();
     public void runOpMode()
     {
-        gripper = hardwareMap.dcMotor.get("gripperB");
-        gripper.setDirection(DcMotorSimple.Direction.FORWARD);
-        gripper.setPower(0.0);
-        initClock.reset();
-        while (initClock.seconds() < 2.5)
-        {
-            gripper.setPower(0.7);
-            telemetry.addData("Program Place" , "Closing Fast");
-            telemetry.update();
-        }
-        gripper.setPower(0.0);
-        initClock.reset();
-        while (initClock.seconds() < 6.0)
-        {
-            gripper.setPower(0.15);
-            telemetry.addData("Program Place" , "Closing Slow");
-            telemetry.update();
-        }
+        robot.init(hardwareMap);
+        waitForStart();
+        telemetry.addData("PRogram Place" , "Done");
     }
 }

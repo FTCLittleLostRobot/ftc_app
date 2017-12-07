@@ -27,14 +27,18 @@ public class BotAutoMoveUtil
     double turnCrntZ = 0;
     double turnStrtZ = 0.0;
     ModernRoboticsI2cGyro gyro = null;
-    DcMotor rDrive = null;
-    DcMotor lDrive = null;
+    DcMotor rFrnt = null;
+    DcMotor rRear = null;
+    DcMotor lFrnt = null;
+    DcMotor lRear = null;
 
-    public BotAutoMoveUtil(ModernRoboticsI2cGyro gyro , DcMotor r_Drive , DcMotor l_Drive)
+    public BotAutoMoveUtil(ModernRoboticsI2cGyro gyro , DcMotor r_Frnt , DcMotor r_Rear , DcMotor l_Frnt , DcMotor l_Rear)
     {
         this.gyro = gyro;
-        this.rDrive = r_Drive;
-        this.lDrive = l_Drive;
+        this.rFrnt = r_Frnt;
+        this.lFrnt = l_Frnt;
+        this.rRear = r_Rear;
+        this.lRear = l_Rear;
     }
 
     public void calibrateGyro()
@@ -45,98 +49,101 @@ public class BotAutoMoveUtil
 
     public void changeMode()
     {
-        rDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void setDist(double distanceINCHES)
     {
         distanceToMove = distanceINCHES * ConstUtil.oneInch; //distanceINCHES is a parameter
         distanceToMoveInt = (int)Math.round(distanceToMove);
-        rMem = rDrive.getCurrentPosition();
-        lMem = lDrive.getCurrentPosition();
+        rMem = rRear.getCurrentPosition();
+        lMem = lRear.getCurrentPosition();
         rMemRound = (int)Math.round(rMem);
         lMemRound = (int)Math.round(lMem);
-        rDrive.setTargetPosition(rMemRound + distanceToMoveInt);
-        lDrive.setTargetPosition(lMemRound + distanceToMoveInt);
+        rRear.setTargetPosition(rMemRound + distanceToMoveInt);
+        lRear.setTargetPosition(lMemRound + distanceToMoveInt);
     }
     public void motorPwrs(double pwr)
     {
-        targetZ = gyro.getIntegratedZValue();
-        if ((rDrive.getCurrentPosition() < rDrive.getTargetPosition()) && (lDrive.getCurrentPosition() < lDrive.getTargetPosition()))
-        {
-            rDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-            lDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-            while ((rDrive.getCurrentPosition() < rDrive.getTargetPosition()) && (lDrive.getCurrentPosition() < lDrive.getTargetPosition()))
+            targetZ = gyro.getIntegratedZValue();
+            if ((rRear.getCurrentPosition() < rRear.getTargetPosition()) && (lRear.getCurrentPosition() < lRear.getTargetPosition()))
             {
-                currentZ = gyro.getIntegratedZValue();
-                if(counter == 500)
+                rRear.setDirection(DcMotorSimple.Direction.REVERSE);
+                lRear.setDirection(DcMotorSimple.Direction.FORWARD);
+                while ((rRear.getCurrentPosition() < rRear.getTargetPosition()) && (lRear.getCurrentPosition() < lRear.getTargetPosition()))
                 {
-                    error = targetZ - currentZ;
-                    steer = error * ConstUtil.driveCoefficient;
-                    if ((rDrive.getTargetPosition() < rMem) && (lDrive.getTargetPosition() == lMem)) {
-                        steer = steer * -1;
+                    currentZ = gyro.getIntegratedZValue();
+                    if(counter == 500)
+                    {
+                        error = targetZ - currentZ;
+                        steer = error * ConstUtil.driveCoefficient;
+                        if ((rRear.getTargetPosition() < rMem) && (lRear.getTargetPosition() == lMem)) {
+                            steer = steer * -1;
+                        }
+                        rPwr = pwr + steer;
+                        lPwr = pwr - steer;
+                        if (rPwr > 1) {
+                            rPwr = 1;
+                        } else if (rPwr < -1) {
+                            rPwr = 0;
+                        }
+                        if (lPwr > 1) {
+                            lPwr = 1;
+                        } else if (lPwr < -1) {
+                            lPwr = 0;
+                        }
+                        setMtrPwr(lPwr, rPwr);
+                        counter = 1;
                     }
-                    rPwr = pwr + steer;
-                    lPwr = pwr - steer;
-                    if (rPwr > 1) {
-                        rPwr = 1;
-                    } else if (rPwr < -1) {
-                        rPwr = 0;
-                    }
-                    if (lPwr > 1) {
-                        lPwr = 1;
-                    } else if (lPwr < -1) {
-                        lPwr = 0;
-                    }
-                    setMtrPwr(lPwr, rPwr);
-                    counter = 1;
-                }
-                counter = counter + 1;
-            }//while loop
-            setMtrPwr(0, 0);
-        }//if statement
+                    counter = counter + 1;
+                }//while loop
+                setMtrPwr(0, 0);
+            }//if statement
 
-        else if((rDrive.getCurrentPosition() > rDrive.getTargetPosition()) && (lDrive.getCurrentPosition() > lDrive.getTargetPosition()))
-        {
-            while ((rDrive.getCurrentPosition() > rDrive.getTargetPosition()) && (lDrive.getCurrentPosition() > lDrive.getTargetPosition()))
+            else if((rRear.getCurrentPosition() > rRear.getTargetPosition()) && (lRear.getCurrentPosition() > lRear.getTargetPosition()))
             {
-                currentZ = gyro.getIntegratedZValue();
-                if (counter == 500)
+                while ((rRear.getCurrentPosition() > rRear.getTargetPosition()) && (lRear.getCurrentPosition() > lRear.getTargetPosition()))
                 {
-                    error = targetZ - currentZ;
-                    steer = error * ConstUtil.driveCoefficient;
-                    /* if ((rDrive.getTargetPosition() == rMem) && (lDrive.getTargetPosition() < lMem))
+                    currentZ = gyro.getIntegratedZValue();
+                    if (counter == 500)
+                    {
+                        error = targetZ - currentZ;
+                        steer = error * ConstUtil.driveCoefficient;
+                    /* if ((rRear.getTargetPosition() == rMem) && (lRear.getTargetPosition() < lMem))
                     {
                         steer = steer * -1;
                     }*/
-                    rPwr = -pwr - steer; //notice how these are switched from forwards code. This is because the robot is "facing"
-                    lPwr = -pwr + steer; //the other way.
-                    if (rPwr > 0)
-                    {
-                        rPwr = 0;
-                    }
-                    else if (rPwr < -1)
-                    {
-                        rPwr = -1;
-                    }
+                        rPwr = -pwr - steer; //notice how these are switched from forwards code. This is because the robot is "facing"
+                        lPwr = -pwr + steer; //the other way.
+                        if (rPwr > 0)
+                        {
+                            rPwr = 0;
+                        }
+                        else if (rPwr < -1)
+                        {
+                            rPwr = -1;
+                        }
 
-                    if (lPwr > 0)
-                    {
-                        lPwr = 0;
+                        if (lPwr > 0)
+                        {
+                            lPwr = 0;
+                        }
+                        else if (lPwr < -1)
+                        {
+                            lPwr = -1;
+                        }
+                        setMtrPwr(lPwr, rPwr);
+                        counter = 1;
                     }
-                    else if (lPwr < -1)
-                    {
-                        lPwr = -1;
-                    }
-                    setMtrPwr(lPwr, rPwr);
-                    counter = 1;
-                }
-                counter = counter + 1;
-            }//while loop
-            setMtrPwr(0,0);
-        }
-        counter = 500;
+                    counter = counter + 1;
+                }//while loop
+                setMtrPwr(0,0);
+            }
+            counter = 500;
+            correctHeading(targetZ);
+
+
     }//mtrPwrs method
 
     public void correctHeading(double tgtHeading)
@@ -166,8 +173,8 @@ public class BotAutoMoveUtil
     public void turnGyro(int turnDegrees , double speed)
     {
         turnStrtZ = gyro.getIntegratedZValue();
-        rDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         turnDegrees = turnDegrees * ConstUtil.oneDegree;
         targetHeading = turnStrtZ + turnDegrees;
         turnCrntZ = gyro.getIntegratedZValue();
@@ -201,7 +208,9 @@ public class BotAutoMoveUtil
     }
     public void setMtrPwr(double LeftPwr , double RightPwr)
     {
-        rDrive.setPower(RightPwr);
-        lDrive.setPower(LeftPwr);
+        rFrnt.setPower(RightPwr);
+        rRear.setPower(RightPwr);
+        lFrnt.setPower(LeftPwr);
+        lRear.setPower(LeftPwr);
     }
 }

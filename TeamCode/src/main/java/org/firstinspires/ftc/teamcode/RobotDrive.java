@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  */
 
 @TeleOp(name = "Threads", group ="Iterative OpMode" )
-
+@Disabled
 public class RobotDrive extends OpMode
 {
 
@@ -27,12 +28,12 @@ public class RobotDrive extends OpMode
 
     public void start()
     {
-        robot.right_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.left_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.right_frnt.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.left_frnt.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         telemetry.addData("Status" , "Go Time!");
         telemetry.update();
-        t1 = new DriveThrd ( DriveThrd.CONST_LEFT , gamepad1 , robot.left_drive); //make different threads
-        t2 = new DriveThrd( DriveThrd.CONST_RIGHT , gamepad1 , robot.right_drive);
+        t1 = new DriveThrd ( DriveThrd.CONST_LEFT , gamepad1 , robot.left_frnt); //make different threads
+        t2 = new DriveThrd( DriveThrd.CONST_RIGHT , gamepad1 , robot.right_frnt);
         Thread thrd1 = new Thread(t1);
         Thread thrd2 = new Thread(t2);
         thrd1.start();
@@ -41,10 +42,12 @@ public class RobotDrive extends OpMode
 
     public void loop()
     {
-        telemetry.addData("Right Pos" , robot.right_drive.getCurrentPosition());
-        telemetry.addData("Right Power" , robot.right_drive.getPower());
-        telemetry.addData("Left Pos" , robot.left_drive.getCurrentPosition());
-        telemetry.addData("Left Power" , robot.left_drive.getPower());
+        telemetry.addData("Right Rear Pos" , robot.right_rear.getCurrentPosition());
+        telemetry.addData("Right Frnt Power" , robot.right_frnt.getPower());
+        telemetry.addData("Right Rear Power" , robot.right_rear.getPower());
+        telemetry.addData("Left Rear Pos" , robot.left_rear.getCurrentPosition());
+        telemetry.addData("Left Frnt Power" , robot.left_frnt.getPower());
+        telemetry.addData("Left Rear Power" , robot.left_rear.getPower());
     }
 
     public void stop()

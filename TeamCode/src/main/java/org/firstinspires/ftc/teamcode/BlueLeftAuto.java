@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -26,25 +27,26 @@ public class BlueLeftAuto extends LinearOpMode
     ElapsedTime vufoClock = new ElapsedTime();
     public void runOpMode()
     {
+        //robot.teleInit(hardwareMap);
         robot.init(hardwareMap);
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
-        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro , robot.right_drive , robot.left_drive);
+        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro , robot.right_frnt , robot.right_rear , robot.left_frnt , robot.left_rear);
         gyro.calibrate();
         gyro.resetZAxisIntegrator();
         botMove.changeMode();
         //Init code below is for Vuforia
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        /*int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.vuforiaLicenseKey = "AZGvwWP/////AAAAGct4CbaXGkKgqClN26216W8Pkairb/CM3qmr+u3dnku8mS2xatHqTMoDijWS72cFo7HeaAatyPtfzmN3ASYlFW792pDXScmWyzwVYaELT/LyCC+j/Bpt7SRhXUC8iYslXzfYb+N8PqSPIrcnwlSjC4K49i15lErTIJU4byhsEXA1KaqQAUTRjTeRkOzb99uumiA8qPLbQN5r1DCOhFJnfcuaMwMmkiOM/OxpI3KSdactcXTQx5AGp5LsLMGgnEWY7TyY/CINfwLEI2xRcP2UUZD5kIX0yYXgNH8DF7+LlbS4aqPajHhNeruC3Q+v2c1oxPy25CahvxikokHN47Dxgi5nGiZIltw+kG2Q3B2ldKHS";
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary*/
         telemetry.addData("Program Place" , "Ready to Run");
         telemetry.update();
         waitForStart();
-        relicTrackables.activate();
+        //relicTrackables.activate();
         vufoClock.reset();
         /*while (vufoClock.seconds() < 5.0)
         {
@@ -60,12 +62,17 @@ public class BlueLeftAuto extends LinearOpMode
 
             telemetry.update();
         }*/
+        botMove.changeMode();
+        robot.glyphElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.glyphElevator.setPower(1);
+        sleep(2000);
+        robot.glyphElevator.setPower(0);
         botMove.setDist(ConstUtil.offRampDist10_27);
-        botMove.motorPwrs(0.3);
-        botMove.turnGyro(ConstUtil.blueLeftAngR , 0.2);
-        botMove.setDist(ConstUtil.blueLeftDistR);
-        botMove.motorPwrs(0.3);
-        botMove.turnGyro(-ConstUtil.blueLeftAngR , 0.1);
+//        botMove.motorPwrs(0.05);
+        //botMove.turnGyro(4 ,0.2); //4 is correct. no need to worry
+        botMove.setDist(ConstUtil.blueLeftDistL);
+  //      botMove.motorPwrs(0.2);
+        //botMove.turnGyro(-ConstUtil.blueLeftAngL , 0.3);
         telemetry.addData("Program Place" , "Done");
         telemetry.update();
 

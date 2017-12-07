@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -9,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  * Created by Nicholas on 2017-10-07.
  */
 @TeleOp(name = "Relic Grabber Test" , group = "Iterative OpMode")
-
+@Disabled
 public class RelicGrabberTest extends OpMode
 {
     HardwareLLR robot = new HardwareLLR();
