@@ -23,6 +23,8 @@ public class Teleop extends OpMode
     double lMtrPwr;
     //private boolean resetCheck = false;
     private boolean gripPower = false;
+    private int elevatorPos = 0;
+    private boolean elevatorOver = false;
     //ModernRoboticsI2cGyro gyro = null;
 
     HardwareLLR robot = new HardwareLLR();
@@ -102,11 +104,39 @@ public class Teleop extends OpMode
 
         if (gamepad2.dpad_up)
         {
-            robot.glyphElevator.setPower(1);
+            if(elevatorOver)
+            {
+                robot.glyphElevator.setPower(1);
+            }
+            else
+            {
+                if (elevatorPos >= ConstUtil.elevatorUpCons)
+                {
+                    robot.glyphElevator.setPower(0);
+                }
+                else
+                {
+                    robot.glyphElevator.setPower(1);
+                }
+            }
         }
         else if(gamepad2.dpad_down)
         {
-            robot.glyphElevator.setPower(-1);
+            if(elevatorOver)
+            {
+                robot.glyphElevator.setPower(-1);
+            }
+            else
+            {
+                if (elevatorPos <= ConstUtil.elevatorDownCons)
+                {
+                    robot.glyphElevator.setPower(0);
+                }
+                else
+                {
+                    robot.glyphElevator.setPower(-1);
+                }
+            }
         }
         else
         {
