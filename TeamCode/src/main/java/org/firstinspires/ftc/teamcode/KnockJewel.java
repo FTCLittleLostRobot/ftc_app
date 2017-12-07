@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -13,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.Const;
  * Created by Nicholas on 2017-09-30.
  */
 @Autonomous (name = "Knock Jewel" , group = "Linear Opmode")
-
+@Disabled
 public class KnockJewel extends LinearOpMode
 {
     HardwareLLR robot = new HardwareLLR();
@@ -26,7 +27,7 @@ public class KnockJewel extends LinearOpMode
     {
         robot.init(hardwareMap);
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
-        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro , robot.right_drive , robot.left_drive);
+        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro , robot.right_frnt , robot.right_rear , robot.left_frnt , robot.left_rear);
         botMove.changeMode();
         colorSensor = (ModernRoboticsI2cColorSensor) hardwareMap.colorSensor.get("colorSensor");
         colorSensor.enableLed(false);
@@ -48,8 +49,10 @@ public class KnockJewel extends LinearOpMode
             robot.right_drive.setPower(0.13);
             telemetry.addData("Program Place" , "Moving forward");
         }*/
-        robot.left_drive.setPower(0);
-        robot.right_drive.setPower(0);
+        robot.left_frnt.setPower(0);
+        robot.right_frnt.setPower(0);
+        robot.left_rear.setPower(0);
+        robot.right_rear.setPower(0);
         sleep(100);
         telemetry.addData("ColorSensor Red" , colorSensor.red());
         telemetry.addData("Color Sensor Blue" , colorSensor.blue());

@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  */
 
 @Autonomous(name = "GyroTurn" , group = "Linear Opmode")
-
+@Disabled
 public class GyroTurn extends LinearOpMode
 {
     DcMotor right = null;

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -10,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  */
 
 @Autonomous(name = "Test Bot Auto Move Util" , group = "Linear Opmode")
-
+@Disabled
 public class TestBotAutoMoveUtil extends LinearOpMode
 {
     double rMem;
@@ -31,32 +32,21 @@ public class TestBotAutoMoveUtil extends LinearOpMode
     public void runOpMode()
     {
         robot.init(hardwareMap);
-        robot.left_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.right_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.left_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.right_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
-        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro , robot.right_drive , robot.left_drive);
+        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro, robot.right_frnt, robot.right_rear, robot.left_frnt, robot.left_rear);
         botMove.calibrateGyro();
         botMove.changeMode();
-        telemetry.addData("Program Place" , "Ready to run");
+        telemetry.addData("Program Place", "Ready to run");
         telemetry.update();
         waitForStart(); //The code above is init
-        /*telemetry.addData("Program Place" , "just started running");
-        telemetry.update();
         botMove.setDist(12);
-        telemetry.addData("Program Place" , "just set distance");
-        telemetry.update();
         botMove.motorPwrs(0.3);
-        telemetry.addData("Program Place" , "just finished running motors");
-        telemetry.update();
         sleep(500);
-        telemetry.addData("Program Place" , "just slept");
-        telemetry.update();*/
-        botMove.turnGyro(-90 , 0.2);
-        telemetry.addData("Program Place" , "Just finished turning right");
-        botMove.turnGyro(90 , 0.2);
-        telemetry.addData("Program Place" , "finished turning left");
-        telemetry.update();
-        telemetry.addData("Program Place" , "Just finished moving backwards");
+        botMove.turnGyro(90 , 0.25);
+        sleep(500);
+        botMove.turnGyro(-90 , 0.25);
     }
 
    /* public void turnGyro(int turnDegrees , double speed)

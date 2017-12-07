@@ -32,8 +32,8 @@ public class  TestGyroCode extends LinearOpMode
     {
         
         robot.init(hardwareMap);
-        robot.left_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.right_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.left_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.right_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
         changeMode();
         telemetry.addData("->" , "Ready to run");
@@ -62,28 +62,28 @@ public class  TestGyroCode extends LinearOpMode
 
     public void changeMode()
     {
-        robot.right_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.left_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.right_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.left_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void setDist(double distanceINCHES)
     {
         distanceToMove = distanceINCHES * ConstUtil.oneInch; //distanceINCHES is a parameter
         distanceToMoveInt = (int)Math.round(distanceToMove);
-        rMem = robot.right_drive.getCurrentPosition();
-        lMem = robot.left_drive.getCurrentPosition();
-        robot.right_drive.setTargetPosition(distanceToMoveInt);
-        robot.left_drive.setTargetPosition(distanceToMoveInt);
+        rMem = robot.right_rear.getCurrentPosition();
+        lMem = robot.left_rear.getCurrentPosition();
+        robot.right_rear.setTargetPosition(distanceToMoveInt);
+        robot.left_rear.setTargetPosition(distanceToMoveInt);
     }
     public void motorPwrs(double pwr)
     {
         targetZ = gyro.getIntegratedZValue();
-        while( (robot.right_drive.getCurrentPosition() < robot.right_drive.getTargetPosition()) && (robot.left_drive.getCurrentPosition() < robot.left_drive.getTargetPosition() ) )
+        while( (robot.right_rear.getCurrentPosition() < robot.right_rear.getTargetPosition()) && (robot.left_rear.getCurrentPosition() < robot.left_rear.getTargetPosition() ) )
         {
             currentZ = gyro.getIntegratedZValue();
             error = targetZ - currentZ;
             steer = error * ConstUtil.driveCoefficient;
-            if ((robot.right_drive.getTargetPosition() < rMem) && (robot.left_drive.getTargetPosition() == lMem))
+            if ((robot.right_rear.getTargetPosition() < rMem) && (robot.left_rear.getTargetPosition() == lMem))
             {
                 steer = steer * -1;
             }
@@ -110,8 +110,8 @@ public class  TestGyroCode extends LinearOpMode
             telemetry.addData("rmem" , rMem);
             telemetry.addData("lmem" , lMem);
             telemetry.addData("target dist" , distanceToMoveInt);
-            telemetry.addData("Current Right" , robot.right_drive.getCurrentPosition());
-            telemetry.addData("Current Left" , robot.left_drive.getCurrentPosition());
+            telemetry.addData("Current Right" , robot.right_rear.getCurrentPosition());
+            telemetry.addData("Current Left" , robot.left_rear.getCurrentPosition());
             telemetry.update();
         }
         setMtrPwr(0,0);
@@ -143,8 +143,8 @@ public class  TestGyroCode extends LinearOpMode
 
     public void turnGyro(int turnDegrees , double speed)
     {
-        robot.right_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.left_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.right_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.left_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         turnDegrees = turnDegrees * ConstUtil.oneDegree;
 
         if (turnDegrees > gyro.getIntegratedZValue()) //If it's more, then you need to turn right
@@ -178,7 +178,7 @@ public class  TestGyroCode extends LinearOpMode
     }
     public void setMtrPwr(double LeftPwr , double RightPwr)
     {
-        robot.right_drive.setPower(RightPwr);
-        robot.left_drive.setPower(LeftPwr);
+        robot.right_rear.setPower(RightPwr);
+        robot.left_rear.setPower(LeftPwr);
     }
 }
