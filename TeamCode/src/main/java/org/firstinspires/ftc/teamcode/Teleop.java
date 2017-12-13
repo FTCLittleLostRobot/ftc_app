@@ -104,12 +104,12 @@ public class Teleop extends OpMode
 
         if (gamepad2.dpad_up)
         {
-            if(elevatorOver)
-            {
-                robot.glyphElevator.setPower(1);
-            }
-            else
-            {
+//  julia            if(elevatorOver)
+//            {
+//                robot.glyphElevator.setPower(1);
+//            }
+//            else
+//            {
                 if (elevatorPos >= ConstUtil.elevatorUpCons)
                 {
                     robot.glyphElevator.setPower(0);
@@ -118,16 +118,16 @@ public class Teleop extends OpMode
                 {
                     robot.glyphElevator.setPower(1);
                 }
-            }
+//            }
         }
         else if(gamepad2.dpad_down)
         {
-            if(elevatorOver)
-            {
-                robot.glyphElevator.setPower(-1);
-            }
-            else
-            {
+ //  julia         if(elevatorOver)
+ //           {
+ //               robot.glyphElevator.setPower(-1);
+ //           }
+ //           else
+ //           {
                 if (elevatorPos <= ConstUtil.elevatorDownCons)
                 {
                     robot.glyphElevator.setPower(0);
@@ -136,7 +136,7 @@ public class Teleop extends OpMode
                 {
                     robot.glyphElevator.setPower(-1);
                 }
-            }
+ //           }
         }
         else
         {

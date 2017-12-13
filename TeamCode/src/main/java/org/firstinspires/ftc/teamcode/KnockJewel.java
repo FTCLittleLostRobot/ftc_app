@@ -27,7 +27,7 @@ public class KnockJewel extends LinearOpMode
     {
         robot.init(hardwareMap);
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
-        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro , robot.right_frnt , robot.right_rear , robot.left_frnt , robot.left_rear);
+        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro , robot.right_frnt , robot.right_rear , robot.left_frnt , robot.left_rear, robot.leftlight, this);
         botMove.changeMode();
         colorSensor = (ModernRoboticsI2cColorSensor) hardwareMap.colorSensor.get("colorSensor");
         colorSensor.enableLed(false);

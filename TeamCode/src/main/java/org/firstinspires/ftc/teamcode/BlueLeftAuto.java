@@ -30,7 +30,7 @@ public class BlueLeftAuto extends LinearOpMode
         //robot.teleInit(hardwareMap);
         robot.init(hardwareMap);
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
-        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro , robot.right_frnt , robot.right_rear , robot.left_frnt , robot.left_rear);
+        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro , robot.right_frnt , robot.right_rear , robot.left_frnt , robot.left_rear, robot.leftlight, this);
         gyro.calibrate();
         gyro.resetZAxisIntegrator();
         botMove.changeMode();
@@ -62,34 +62,36 @@ public class BlueLeftAuto extends LinearOpMode
 
             telemetry.update();
         }*/
-        botMove.changeMode();
-        robot.glyphElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.glyphElevator.setPower(1);
-        sleep(2000);
-        robot.glyphElevator.setPower(0);
-        botMove.setDist(ConstUtil.offRampDist10_27);
-//        botMove.motorPwrs(0.05);
-        //botMove.turnGyro(4 ,0.2); //4 is correct. no need to worry
+     //   botMove.changeMode();
+     //   robot.glyphElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+     //  juia  use encoder to set the distance to 1 inch above robot.glyphElevator.setPower(1);
+     //  julia sleep(2000);
+     //  julia  robot.glyphElevator.setPower(0);
+
+         botMove.setDist(ConstUtil.offRampDist10_27);
+     /*   botMove.motorPwrs(0.05);
+        botMove.turnGyro(4 ,0.2); //4 is correct. no need to worry
         botMove.setDist(ConstUtil.blueLeftDistL);
-  //      botMove.motorPwrs(0.2);
-        //botMove.turnGyro(-ConstUtil.blueLeftAngL , 0.3);
+        botMove.motorPwrs(0.2);
+        botMove.turnGyro(-ConstUtil.blueLeftAngL , 0.3);
         telemetry.addData("Program Place" , "Done");
         telemetry.update();
-
-        /*if (vuMark == "LEFT")
+*/
+        //if (vuMark == "LEFT")
+        //{
+        //    botMove.turnGyro(-72 , 0.2); //Negative numbers turn the robot right  //-72.36
+        //    botMove.setDist(12.59);
+        //    botMove.motorPwrs(0.3);
+        //    botMove.turnGyro(72 , 0.2); //Positive numbers turn the robot left  //72.36
+ //       }
+  /*      else if (vuMark == "CENTER")
         {
-            botMove.turnGyro(-72.36 , 0.2); //Negative numbers turn the robot right
-            botMove.setDist(12.59);
-            botMove.motorPowers(0.3);
-            botMove.turnGyro(72.36 , 0.2); //Positive numbers turn the robot left
-        }
-        else if (vuMark == "CENTER")
-        {
-            botMove.turnGyro(-46.36 , 0.2);
-            botMove.setDist(16.58);
-            botMove.motorPowers(0.3);
-            botMove.turnGyro(46.36 , 0.2);
-        }
+*/
+            botMove.turnGyro(-46 , 0.2);  //-46.36
+            botMove.setDist(16.58);  // 14.58 12.58 16.58
+            botMove.motorPwrs(0.3);
+            botMove.turnGyro(46 , 0.2);  //46.36
+ /*       }
         else if (vuMark == "RIGHT")
         {
             botMove.turnGyro(-32 , 0.2);

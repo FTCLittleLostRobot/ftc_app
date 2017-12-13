@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -31,14 +32,18 @@ public class BotAutoMoveUtil
     DcMotor rRear = null;
     DcMotor lFrnt = null;
     DcMotor lRear = null;
+    DcMotor lLight = null;
+    LinearOpMode currAuto;
 
-    public BotAutoMoveUtil(ModernRoboticsI2cGyro gyro , DcMotor r_Frnt , DcMotor r_Rear , DcMotor l_Frnt , DcMotor l_Rear)
+    public BotAutoMoveUtil(ModernRoboticsI2cGyro gyro , DcMotor r_Frnt , DcMotor r_Rear , DcMotor l_Frnt , DcMotor l_Rear, DcMotor l_Light, LinearOpMode curOp)
     {
         this.gyro = gyro;
         this.rFrnt = r_Frnt;
         this.lFrnt = l_Frnt;
         this.rRear = r_Rear;
         this.lRear = l_Rear;
+        this.lLight = l_Light;
+        this.currAuto = curOp;
     }
 
     public void calibrateGyro()
@@ -71,7 +76,8 @@ public class BotAutoMoveUtil
             {
                 rRear.setDirection(DcMotorSimple.Direction.REVERSE);
                 lRear.setDirection(DcMotorSimple.Direction.FORWARD);
-                while ((rRear.getCurrentPosition() < rRear.getTargetPosition()) && (lRear.getCurrentPosition() < lRear.getTargetPosition()))
+                while ((( rRear.getCurrentPosition() < rRear.getTargetPosition()) && (lRear.getCurrentPosition() < lRear.getTargetPosition()))
+                        && ! currAuto.isStopRequested() )
                 {
                     currentZ = gyro.getIntegratedZValue();
                     if(counter == 500)
@@ -103,7 +109,8 @@ public class BotAutoMoveUtil
 
             else if((rRear.getCurrentPosition() > rRear.getTargetPosition()) && (lRear.getCurrentPosition() > lRear.getTargetPosition()))
             {
-                while ((rRear.getCurrentPosition() > rRear.getTargetPosition()) && (lRear.getCurrentPosition() > lRear.getTargetPosition()))
+                while (((rRear.getCurrentPosition() > rRear.getTargetPosition()) && (lRear.getCurrentPosition() > lRear.getTargetPosition()))
+                            && ! currAuto.isStopRequested() )
                 {
                     currentZ = gyro.getIntegratedZValue();
                     if (counter == 500)
@@ -150,14 +157,14 @@ public class BotAutoMoveUtil
     {
         if (tgtHeading > gyro.getIntegratedZValue()) //tgtHeading > gyro.getIntegratedZValue() //gyro.getIntegratedZValue() > tgtHeading
         {
-            while (tgtHeading > gyro.getIntegratedZValue())
+            while ((tgtHeading > gyro.getIntegratedZValue()) && !currAuto.isStopRequested() )
             {
                 setMtrPwr(-0.1, 0.1);
             }
         }
         else if (tgtHeading < gyro.getIntegratedZValue()) //tgtHeading < gyro.getIntegratedZValue() //gyro.getIntegratedZValue() < tgtHeading
         {
-            while (tgtHeading < gyro.getIntegratedZValue())
+            while ((tgtHeading < gyro.getIntegratedZValue()) && !currAuto.isStopRequested() )
             {
                 setMtrPwr(0.1, -0.1);
             }
@@ -181,7 +188,7 @@ public class BotAutoMoveUtil
 
         if (targetHeading > turnCrntZ) //If it's more, then you need to turn left
         {
-            while (targetHeading > turnCrntZ)
+            while (( targetHeading > turnCrntZ) && !currAuto.isStopRequested() )
             {
                 setMtrPwr(-speed , speed);
                 turnCrntZ = gyro.getIntegratedZValue();
@@ -195,7 +202,7 @@ public class BotAutoMoveUtil
         }
         else if (targetHeading < turnCrntZ)
         {
-            while (targetHeading < turnCrntZ) //If it's less, then you need to turn right
+            while ((targetHeading < turnCrntZ) && !currAuto.isStopRequested() ) //If it's less, then you need to turn right
             {
                 setMtrPwr(speed , -speed);
                 turnCrntZ = gyro.getIntegratedZValue();
