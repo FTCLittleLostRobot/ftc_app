@@ -35,7 +35,7 @@ public class TestBotAutoMoveUtil extends LinearOpMode
         robot.left_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.right_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
-        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro, robot.right_frnt, robot.right_rear, robot.left_frnt, robot.left_rear);
+        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro, robot.right_frnt, robot.right_rear, robot.left_frnt, robot.left_rear, robot.leftlight, this);
         botMove.calibrateGyro();
         botMove.changeMode();
         telemetry.addData("Program Place", "Ready to run");

@@ -36,6 +36,7 @@ public class HardwareLLR
     public DcMotor right_rear = null;
     public DcMotor left_frnt = null;
     public DcMotor left_rear = null;
+    public DcMotor leftlight = null;  //julia
     public DcMotor gripperB = null;
     public DcMotor glyphElevator = null;
     public Servo colorServ = null;
@@ -64,6 +65,7 @@ public class HardwareLLR
         left_rear = hwMap.dcMotor.get("leftrear");
         right_frnt = hwMap.dcMotor.get("rightfrnt");
         right_rear = hwMap.dcMotor.get("rightrear");
+        leftlight = hwMap.dcMotor.get("leftlight");  //julia
         left_frnt.setDirection(DcMotor.Direction.FORWARD);
         left_rear.setDirection(DcMotorSimple.Direction.FORWARD);
         right_frnt.setDirection(DcMotor.Direction.REVERSE);
@@ -79,6 +81,7 @@ public class HardwareLLR
         left_rear.setPower(0);
         right_frnt.setPower(0);
         right_rear.setPower(0);
+        leftlight.setPower(0);  //julia
         gripperB.setPower(0);
         glyphElevator.setPower(0.0);
 
@@ -128,10 +131,13 @@ public class HardwareLLR
         // Define and Initialize Motors
         left_frnt = hwMap.dcMotor.get("leftfrnt");
         left_rear = hwMap.dcMotor.get("leftrear");
+        leftlight = hwMap.dcMotor.get("leftlight");  //julia
         right_frnt = hwMap.dcMotor.get("rightfrnt");
         right_rear = hwMap.dcMotor.get("rightrear");
+
         left_frnt.setDirection(DcMotor.Direction.FORWARD);
         left_rear.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftlight.setDirection(DcMotorSimple.Direction.FORWARD);  //julia
         right_frnt.setDirection(DcMotor.Direction.REVERSE);
         right_rear.setDirection(DcMotor.Direction.REVERSE);
 
@@ -146,6 +152,7 @@ public class HardwareLLR
         left_rear.setPower(0);
         right_frnt.setPower(0);
         right_rear.setPower(0);
+        leftlight.setPower(0);  //julia
         gripperB.setPower(0);
         glyphElevator.setPower(0.0);
 
@@ -168,6 +175,8 @@ public class HardwareLLR
         limitSwitch.setMode(DigitalChannel.Mode.INPUT);
         gripperB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         limitSwitchCheck = limitSwitch.getState();
+
+        /*  julia
         while(limitSwitchCheck == false)
         {
             gripperB.setPower(0.02);
@@ -198,9 +207,10 @@ public class HardwareLLR
             //telemetry.addData("GripInitCheck" , gripInitCheck);
             //telemetry.update();
         }
-        gripperB.setPower(0);
+        gripperB.setPower(0); julia */
     }
-    /***
+
+    /**
      *
      * waitForTick implements a periodic delay. However, this acts like a metronome with a regular
      * periodic tick.  This is used to compensate for varying processing times for each cycle.
@@ -208,6 +218,7 @@ public class HardwareLLR
      *
      * @param periodMs  Length of wait cycle in mSec.
      */
+
     public void waitForTick(long periodMs) {
 
         long  remaining = periodMs - (long)period.milliseconds();

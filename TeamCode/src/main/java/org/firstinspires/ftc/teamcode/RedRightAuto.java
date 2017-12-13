@@ -22,7 +22,7 @@ public class RedRightAuto extends LinearOpMode
         sleep(2000);
         robot.glyphElevator.setPower(0);*/
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
-        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro , robot.right_frnt , robot.right_rear , robot.left_frnt , robot.left_rear);
+        BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro , robot.right_frnt , robot.right_rear , robot.left_frnt , robot.left_rear, robot.leftlight, this);
         gyro.calibrate();
         gyro.resetZAxisIntegrator();
         telemetry.addData("Program Place" , "Ready to Run");

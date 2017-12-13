@@ -28,7 +28,7 @@ public class BlueRightAuto extends LinearOpMode
             robot.teleInit(hardwareMap);
             //robot.init(hardwareMap);
             gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
-            BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro, robot.right_frnt, robot.right_rear, robot.left_frnt, robot.left_rear);
+            BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro, robot.right_frnt, robot.right_rear, robot.left_frnt, robot.left_rear, robot.leftlight, this);
             gyro.calibrate();
             gyro.resetZAxisIntegrator();
             telemetry.addData("Program Place", "Ready to Run");
