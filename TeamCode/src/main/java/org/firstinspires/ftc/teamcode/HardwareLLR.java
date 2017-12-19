@@ -72,7 +72,7 @@ public class HardwareLLR
         right_rear.setDirection(DcMotor.Direction.REVERSE);
 
         gripperB = hwMap.dcMotor.get("gripperB");
-        gripperB.setDirection(DcMotorSimple.Direction.REVERSE);
+        gripperB.setDirection(DcMotorSimple.Direction.FORWARD);
         glyphElevator = hwMap.dcMotor.get("glyphElevator");
         glyphElevator.setDirection(DcMotorSimple.Direction.REVERSE); //forward moves the elevator down, reverse moves it up
 
@@ -94,6 +94,7 @@ public class HardwareLLR
         left_frnt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         left_rear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         gripperB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        limitSwitch = hwMap.get(DigitalChannel.class, "limitSwitch"); //Delete this line later
 
         /*touchSensor = hwMap.get(DigitalChannel.class, "touchSensor");
         touchSensor.setMode(DigitalChannel.Mode.INPUT);
@@ -142,7 +143,7 @@ public class HardwareLLR
         right_rear.setDirection(DcMotor.Direction.REVERSE);
 
         gripperB = hwMap.dcMotor.get("gripperB");
-        gripperB.setDirection(DcMotorSimple.Direction.REVERSE);
+        gripperB.setDirection(DcMotorSimple.Direction.FORWARD);
         glyphElevator = hwMap.dcMotor.get("glyphElevator");
         glyphElevator.setDirection(DcMotorSimple.Direction.REVERSE); //forward moves the elevator down, reverse moves it up
 
@@ -173,18 +174,7 @@ public class HardwareLLR
         touchSensor.setMode(DigitalChannel.Mode.INPUT);
         limitSwitch = hwMap.get(DigitalChannel.class, "limitSwitch");
         limitSwitch.setMode(DigitalChannel.Mode.INPUT);
-        gripperB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        limitSwitchCheck = limitSwitch.getState();
-
-        /*  julia
-        while(limitSwitchCheck == false)
-        {
-            gripperB.setPower(0.02);
-            limitSwitchCheck = limitSwitch.getState();
-        }
-        gripperB.setPower(0.0);
-        gripperB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        gripperB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        resetLimitSwitch();
         gripInitCheck = gripperB.getCurrentPosition();
         while(gripInitCheck > ConstUtil.gripperOutCons)
         {
@@ -194,7 +184,7 @@ public class HardwareLLR
             //telemetry.update();
         }
         gripperB.setPower(0);
-        while(touchSensor.getState() == true)
+        while(touchSensor.getState())
         {
             //telemetry.addData("Program Place" , "You can press the button now");
             //telemetry.update();
@@ -207,8 +197,22 @@ public class HardwareLLR
             //telemetry.addData("GripInitCheck" , gripInitCheck);
             //telemetry.update();
         }
-        gripperB.setPower(0); julia */
+        gripperB.setPower(0);
     }
+
+    public void resetLimitSwitch()
+    {
+        gripperB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        limitSwitchCheck = limitSwitch.getState();
+        while(!limitSwitchCheck)
+        {
+            gripperB.setPower(0.3);
+            limitSwitchCheck = limitSwitch.getState();
+        }
+        gripperB.setPower(0.0);
+        gripperB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        gripperB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+}
 
     /**
      *

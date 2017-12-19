@@ -14,10 +14,11 @@ public class ConstUtil
     public static final int gripCounterCons = 200;
 
     public static final int elevatorUpCons = 10807; //explained in the name
+    public static final int elevatorGripUp = 3641;
     public static final int elevatorDownCons = 0; //explained in the name
 
-    public static final int gripperOutCons = -800; //Constant for moving the gripper out
-    public static final int gripperCloseCons = -593; //Constant for closing the gripper to grip a block
+    public static final int gripperOutCons = -576; //Constant for moving the gripper out
+    public static final int gripperCloseCons = -306; //Constant for closing the gripper to grip a block
 
     public static final int oneDegree = 1; //Auto gyro turn
     public static final double oneInch = 47.1944458333 ; //Auto gyro straight for Green 4 inch diameter wheel
@@ -25,7 +26,7 @@ public class ConstUtil
 
     public static final double rampUpRate = 0.025; //The rate the shooter motor ramps up (Teleop)
 
-    public static final double offRampDist10_27 = 14.0; //10/27/17 Good offRampDist for MedBot. Bot must be placed near front of balance WAS 14
+    public static final double offRampDist10_27 = 36.0; //WAS 22.0 10/27/17 Good offRampDist for MedBot. Bot must be placed near front of balance WAS 14
 
     public static final double clrServUp = 1.0; //Color Servo Up position
     public static final double clrServDown = 0.0; //Color Servo Down position
@@ -57,14 +58,14 @@ public class ConstUtil
     //public static final double baseToGlyDist = 16.25; //WAS 16.5 - 5 inch difference
     public static final double baseToGlyDist = 11.25; //WAS 16.5 was 16.25, see above line
     //public static final double after90TurnDist = 11; //Was 14 - 5 inch difference
-    public static final double after90TurnDist = 6; //Was 11 see above comment
+    public static final double after90TurnDist = 7; //Was 6 see above comment
     public static final double blueRightDistL = baseToGlyDist + (glyBoxColW/2); //Distance to move to Blue Right side left row of block box WAS 18.4
     public static final double blueRightDistC = baseToGlyDist + (glyBoxColW * 1.5); //Distance to move to Blue Right side center row of block box
     public static final double blueRightDistR = baseToGlyDist + (glyBoxColW * 2.5); //Distance to move to Blue RIght side right row of block box WAS 23
 
     // Red Left angles and distances
     //public static final double after90TurnDistRedLft = 11; //Was 14  - 5 inch difference
-    public static final double after90TurnDistRedLft = 6; //Was 11 see above line
+    public static final double after90TurnDistRedLft = 3; //Was 11 see above line
     public static final double baseToGlyDistRedLeft = -33.5; //WAS 3025
     public static final double redLeftDistL = baseToGlyDistRedLeft - glyBoxColW; //Distance to move to Blue Right side left row of block box WAS 18.4
     public static final double redLeftDistC = baseToGlyDistRedLeft; //Distance to move to Blue Right side center row of block box
