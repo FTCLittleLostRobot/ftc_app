@@ -21,11 +21,14 @@ public class Teleop extends OpMode
     double lTrig;
     double rMtrPwr;
     double lMtrPwr;
-    //private boolean resetCheck = false;
+
     private boolean gripPower = false;
     private int elevatorPos = 0;
     private boolean elevatorOver = false;
-    //ModernRoboticsI2cGyro gyro = null;
+    private int gripperPos = 0;
+    private boolean gripped = false;
+    private boolean autoRaiseDone = false;
+    private boolean resetGripper = false;
 
     HardwareLLR robot = new HardwareLLR();
 
@@ -35,7 +38,7 @@ public class Teleop extends OpMode
      /*gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
      gyro.calibrate();
      gyro.resetZAxisIntegrator();*/
-     telemetry.addData("Program Place" , "Press the right bumper to open, press the left bumper to close");
+     robot.glyphElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
      telemetry.update();
      telemetry.addData("Status" , "Ready");
      telemetry.update();
@@ -43,6 +46,7 @@ public class Teleop extends OpMode
 
     public void start()
     {
+        robot.glyphElevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.gripperB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.right_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.left_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -52,19 +56,62 @@ public class Teleop extends OpMode
 
     public void loop()
     {
+        elevatorPos = robot.glyphElevator.getCurrentPosition();
+        gripperPos = robot.gripperB.getCurrentPosition();
         rStk = gamepad1.right_stick_y*-1;
         lStk = gamepad1.left_stick_y*-1;
         boost = gamepad1.right_trigger;
         lTrig = gamepad1.left_trigger;
 
+        if(gamepad2.y)
+        {
+            elevatorOver = true;
+            robot.glyphElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+        else
+        {
+
+        }
+
         if(gamepad2.x)
         {
-            gripPower = true;
-            robot.gripperB.setPower(0.01);
+            if(resetGripper)
+            {
+
+            }
+            else
+            {
+                gripPower = true;
+                robot.gripperB.setPower(0.01);
+            }
         }
         else
         {
             gripPower = false;
+        }
+
+        if(gamepad2.b)
+        {
+            resetGripper = true;
+        }
+        else
+        {
+
+        }
+
+        if(resetGripper)
+        {
+            if (!robot.limitSwitch.getState())
+            {
+                robot.gripperB.setPower(0.3);
+            }
+            else
+            {
+                robot.gripperB.setPower(0);
+                robot.gripperB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.gripperB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                resetGripper = false;
+            }
         }
 
         if (gamepad2.right_bumper)
@@ -75,7 +122,22 @@ public class Teleop extends OpMode
             }
             else
             {
-                robot.gripperB.setPower(-0.15);
+                if(resetGripper)
+                {
+
+                }
+                else
+                {
+                    if(gripperPos >= ConstUtil.gripperOutCons)
+                    {
+                        robot.gripperB.setPower(-0.20);
+                        gripped = false;
+                    }
+                    else
+                    {
+                        robot.gripperB.setPower(0.0);
+                    }
+                }
             }
 
         }
@@ -87,10 +149,25 @@ public class Teleop extends OpMode
             }
             else
             {
-                robot.gripperB.setPower(0.15);
+                if(resetGripper)
+                {
+
+                }
+                else
+                {
+                    if(gripperPos <= ConstUtil.gripperCloseCons)
+                    {
+                        robot.gripperB.setPower(0.20);
+                    }
+                    else
+                    {
+                        robot.gripperB.setPower(0.001);
+                        gripped = true;
+                    }
+                }
             }
         }
-        else
+        else  //  right bumper and left bumper is not pressed
         {
             if(gripPower)
             {
@@ -98,36 +175,53 @@ public class Teleop extends OpMode
             }
             else
             {
-                robot.gripperB.setPower(0.0);
+                if(resetGripper)
+                {
+
+                }
+                else
+                {
+                    robot.gripperB.setPower(0.0);
+                }
             }
+
         }
 
         if (gamepad2.dpad_up)
         {
-//  julia            if(elevatorOver)
-//            {
-//                robot.glyphElevator.setPower(1);
-//            }
-//            else
-//            {
-                if (elevatorPos >= ConstUtil.elevatorUpCons)
+            gripped = false;
+            if(elevatorOver)
+            {
+                robot.glyphElevator.setPower(1);
+            }
+            else
+            {
+                if(!autoRaiseDone)
                 {
-                    robot.glyphElevator.setPower(0);
+
                 }
                 else
                 {
-                    robot.glyphElevator.setPower(1);
+                    if (elevatorPos >= ConstUtil.elevatorUpCons)
+                    {
+                        robot.glyphElevator.setPower(0);
+                    }
+                    else
+                    {
+                        robot.glyphElevator.setPower(1);
+                    }
                 }
-//            }
+            }
         }
         else if(gamepad2.dpad_down)
         {
- //  julia         if(elevatorOver)
- //           {
- //               robot.glyphElevator.setPower(-1);
- //           }
- //           else
- //           {
+            gripped = false;
+            if(elevatorOver)
+            {
+                robot.glyphElevator.setPower(-1);
+            }
+            else
+            {
                 if (elevatorPos <= ConstUtil.elevatorDownCons)
                 {
                     robot.glyphElevator.setPower(0);
@@ -136,9 +230,9 @@ public class Teleop extends OpMode
                 {
                     robot.glyphElevator.setPower(-1);
                 }
- //           }
+            }
         }
-        else
+        else  // not dpad_up or dpad_down is pressed
         {
             robot.glyphElevator.setPower(0.0);
         }
@@ -161,6 +255,23 @@ public class Teleop extends OpMode
                 lMtrPwr = lStk * ConstUtil.spdMulty;
             }
         }
+        if(elevatorOver)
+        {
+            gripped = false;
+        }
+        if(gripped)
+        {
+            if(elevatorPos >= ConstUtil.elevatorGripUp)
+            {
+                robot.glyphElevator.setPower(0);
+                autoRaiseDone = true;
+            }
+            else
+            {
+                robot.glyphElevator.setPower(1);
+                autoRaiseDone = false;
+            }
+        }
 
         setMtrPwr(lMtrPwr , rMtrPwr);
         telemetry.addData("Right Frnt Motor Power" , robot.right_frnt.getPower());
@@ -171,7 +282,9 @@ public class Teleop extends OpMode
         telemetry.addData("Left Rear Motor POSITION" , robot.left_rear.getCurrentPosition());
         telemetry.addData("R Trigger Value" , boost);
         telemetry.addData("Gripper Pos" , robot.gripperB.getCurrentPosition());
-        //telemetry.addData("Gyro Z" , gyro.getIntegratedZValue());
+        telemetry.addData("gripped" , gripped);
+        telemetry.addData("autoRaiseDone" , autoRaiseDone);
+        telemetry.addData("Elevator Position" , robot.glyphElevator.getCurrentPosition());
         telemetry.update();
     }
 

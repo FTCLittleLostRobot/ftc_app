@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  * Created by Nicholas on 2017-10-27.
  */
 @Autonomous(name = "RED Right Auto" , group = "Linear OpMode")
-@Disabled
+
 public class RedRightAuto extends LinearOpMode
 {
     HardwareLLR robot = new HardwareLLR();
@@ -17,7 +17,7 @@ public class RedRightAuto extends LinearOpMode
 
     public void runOpMode()
     {
-        robot.teleInit(hardwareMap);
+        robot.init(hardwareMap);
         /*robot.glyphElevator.setPower(1);
         sleep(2000);
         robot.glyphElevator.setPower(0);*/
@@ -28,15 +28,34 @@ public class RedRightAuto extends LinearOpMode
         telemetry.addData("Program Place" , "Ready to Run");
         telemetry.update();
         waitForStart();
-        botMove.changeMode();
-        //positive turnDegrees turns the bot to the left, negative to the right.
-        botMove.setDist(ConstUtil.offRampDist10_27);
-        botMove.motorPwrs(0.05);
-        //botMove.turnGyro(4 ,0.2); //4 is correct. no need to worry
-        botMove.setDist(ConstUtil.blueLeftDistL);
-        botMove.motorPwrs(0.2);
-        //botMove.turnGyro(-ConstUtil.blueLeftAngL , 0.3);
-        telemetry.addData("Program Place" , "Done");
-        telemetry.update();
+        while(opModeIsActive() && !isStopRequested())
+        {
+            robot.glyphElevator.setPower(1);
+            sleep(2000);
+            robot.glyphElevator.setPower(0);
+            botMove.changeMode();
+            //positive turnDegrees turns the bot to the left, negative to the right.
+            botMove.setDist(14);
+            if(!isStopRequested())
+            {
+                botMove.motorPwrs(0.05);
+            }
+            if(!isStopRequested())
+            {
+                botMove.turnGyro(4 , 0.2);
+            }
+            botMove.setDist(ConstUtil.blueLeftDistL - 4);
+            if(!isStopRequested())
+            {
+                botMove.motorPwrs(0.2);
+            }
+            //botMove.turnGyro(-ConstUtil.blueLeftAngL , 0.3);
+            robot.glyphElevator.setPower(-1);
+            sleep(2000);
+            robot.glyphElevator.setPower(0);
+            stop();
+            telemetry.addData("Program Place" , "Done");
+            telemetry.update();
+        }
     }
 }

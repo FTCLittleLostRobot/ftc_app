@@ -20,7 +20,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 public class BlueLeftAuto extends LinearOpMode
 {
-    VuforiaLocalizer vuforia;
     HardwareLLR robot = new HardwareLLR();
     ModernRoboticsI2cGyro gyro = null;
 
@@ -29,80 +28,52 @@ public class BlueLeftAuto extends LinearOpMode
     {
         //robot.teleInit(hardwareMap);
         robot.init(hardwareMap);
+        telemetry.addData("Initialize",  "gyro");
+        telemetry.update();
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
         BotAutoMoveUtil botMove = new BotAutoMoveUtil(gyro , robot.right_frnt , robot.right_rear , robot.left_frnt , robot.left_rear, robot.leftlight, this);
         gyro.calibrate();
         gyro.resetZAxisIntegrator();
+        telemetry.addData("Initialize",  "finished gyro");
+        telemetry.update();
         botMove.changeMode();
-        //Init code below is for Vuforia
-        /*int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        parameters.vuforiaLicenseKey = "AZGvwWP/////AAAAGct4CbaXGkKgqClN26216W8Pkairb/CM3qmr+u3dnku8mS2xatHqTMoDijWS72cFo7HeaAatyPtfzmN3ASYlFW792pDXScmWyzwVYaELT/LyCC+j/Bpt7SRhXUC8iYslXzfYb+N8PqSPIrcnwlSjC4K49i15lErTIJU4byhsEXA1KaqQAUTRjTeRkOzb99uumiA8qPLbQN5r1DCOhFJnfcuaMwMmkiOM/OxpI3KSdactcXTQx5AGp5LsLMGgnEWY7TyY/CINfwLEI2xRcP2UUZD5kIX0yYXgNH8DF7+LlbS4aqPajHhNeruC3Q+v2c1oxPy25CahvxikokHN47Dxgi5nGiZIltw+kG2Q3B2ldKHS";
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary*/
         telemetry.addData("Program Place" , "Ready to Run");
         telemetry.update();
         waitForStart();
-        //relicTrackables.activate();
-        vufoClock.reset();
-        /*while (vufoClock.seconds() < 5.0)
+        while(opModeIsActive() && !isStopRequested())
         {
-
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-                telemetry.addData("VuMark", "%s visible", vuMark);
+            botMove.changeMode();
+            robot.glyphElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            //use encoder to set the distance to 1 inch above
+            robot.glyphElevator.setPower(1);
+            sleep(2000);
+            robot.glyphElevator.setPower(0);
+            botMove.setDist(14);
+            if(!isStopRequested())
+            {
+                botMove.motorPwrs(0.05);
             }
-            else
-                {
-                telemetry.addData("VuMark", "not visible");
-                }
-
+            if(!isStopRequested())
+            {
+                botMove.turnGyro(-4 ,0.2); //
+            }
+            botMove.setDist(ConstUtil.blueLeftDistL - 4);
+            if(!isStopRequested())
+            {
+                botMove.motorPwrs(0.2);
+            }
+            if(!isStopRequested())
+            {
+                botMove.turnGyro(-ConstUtil.blueLeftAngL , 0.2);
+            }
+            robot.glyphElevator.setPower(-1);
+            sleep(2000);
+            robot.glyphElevator.setPower(0);
+            telemetry.addData("Program Place" , "Done");
             telemetry.update();
-        }*/
-     //   botMove.changeMode();
-     //   robot.glyphElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-     //  juia  use encoder to set the distance to 1 inch above robot.glyphElevator.setPower(1);
-     //  julia sleep(2000);
-     //  julia  robot.glyphElevator.setPower(0);
-
-         botMove.setDist(ConstUtil.offRampDist10_27);
-     /*   botMove.motorPwrs(0.05);
-        botMove.turnGyro(4 ,0.2); //4 is correct. no need to worry
-        botMove.setDist(ConstUtil.blueLeftDistL);
-        botMove.motorPwrs(0.2);
-        botMove.turnGyro(-ConstUtil.blueLeftAngL , 0.3);
-        telemetry.addData("Program Place" , "Done");
-        telemetry.update();
-*/
-        //if (vuMark == "LEFT")
-        //{
-        //    botMove.turnGyro(-72 , 0.2); //Negative numbers turn the robot right  //-72.36
-        //    botMove.setDist(12.59);
-        //    botMove.motorPwrs(0.3);
-        //    botMove.turnGyro(72 , 0.2); //Positive numbers turn the robot left  //72.36
- //       }
-  /*      else if (vuMark == "CENTER")
-        {
-*/
-            botMove.turnGyro(-46 , 0.2);  //-46.36
-            botMove.setDist(16.58);  // 14.58 12.58 16.58
-            botMove.motorPwrs(0.3);
-            botMove.turnGyro(46 , 0.2);  //46.36
- /*       }
-        else if (vuMark == "RIGHT")
-        {
-            botMove.turnGyro(-32 , 0.2);
-            botMove.setDist(22.54);
-            botMove.motorPowers(0.3);
-            botMove.turnGyro(32.17 , 0.2);
+            stop();
         }
 
-        */
     }
-    String format(OpenGLMatrix transformationMatrix) {
-        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
-    }
+
 }
