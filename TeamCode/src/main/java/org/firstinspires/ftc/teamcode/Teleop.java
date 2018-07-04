@@ -68,18 +68,10 @@ public class Teleop extends OpMode
             elevatorOver = true;
             robot.glyphElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
-        else
-        {
-
-        }
 
         if(gamepad2.x)
         {
-            if(resetGripper)
-            {
-
-            }
-            else
+            if(!resetGripper)
             {
                 gripPower = true;
                 robot.gripperB.setPower(0.01);
@@ -93,10 +85,6 @@ public class Teleop extends OpMode
         if(gamepad2.b)
         {
             resetGripper = true;
-        }
-        else
-        {
-
         }
 
         if(resetGripper)
@@ -116,17 +104,9 @@ public class Teleop extends OpMode
 
         if (gamepad2.right_bumper)
         {
-            if(gripPower)
+            if(!gripPower)
             {
-
-            }
-            else
-            {
-                if(resetGripper)
-                {
-
-                }
-                else
+                if(!resetGripper)
                 {
                     if(gripperPos >= ConstUtil.gripperOutCons)
                     {
@@ -143,48 +123,29 @@ public class Teleop extends OpMode
         }
         else if(gamepad2.left_bumper)
         {
-            if(gripPower)
+            if(!gripPower&&!resetGripper)
             {
 
-            }
-            else
-            {
-                if(resetGripper)
+                if(gripperPos <= ConstUtil.gripperCloseCons)
                 {
-
+                    robot.gripperB.setPower(0.20);
                 }
                 else
                 {
-                    if(gripperPos <= ConstUtil.gripperCloseCons)
-                    {
-                        robot.gripperB.setPower(0.20);
-                    }
-                    else
-                    {
-                        robot.gripperB.setPower(0.001);
-                        gripped = true;
-                    }
+                    robot.gripperB.setPower(0.001);
+                    gripped = true;
                 }
             }
         }
         else  //  right bumper and left bumper is not pressed
         {
-            if(gripPower)
+            if(!gripPower)
             {
-
-            }
-            else
-            {
-                if(resetGripper)
-                {
-
-                }
-                else
+                if(!resetGripper)
                 {
                     robot.gripperB.setPower(0.0);
                 }
             }
-
         }
 
         if (gamepad2.dpad_up)
@@ -196,11 +157,7 @@ public class Teleop extends OpMode
             }
             else
             {
-                if(!autoRaiseDone)
-                {
-
-                }
-                else
+                if(autoRaiseDone)
                 {
                     if (elevatorPos >= ConstUtil.elevatorUpCons)
                     {
