@@ -62,7 +62,7 @@ public class TestingBaseAutoDrive_Linear extends LinearOpMode {
 
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
-        // Step 1:  Drive forward for 3 seconds
+        // Step 1:  Drive forward for 1 seconds
         robot.left_drive.setPower(FORWARD_SPEED);
         robot.right_drive.setPower(FORWARD_SPEED);
         runtime.reset();
@@ -71,7 +71,7 @@ public class TestingBaseAutoDrive_Linear extends LinearOpMode {
             telemetry.update();
         }
 
-        // Step 2:  Spin right for 1.3 seconds
+        // Step 2:  Spin right for 0.5 seconds
         robot.left_drive.setPower(TURN_SPEED);
         robot.right_drive.setPower(-TURN_SPEED);
         runtime.reset();

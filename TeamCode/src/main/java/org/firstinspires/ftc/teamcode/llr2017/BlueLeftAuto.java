@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.llr2017;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -10,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Created by Nicholas on 2017-10-25. TODO:Remember to change the Constants to suit this year's Robot, not MediumBot
  */
 @Autonomous(name = "Blue Left Auto" , group = "Linear OpMode")
-
+@Disabled
 public class BlueLeftAuto extends LinearOpMode
 {
     HardwareLLR robot = new HardwareLLR();
