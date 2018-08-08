@@ -47,6 +47,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  * Motor channel:  Left  drive motor:        "left_drive"
  * Motor channel:  Right drive motor:        "right_drive"
+ *
+ * Motors: NeveRest Orbital 20 Gearmotor (am-3637)
+ *   Theoretical Performance Specifications:
+ *   Gearbox Reduction: 19.2:1
+ *   Voltage: 12 Volt DC
+ *   No Load Free Speed, at gearbox output shaft: 340 RPM
+ *   Force Needed to Back-Drive: 6.4 oz-in
+ *   Gearbox Output Power: 14 W
+ *   Stall Torque: 175 oz-in
+ *   Stall Current: 11.5 A
+ *   Output counts per revolution of Output Shaft (cpr): 537.6
+ *   Output pulse per revolution of encoder shaft (ppr): 134.4
+
  */
 public class HardwareTestingBase
 {

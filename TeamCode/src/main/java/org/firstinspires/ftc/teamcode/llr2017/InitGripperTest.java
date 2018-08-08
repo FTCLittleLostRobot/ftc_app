@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.llr2017;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /**
  * Created by Nicholas on 2017-10-25.
  */
 @Autonomous(name = "Init Gripper Test" , group = "Linear OpMode")
-
+@Disabled
 public class InitGripperTest extends LinearOpMode
 {
     HardwareLLR robot = new HardwareLLR();

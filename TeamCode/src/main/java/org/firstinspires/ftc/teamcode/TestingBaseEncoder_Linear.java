@@ -50,15 +50,14 @@ public class TestingBaseEncoder_Linear extends LinearOpMode {
     static final double FORWARD_SPEED = 0.1;
     static final double TURN_SPEED = 0.25;
 
-    static final double     COUNTS_PER_MOTOR_REV    = 103 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 10.0 ;     // This is < 1.0 if geared UP
+    static final double     COUNTS_PER_MOTOR_REV    = 537.6 ;  // eg: Countable events per revolution of Output shaft
+    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
 
     @Override
     public void runOpMode() {
-
 
         robot.init(hardwareMap);
 
@@ -83,9 +82,9 @@ public class TestingBaseEncoder_Linear extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(FORWARD_SPEED,  6,  6, 1.0);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderDrive(FORWARD_SPEED,  6,  6, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
         encoderDrive(TURN_SPEED,   5, -5, 5.0 );  // S2: Turn Right 12 Inches with 4 Sec timeout
-        encoderDrive(FORWARD_SPEED, -10, -10, 1.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+        encoderDrive(FORWARD_SPEED, -10, -10, 5.0);  // S3: Reverse 24 Inches with 4 Sec timeout
             
         telemetry.addData("Path", "Complete");
         telemetry.update();

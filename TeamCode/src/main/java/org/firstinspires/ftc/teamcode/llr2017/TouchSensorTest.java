@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.llr2017;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
@@ -9,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
  * Created by Nicholas on 2017-11-10.
  */
 @Autonomous(name = "Touch Sensor Test" , group = "Linear OpMode")
-
+@Disabled
 public class TouchSensorTest extends LinearOpMode
 {
     private DigitalChannel touchSensor = null;

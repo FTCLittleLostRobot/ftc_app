@@ -2,13 +2,14 @@ package org.firstinspires.ftc.teamcode.llr2017;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /**
  * Created by Nicholas on 2017-10-27.
  */
 @Autonomous(name = "RED Right Auto" , group = "Linear OpMode")
-
+@Disabled
 public class RedRightAuto extends LinearOpMode
 {
     HardwareLLR robot = new HardwareLLR();
