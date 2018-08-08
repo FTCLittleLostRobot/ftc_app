@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.llr2017;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import java.io.PrintWriter;
@@ -11,7 +12,7 @@ import java.io.StringWriter;
  * Created by Nicholas on 2017-10-29.
  */
 @Autonomous(name = "BLUE RIGHT Auto Test for stop()" , group = "Linear OpMode")
-
+@Disabled
 public class BlueRightAuto extends LinearOpMode
 {
     HardwareLLR robot = new HardwareLLR();

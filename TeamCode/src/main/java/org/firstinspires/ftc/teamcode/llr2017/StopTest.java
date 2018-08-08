@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode.llr2017;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /**
  * Created by Nicholas on 2017-12-03.
  */
 @Autonomous(name = "Stop Test" , group = "Linear OpMode")
+@Disabled
 public class StopTest extends LinearOpMode
 {
     HardwareLLR robot = new HardwareLLR();

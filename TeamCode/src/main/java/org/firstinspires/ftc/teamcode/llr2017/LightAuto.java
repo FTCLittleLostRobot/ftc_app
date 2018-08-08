@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.llr2017;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -10,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  * plugged into Motor 3, set mode to FORWARD.  Should turn off when VuMark is done.
  */
 @Autonomous (name = "Light On Auto", group = "Linear OpMode")
+@Disabled
 public class LightAuto extends LinearOpMode
 {
     HardwareLLR robot = new HardwareLLR();
