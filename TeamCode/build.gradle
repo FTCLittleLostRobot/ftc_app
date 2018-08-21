@@ -15,5 +15,14 @@
 apply from: '../build.common.gradle'
 
 android {
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
+}
+
+repositories {
+    flatDir {
+        dirs '../libs'
+
+    }
+    google()
+    jcenter()
 }
