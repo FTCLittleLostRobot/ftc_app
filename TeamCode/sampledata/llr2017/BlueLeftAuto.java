@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
- * Created by Nicholas on 2017-10-25. TODO:Remember to change the Constants to suit this year's Robot, not MediumBot
+ * Created by Nicholas on 2017-10-25.
  */
 @Autonomous(name = "Blue Left Auto" , group = "Linear OpMode")
 @Disabled

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
- * Created by Nicholas on 2017-08-04. TODO: slowly add gyroUtil components back later
+ * Created by Nicholas on 2017-08-04.
  */
 
 @Autonomous(name = "Test Bot Auto Move Util" , group = "Linear Opmode")
