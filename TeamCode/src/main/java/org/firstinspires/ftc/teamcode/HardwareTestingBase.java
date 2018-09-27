@@ -34,6 +34,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 /**
  * This is NOT an opmode.
@@ -66,9 +68,10 @@ public class HardwareTestingBase
     /* Public OpMode members. */
     public DcMotor  left_drive   = null;
     public DcMotor  right_drive  = null;
+    public NormalizedColorSensor colorSensor = null;
 
     /* local OpMode members. */
-    HardwareMap hwMap           =  null;
+    HardwareMap hardwareMap           =  null;
 
     private static final double     COUNTS_PER_MOTOR_REV    = 537.6 ;  // eg: Countable events per revolution of Output shaft
     private static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
@@ -86,13 +89,16 @@ public class HardwareTestingBase
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
-        hwMap = ahwMap;
+        hardwareMap = ahwMap;
 
         // Define and Initialize Motors
-        left_drive  = hwMap.get(DcMotor.class, "left");
-        right_drive = hwMap.get(DcMotor.class, "right");
+        left_drive  = hardwareMap.get(DcMotor.class, "left");
+        right_drive = hardwareMap.get(DcMotor.class, "right");
         left_drive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         right_drive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+
+        // Get a reference to our sensor object.
+        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorsensor");
 
         // Set all motors to zero power
         left_drive.setPower(0);
