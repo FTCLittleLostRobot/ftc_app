@@ -115,16 +115,26 @@ public class TestingBaseFindBlock_Iterative extends OpMode {
         switch (state)
         {
             case Setup:
-                encoderDrive_Start(FORWARD_SPEED, 12, 12);  // S1: Forward 47 Inches with 5 Sec timeout
+                encoderDrive_Start(FORWARD_SPEED, 24, 24);  // S1: Forward 47 Inches with 5 Sec timeout
                 state = RobotState.Start;
                 break;
 
             case Start:
                 NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
 
+                telemetry.addLine()
+                        .addData("a", "%.3f", colors.alpha)
+                        .addData("r", "%.3f", colors.red)
+                        .addData("g", "%.3f", colors.green)
+                        .addData("b", "%.3f", colors.blue);
 
-                if (encoderDrive_IsDone() ) {
+                telemetry.update();
+
+                if ((encoderDrive_IsDone()  ) || (colors.red >= 0.008 && colors.green >= 0.004)) {
+                    //29 | r : 89 | g : 56 | b : 2a)) {fv starting now: colors.alpha >= 27 && colors.alpha < 31
                     state = RobotState.Finish;
+
+
                 }
 
 
@@ -135,8 +145,17 @@ public class TestingBaseFindBlock_Iterative extends OpMode {
                 encoderDrive_Complete();
                 state = RobotState.Done;
                 break;
+
+            case Done:
+                telemetry.addLine ()
+                    .addData("Finished", "Complete");
+                telemetry.update();
+
+                break;
         }
     }
+
+
 
     /*
      * Code to run ONCE after the driver hits STOP
