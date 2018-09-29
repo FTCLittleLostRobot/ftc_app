@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.telecom.RemoteConnection;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
@@ -121,25 +123,54 @@ public class HardwareMecanumBase
         right_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    public void DrivePower(WheelControl wheel, double power)
-    {
+    public void DrivePower(WheelControl wheel, double power) {
 
         switch (wheel) {
             case LeftBackDrive:
-                left_back_drive.setPower(power);
+                left_back_drive.setPower(power * 0.5);
                 break;
             case RightBackDrive:
-                right_back_drive.setPower(-power);
+                right_back_drive.setPower(-power * 0.5);
                 break;
             case LeftFrontDrive:
-                left_front_drive.setPower(power);
+                left_front_drive.setPower(power * 0.5);
                 break;
             case RightFrontDrive:
-                right_front_drive.setPower(power);
+                right_front_drive.setPower(power * 0.5);
                 break;
             default:
                 break;
         }
+    }
+
+
+    // Move
+    public void MoveMecanum(double x, double y, double rotation)
+    {
+
+
+
+        double r = Math.hypot( x, y);
+        double robotAngle = Math.atan2(y,x) - Math.PI / 4;
+
+
+        final double v1 = r * Math.cos(robotAngle) + rotation;
+        final double v2 = r * Math.sin(robotAngle) - rotation;
+        final double v3 = r * Math.sin(robotAngle) + rotation;
+        final double v4 = r * Math.cos(robotAngle) - rotation;
+
+        DrivePower(WheelControl.LeftFrontDrive, v1);
+        DrivePower(WheelControl.RightFrontDrive, v2);
+        DrivePower(WheelControl.LeftBackDrive,v3);
+        DrivePower(WheelControl.RightBackDrive, v4);
+
+/*
+    leftFront.setPower(v1);
+    rightFront.setPower(v2);
+    leftRear.setPower(v3)
+    rightRear.setPower(v4);
+*/
+
     }
 }
 

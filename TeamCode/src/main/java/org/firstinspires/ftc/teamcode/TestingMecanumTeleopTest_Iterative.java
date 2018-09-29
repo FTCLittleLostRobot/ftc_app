@@ -54,7 +54,7 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
     private HardwareMecanumBase robot       = new HardwareMecanumBase(); // use the class created to define a Pushbot's hardware
     private float starting_left = 0;
     private float starting_right = 0;
-
+    private float starting_rotation=0;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -63,6 +63,7 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
 
         starting_left = -gamepad1.left_stick_y;
         starting_right = -gamepad1.left_stick_y;
+        starting_rotation= -gamepad1.right_stick_x;
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
@@ -93,20 +94,21 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
     @Override
     public void loop() {
         double left;
-        double right;
+        double fwd;
+        double rotation;
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
-        left = -gamepad1.left_stick_y - starting_left;
-        right = -gamepad1.left_stick_y - starting_right;
+        left = -gamepad1.left_stick_x - starting_left;
+        fwd = -gamepad1.left_stick_y - starting_right;
+        rotation= -gamepad1.right_stick_x - starting_rotation;
 
-        robot.DrivePower(HardwareMecanumBase.WheelControl.LeftFrontDrive, left);
-        robot.DrivePower(HardwareMecanumBase.WheelControl.RightFrontDrive, right);
-        robot.DrivePower(HardwareMecanumBase.WheelControl.LeftBackDrive,left);
-        robot.DrivePower(HardwareMecanumBase.WheelControl.RightBackDrive, right);
+        robot.MoveMecanum(left, fwd, rotation);
+
 
         // Send telemetry message to signify robot running;
         telemetry.addData("left",  "%.2f", left);
-        telemetry.addData("right", "%.2f", right);
+        telemetry.addData("fwd", "%.2f", fwd);
+        telemetry.addData("rot", "%.2f", rotation);
     }
 
     /*
