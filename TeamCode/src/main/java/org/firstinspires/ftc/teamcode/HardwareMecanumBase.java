@@ -77,7 +77,6 @@ public class HardwareMecanumBase
     private DcMotor  right_front_drive  = null;
     private DcMotor  left_back_drive   = null;
     private DcMotor  right_back_drive  = null;
-    public NormalizedColorSensor colorSensor = null;
 
     /* local OpMode members. */
     HardwareMap hardwareMap           =  null;
@@ -90,9 +89,7 @@ public class HardwareMecanumBase
 
     private ElapsedTime period  = new ElapsedTime();
 
-    /* Constructor */
-    public HardwareMecanumBase(){
-
+    /* Constructor *private HardwareMecanumBase(){
     }
 
     /* Initialize standard Hardware interfaces */
@@ -106,24 +103,25 @@ public class HardwareMecanumBase
         left_back_drive  = hardwareMap.get(DcMotor.class, "left_back");
         right_back_drive = hardwareMap.get(DcMotor.class, "right_back");
 
+        // TODO: DANIELLE Update this to make the direction consistent, remove the -power in the DrivePower function
         left_front_drive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         right_front_drive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-
 
         // Set all motors to zero power
         left_front_drive.setPower(0);
         right_front_drive.setPower(0);
         right_back_drive.setPower(0);
         left_back_drive.setPower(0);
+
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-        left_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        right_front_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        left_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        right_back_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        left_front_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        right_front_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        left_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        right_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void DrivePower(WheelControl wheel, double power) {
+    private void DrivePower(WheelControl wheel, double power) {
 
         switch (wheel) {
             case LeftBackDrive:
@@ -143,16 +141,10 @@ public class HardwareMecanumBase
         }
     }
 
-
-    // Move
     public void MoveMecanum(double x, double y, double rotation)
     {
-
-
-
         double r = Math.hypot( x, y);
         double robotAngle = Math.atan2(y,x) - Math.PI / 4;
-
 
         final double v1 = r * Math.cos(robotAngle) + rotation;
         final double v2 = r * Math.sin(robotAngle) - rotation;
@@ -163,14 +155,6 @@ public class HardwareMecanumBase
         DrivePower(WheelControl.RightFrontDrive, v2);
         DrivePower(WheelControl.LeftBackDrive,v3);
         DrivePower(WheelControl.RightBackDrive, v4);
-
-/*
-    leftFront.setPower(v1);
-    rightFront.setPower(v2);
-    leftRear.setPower(v3)
-    rightRear.setPower(v4);
-*/
-
     }
 }
 
