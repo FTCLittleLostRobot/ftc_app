@@ -1,3 +1,7 @@
+/* Little Lost Robots
+   Core Devs: Caden, Nathan
+*/
+
 /* Copyright (c) 2017 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,7 +33,6 @@
 
 
 // only works for 6 inches
-
 
 package org.firstinspires.ftc.teamcode;
 
