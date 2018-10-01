@@ -107,7 +107,7 @@ public class HardwareMecanumBase
         left_back_drive  = hardwareMap.get(DcMotor.class, "left_back");
         right_back_drive = hardwareMap.get(DcMotor.class, "right_back");
 
-        // TODO: DANIELLE Update this to make the direction consistent, remove the -power in the DrivePower function
+        // TODO: DANIELLE Update this to make the direction consistent, remove the -power in the DrivePower function add both other wheels
         left_front_drive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         right_front_drive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
