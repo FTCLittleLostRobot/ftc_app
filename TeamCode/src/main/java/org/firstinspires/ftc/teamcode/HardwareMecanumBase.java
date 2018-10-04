@@ -108,7 +108,7 @@ public class HardwareMecanumBase
         left_back_drive  = hardwareMap.get(DcMotor.class, "left_back");
         right_back_drive = hardwareMap.get(DcMotor.class, "right_back");
 
-
+        // need to test not sure if correct
         left_front_drive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         right_front_drive.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
         left_back_drive.setDirection(DcMotor.Direction.REVERSE);
