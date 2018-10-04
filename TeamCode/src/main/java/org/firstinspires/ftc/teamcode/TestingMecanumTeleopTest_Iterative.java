@@ -33,8 +33,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+        import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+        import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 /**
  * This file provides basic Telop driving for a Pushbot robot.
@@ -65,7 +65,7 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
     @Override
     public void init() {
 
-        starting_left = -gamepad1.left_stick_y;
+        starting_left = -gamepad1.left_stick_x;
         starting_right = -gamepad1.left_stick_y;
         starting_rotation= -gamepad1.right_stick_x;
 

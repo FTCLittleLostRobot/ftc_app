@@ -36,6 +36,7 @@ package org.firstinspires.ftc.teamcode;
 import android.telecom.RemoteConnection;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -107,9 +108,13 @@ public class HardwareMecanumBase
         left_back_drive  = hardwareMap.get(DcMotor.class, "left_back");
         right_back_drive = hardwareMap.get(DcMotor.class, "right_back");
 
-        // TODO: DANIELLE Update this to make the direction consistent, remove the -power in the DrivePower function add both other wheels
+
         left_front_drive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        right_front_drive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        right_front_drive.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
+        left_back_drive.setDirection(DcMotor.Direction.REVERSE);
+        right_back_drive.setDirection(DcMotor.Direction.REVERSE);
+
+
 
         // Set all motors to zero power
         left_front_drive.setPower(0);
@@ -132,7 +137,7 @@ public class HardwareMecanumBase
                 left_back_drive.setPower(power * 0.5);
                 break;
             case RightBackDrive:
-                right_back_drive.setPower(-power * 0.5);
+                right_back_drive.setPower(power * 0.5);
                 break;
             case LeftFrontDrive:
                 left_front_drive.setPower(power * 0.5);
