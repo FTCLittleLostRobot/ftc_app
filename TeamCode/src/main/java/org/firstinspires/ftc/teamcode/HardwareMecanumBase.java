@@ -78,10 +78,11 @@ public class HardwareMecanumBase
     }
 
     /* Public OpMode members. */
-    private DcMotor  left_front_drive   = null;
-    private DcMotor  right_front_drive  = null;
-    private DcMotor  left_back_drive   = null;
-    private DcMotor  right_back_drive  = null;
+    // Changed them all to public change back to private
+     DcMotor  left_front_drive   = null;
+     DcMotor  right_front_drive  = null;
+     DcMotor  left_back_drive   = null;
+     DcMotor  right_back_drive  = null;
 
     /* local OpMode members. */
     HardwareMap hardwareMap           =  null;
@@ -110,8 +111,8 @@ public class HardwareMecanumBase
 
         // need to test not sure if correct
         left_front_drive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        right_front_drive.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
-        left_back_drive.setDirection(DcMotor.Direction.REVERSE);
+        right_front_drive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        left_back_drive.setDirection(DcMotor.Direction.FORWARD);
         right_back_drive.setDirection(DcMotor.Direction.REVERSE);
 
 

@@ -66,6 +66,7 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
     public void init() {
 
         starting_left = -gamepad1.left_stick_x;
+        //starting_right = -gamepad1.left_stick_y;
         starting_right = -gamepad1.left_stick_y;
         starting_rotation= -gamepad1.right_stick_x;
 
