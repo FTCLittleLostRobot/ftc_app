@@ -110,11 +110,13 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
         left_bumper = gamepad1.left_bumper;
         right_bumper= gamepad1.right_bumper;
 
-        if (left_bumper) {
+        if (left_bumper && right_bumper) {
+            robot.ResetSpeed();
+        }
+        else if (left_bumper) {
             robot.DecreaseSpeed();
         }
-
-        if (right_bumper){
+        else if (right_bumper) {
             robot.IncreaseSpeed();
         }
 

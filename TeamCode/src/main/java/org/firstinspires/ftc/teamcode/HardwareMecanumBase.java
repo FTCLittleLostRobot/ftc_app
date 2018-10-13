@@ -173,22 +173,17 @@ public class HardwareMecanumBase
 
     public void IncreaseSpeed()
     {
-        if (SpeedMultiplier == 30) {
-            SpeedMultiplier = 50;
-        }
-        else {
-            SpeedMultiplier = 80;
-        }
+        SpeedMultiplier = 80;
     }
 
     public void DecreaseSpeed()
     {
-        if (SpeedMultiplier == 80) {
-            SpeedMultiplier = 50;
-        }
-        else {
-            SpeedMultiplier = 30;
-        }
+        SpeedMultiplier = 30;
+    }
+
+    public void ResetSpeed()
+    {
+        SpeedMultiplier = 50;
     }
 }
 
