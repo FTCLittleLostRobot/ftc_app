@@ -66,8 +66,7 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
     public void init() {
 
         starting_left = -gamepad1.left_stick_x;
-        //starting_right = -gamepad1.left_stick_y;
-        starting_right = -gamepad1.left_stick_y;
+        starting_right = gamepad1.left_stick_y;
         starting_rotation= -gamepad1.right_stick_x;
 
         /* Initialize the hardware variables.
@@ -101,19 +100,34 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
         double left;
         double fwd;
         double rotation;
+        boolean left_bumper;
+        boolean right_bumper;
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
         left = -gamepad1.left_stick_x - starting_left;
-        fwd = -gamepad1.left_stick_y - starting_right;
+        fwd = gamepad1.left_stick_y - starting_right;
         rotation= -gamepad1.right_stick_x - starting_rotation;
+        left_bumper = gamepad1.left_bumper;
+        right_bumper= gamepad1.right_bumper;
+
+        if (left_bumper) {
+            robot.DecreaseSpeed();
+        }
+
+        if (right_bumper){
+            robot.IncreaseSpeed();
+        }
 
         robot.MoveMecanum(left, fwd, rotation);
-
 
         // Send telemetry message to signify robot running;
         telemetry.addData("left",  "%.2f", left);
         telemetry.addData("fwd", "%.2f", fwd);
         telemetry.addData("rot", "%.2f", rotation);
+        telemetry.addData("left_bumper", left_bumper);
+        telemetry.addData("right_bumper", right_bumper);
+        telemetry.addData("SpeedMultplier", robot.SpeedMultiplier);
+
     }
 
     /*
