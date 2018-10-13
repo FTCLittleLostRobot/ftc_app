@@ -1,5 +1,5 @@
 /* Little Lost Robots
-   Core Devs: Danielle, Nathan and Soham
+   Core Devs: Danielle
 */
 
 /* Copyright (c) 2017 FIRST. All rights reserved.
@@ -33,13 +33,13 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.telecom.RemoteConnection;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * This is NOT an opmode.
@@ -51,8 +51,8 @@ import com.qualcomm.robotcore.hardware.NormalizedRGBA;
  * This hardware class doesn't assume the following device names have been configured on the robot:
  * Note:  All names are not lower case and some have don't single spaces between words.
  *
- * Motor channel:  Left  drive motor:        "left_drive"
- * Motor channel:  Right drive motor:        "right_drive"
+ * Motor channel:  Left  drive motor:        "left_front_drive"
+ * Motor channel:  Right drive motor:        "right_front_drive"
  *
  * Motors: NeveRest Orbital 20 Gearmotor (am-3637)
  *   Theoretical Performance Specifications:
@@ -67,12 +67,22 @@ import com.qualcomm.robotcore.hardware.NormalizedRGBA;
  *   Output pulse per revolution of encoder shaft (ppr): 134.4
 
  */
-public class HardwareTestingBase
+public class HardwareMecanumBase
 {
+    public enum WheelControl
+    {
+        LeftFrontDrive,
+        RightFrontDrive,
+        LeftBackDrive,
+        RightBackDrive
+    }
+
     /* Public OpMode members. */
-    public DcMotor  left_drive   = null;
-    public DcMotor  right_drive  = null;
-    public NormalizedColorSensor colorSensor = null;
+    // Changed them all to public change back to private
+     DcMotor  left_front_drive   = null;
+     DcMotor  right_front_drive  = null;
+     DcMotor  left_back_drive   = null;
+     DcMotor  right_back_drive  = null;
 
     /* local OpMode members. */
     HardwareMap hardwareMap           =  null;
@@ -85,9 +95,7 @@ public class HardwareTestingBase
 
     private ElapsedTime period  = new ElapsedTime();
 
-    /* Constructor */
-    public HardwareTestingBase(){
-
+    /* Constructor *private HardwareMecanumBase(){
     }
 
     /* Initialize standard Hardware interfaces */
@@ -96,23 +104,67 @@ public class HardwareTestingBase
         hardwareMap = ahwMap;
 
         // Define and Initialize Motors
-        left_drive  = hardwareMap.get(DcMotor.class, "left");
-        right_drive = hardwareMap.get(DcMotor.class, "right");
+        left_front_drive  = hardwareMap.get(DcMotor.class, "left_front");
+        right_front_drive = hardwareMap.get(DcMotor.class, "right_front");
+        left_back_drive  = hardwareMap.get(DcMotor.class, "left_back");
+        right_back_drive = hardwareMap.get(DcMotor.class, "right_back");
 
-        left_drive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        right_drive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        // need to test not sure if correct
+        left_front_drive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        right_front_drive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        left_back_drive.setDirection(DcMotor.Direction.FORWARD);
+        right_back_drive.setDirection(DcMotor.Direction.REVERSE);
 
-        // Get a reference to our sensor object.
-        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorsensor");
+
 
         // Set all motors to zero power
-        left_drive.setPower(0);
-        right_drive.setPower(0);
+        left_front_drive.setPower(0);
+        right_front_drive.setPower(0);
+        right_back_drive.setPower(0);
+        left_back_drive.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-        left_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        right_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        left_front_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        right_front_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        left_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        right_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    private void DrivePower(WheelControl wheel, double power) {
+
+        switch (wheel) {
+            case LeftBackDrive:
+                left_back_drive.setPower(power * 0.5);
+                break;
+            case RightBackDrive:
+                right_back_drive.setPower(power * 0.5);
+                break;
+            case LeftFrontDrive:
+                left_front_drive.setPower(power * 0.5);
+                break;
+            case RightFrontDrive:
+                right_front_drive.setPower(power * 0.5);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void MoveMecanum(double x, double y, double rotation)
+    {
+        double r = Math.hypot( x, y);
+        double robotAngle = Math.atan2(y,x) - Math.PI / 4;
+
+        final double v1 = r * Math.cos(robotAngle) + rotation;
+        final double v2 = r * Math.sin(robotAngle) - rotation;
+        final double v3 = r * Math.sin(robotAngle) + rotation;
+        final double v4 = r * Math.cos(robotAngle) - rotation;
+
+        DrivePower(WheelControl.LeftFrontDrive, v1);
+        DrivePower(WheelControl.RightFrontDrive, v2);
+        DrivePower(WheelControl.LeftBackDrive,v3);
+        DrivePower(WheelControl.RightBackDrive, v4);
     }
 }
 

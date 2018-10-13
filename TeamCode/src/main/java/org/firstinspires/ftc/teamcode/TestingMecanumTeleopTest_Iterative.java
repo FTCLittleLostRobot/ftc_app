@@ -1,7 +1,6 @@
 /* Little Lost Robots
-   Core Devs: Caden, Nathan and Soham
+   Core Devs: Danielle
 */
-
 
 /* Copyright (c) 2017 FIRST. All rights reserved.
  *
@@ -34,8 +33,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+        import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+        import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 /**
  * This file provides basic Telop driving for a Pushbot robot.
@@ -52,22 +51,24 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="TestingBase: New Test", group="TestingBase")
-public class TestingBaseTeleopNewTest_Iterative extends OpMode{
+@TeleOp(name="TestingMecanum: New Test", group="TestingMecanum")
+public class TestingMecanumTeleopTest_Iterative extends OpMode{
 
     /* Declare OpMode members. */
-    private HardwareTestingBase robot       = new HardwareTestingBase(); // use the class created to define a Pushbot's hardware
+    private HardwareMecanumBase robot       = new HardwareMecanumBase(); // use the class created to define a Pushbot's hardware
     private float starting_left = 0;
     private float starting_right = 0;
-
+    private float starting_rotation=0;
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
 
-        starting_left = -gamepad1.left_stick_y;
-        starting_right = -gamepad1.right_stick_y;
+        starting_left = -gamepad1.left_stick_x;
+        //starting_right = -gamepad1.left_stick_y;
+        starting_right = -gamepad1.left_stick_y;
+        starting_rotation= -gamepad1.right_stick_x;
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
@@ -98,18 +99,21 @@ public class TestingBaseTeleopNewTest_Iterative extends OpMode{
     @Override
     public void loop() {
         double left;
-        double right;
+        double fwd;
+        double rotation;
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
-        left = -gamepad1.left_stick_y - starting_left;
-        right = -gamepad1.right_stick_y - starting_right;
+        left = -gamepad1.left_stick_x - starting_left;
+        fwd = -gamepad1.left_stick_y - starting_right;
+        rotation= -gamepad1.right_stick_x - starting_rotation;
 
-        robot.left_drive.setPower(left);
-        robot.right_drive.setPower(right);
+        robot.MoveMecanum(left, fwd, rotation);
+
 
         // Send telemetry message to signify robot running;
         telemetry.addData("left",  "%.2f", left);
-        telemetry.addData("right", "%.2f", right);
+        telemetry.addData("fwd", "%.2f", fwd);
+        telemetry.addData("rot", "%.2f", rotation);
     }
 
     /*
