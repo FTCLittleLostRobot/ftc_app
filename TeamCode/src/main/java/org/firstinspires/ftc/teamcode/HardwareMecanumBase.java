@@ -41,6 +41,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.math.BigDecimal;
+
 /**
  * This is NOT an opmode.
  *
@@ -94,6 +96,7 @@ public class HardwareMecanumBase
             (WHEEL_DIAMETER_INCHES * 3.1415);
 
     private ElapsedTime period  = new ElapsedTime();
+    public int SpeedMultiplier = 50;
 
     /* Constructor *private HardwareMecanumBase(){
     }
@@ -135,16 +138,16 @@ public class HardwareMecanumBase
 
         switch (wheel) {
             case LeftBackDrive:
-                left_back_drive.setPower(power * 0.5);
+                left_back_drive.setPower(power * ((double)SpeedMultiplier / 100));
                 break;
             case RightBackDrive:
-                right_back_drive.setPower(power * 0.5);
+                right_back_drive.setPower(power * ((double)SpeedMultiplier / 100));
                 break;
             case LeftFrontDrive:
-                left_front_drive.setPower(power * 0.5);
+                left_front_drive.setPower(power * ((double)SpeedMultiplier / 100));
                 break;
             case RightFrontDrive:
-                right_front_drive.setPower(power * 0.5);
+                right_front_drive.setPower(power * ((double)SpeedMultiplier / 100));
                 break;
             default:
                 break;
@@ -165,6 +168,22 @@ public class HardwareMecanumBase
         DrivePower(WheelControl.RightFrontDrive, v2);
         DrivePower(WheelControl.LeftBackDrive,v3);
         DrivePower(WheelControl.RightBackDrive, v4);
+    }
+
+
+    public void IncreaseSpeed()
+    {
+        SpeedMultiplier = 80;
+    }
+
+    public void DecreaseSpeed()
+    {
+        SpeedMultiplier = 30;
+    }
+
+    public void ResetSpeed()
+    {
+        SpeedMultiplier = 50;
     }
 }
 

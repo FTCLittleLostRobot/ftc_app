@@ -56,19 +56,18 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
 
     /* Declare OpMode members. */
     private HardwareMecanumBase robot       = new HardwareMecanumBase(); // use the class created to define a Pushbot's hardware
-    private float starting_left = 0;
-    private float starting_right = 0;
-    private float starting_rotation=0;
+    private float starting_left_x = 0;
+    private float starting_left_y = 0;
+    private float starting_right_x=0;
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
 
-        starting_left = -gamepad1.left_stick_x;
-        //starting_right = -gamepad1.left_stick_y;
-        starting_right = -gamepad1.left_stick_y;
-        starting_rotation= -gamepad1.right_stick_x;
+        starting_left_x = -gamepad1.left_stick_x;
+        starting_left_y = gamepad1.left_stick_y;
+        starting_right_x= -gamepad1.right_stick_x;
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
@@ -98,22 +97,40 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
      */
     @Override
     public void loop() {
-        double left;
-        double fwd;
-        double rotation;
+        double left_stick_x;
+        double left_stick_y;
+        double right_stick_x;
+        boolean left_bumper;
+        boolean right_bumper;
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
-        left = -gamepad1.left_stick_x - starting_left;
-        fwd = -gamepad1.left_stick_y - starting_right;
-        rotation= -gamepad1.right_stick_x - starting_rotation;
+        left_stick_x = -gamepad1.left_stick_x - starting_left_x;
+        left_stick_y = gamepad1.left_stick_y - starting_left_y;
+        right_stick_x= -gamepad1.right_stick_x - starting_right_x;
+        left_bumper = gamepad1.left_bumper;
+        right_bumper= gamepad1.right_bumper;
 
-        robot.MoveMecanum(left, fwd, rotation);
+        if (left_bumper && right_bumper) {
+            robot.ResetSpeed();
+        }
+        else if (left_bumper) {
+            robot.DecreaseSpeed();
+        }
+        else if (right_bumper) {
+            robot.IncreaseSpeed();
+        }
+        // todo make else reset state
 
+        robot.MoveMecanum(left_stick_x, left_stick_y, right_stick_x);
 
         // Send telemetry message to signify robot running;
-        telemetry.addData("left",  "%.2f", left);
-        telemetry.addData("fwd", "%.2f", fwd);
-        telemetry.addData("rot", "%.2f", rotation);
+        telemetry.addData("left",  "%.2f", left_stick_x);
+        telemetry.addData("fwd", "%.2f", left_stick_y);
+        telemetry.addData("rot", "%.2f", right_stick_x);
+        telemetry.addData("left_bumper", left_bumper);
+        telemetry.addData("right_bumper", right_bumper);
+        telemetry.addData("SpeedMultplier", robot.SpeedMultiplier);
+
     }
 
     /*
