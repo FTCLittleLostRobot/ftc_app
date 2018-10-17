@@ -32,9 +32,16 @@
  */
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.support.annotation.Nullable;
+
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.vuforia.Image;
+import com.vuforia.PIXEL_FORMAT;
+import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -50,6 +57,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.robotcore.internal.vuforia.VuforiaLocalizerImpl;
+
+//https://www.rapidtables.com/convert/color/rgb-to-hsv.html
+//https://www.youtube.com/watch?v=wckaGJFxwlw
 
 /**
  * This OpMode illustrates the basics of using the Vuforia engine to determine
@@ -71,14 +82,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  */
 
 @TeleOp(name="Concept: VuMark Id", group ="Concept")
-@Disabled
 public class ConceptVuMarkIdentification extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
     OpenGLMatrix lastLocation = null;
     private VuforiaLocalizer vuforia;
-
     @Override public void runOpMode() {
 
         /*
@@ -88,7 +97,7 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
         // OR...  Do Not Activate the Camera Monitor View, to save power
-        // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+        // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters()
 
         /*
          * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -110,75 +119,93 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
          * for a competition robot, the front camera might be more convenient.
          */
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-
-        /*
-         * Instantiate the Vuforia engine
-         */
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);
-
-
-        /*
-         * Load the data set containing the VuMarks for Relic Recovery. There's only one trackable
-         * in this data set: all three of the VuMarks in the game were created from this one template,
-         * but differ in their instance id information.
-         */
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+        vuforia = new VuforiaLocalizerImpl(parameters);
+        Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
+        vuforia.setFrameQueueCapacity(1);
 
         telemetry.addData(">", "Press Play to start");
         telemetry.update();
         waitForStart();
-
-        relicTrackables.activate();
-
         while (opModeIsActive()) {
 
-            /*
-             * See if any of the instances of relicTemplate are currently visible.
-             * RelicRecoveryVuMark is an enum which can have the following values:
-             * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
-             * UNKNOWN will be returned by RelicRecoveryVuMark
-             */
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-
-                /* Found an instance of the template. In the actual game, you will probably
-                 * loop until this condition occurs, then move on to act accordingly depending
-                 * on which VuMark was visible. */
-                telemetry.addData("VuMark", "%s visible", vuMark);
-
-                /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
-                 * it is perhaps unlikely that you will actually need to act on this pose information, but
-                 * we illustrate it nevertheless, for completeness. */
-                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
-                telemetry.addData("Pose", format(pose));
-
-                /* We further illustrate how to decompose the pose into useful rotational and
-                 * translational components */
-                if (pose != null) {
-                    VectorF trans = pose.getTranslation();
-                    Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-
-                    // Extract the X, Y, and Z components of the offset of the target relative to the robot
-                    double tX = trans.get(0);
-                    double tY = trans.get(1);
-                    double tZ = trans.get(2);
-
-                    // Extract the rotational components of the target relative to the robot
-                    double rX = rot.firstAngle;
-                    double rY = rot.secondAngle;
-                    double rZ = rot.thirdAngle;
-                }
-            }
-            else {
-                telemetry.addData("VuMark", "not visible");
+            try {
+            Bitmap bm = getImage();
+            int colorMum = colorAnalyzer(bm, 0);
+                telemetry.addData("Color: ", colorMum);
+        } catch(InterruptedException ex){
+            telemetry.addData("error", ex.getMessage());
             }
 
             telemetry.update();
         }
     }
 
+    public Bitmap getImage() throws InterruptedException {
+        Image img;
+        // get current frame and transform it to Bitmap
+        img = getImagefromFrame(vuforia.getFrameQueue().take(), PIXEL_FORMAT.RGB565);
+        Bitmap bm_img = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Bitmap.Config.RGB_565);
+        bm_img.copyPixelsFromBuffer(img.getPixels());
+
+        return bm_img;
+
+    }
+
+    @Nullable
+    private Image getImagefromFrame(VuforiaLocalizer.CloseableFrame frame, int format) {
+        long numImgs = frame.getNumImages();
+        for (int i = 0; i <numImgs; i++) {
+            if (frame.getImage(i).getFormat() == format) {
+                return frame.getImage(i);
+            }
+        }
+
+        return null;
+    }
+
+    public int colorAnalyzer(Bitmap bm_ing, int pix)  {
+        int RED_COUNTER = 0,BLUE_COUNTER = 0,X1 = 0, X =0; // color counters
+        Color cur_color = null;
+        int cur_color_int, rgb[] = new int[3];
+        float hsv[] = new float[3];
+        int hueMax = 0;
+
+        int width = bm_ing.getWidth(); // width in landscape mode
+        int height = bm_ing.getHeight(); // height in landscape mode
+
+            for (int i = 500; i < height; i += 3) {
+                for (int j = pix; j < width; j += 3) {
+                    cur_color_int = bm_ing.getPixel(j, i);
+                    rgb[0] = cur_color.red(cur_color_int);
+                    rgb[1] = cur_color.green(cur_color_int);
+                    rgb[2] = cur_color.blue(cur_color_int);
+
+                    Color.RGBToHSV(rgb[0], rgb[1], rgb[2], hsv);
+
+                    hueMax = Math.max((int) hsv[0], hueMax);
+
+                    if (hsv[0] < 15 && j > pix && hsv[0] > 8) {
+                        RED_COUNTER++;
+                      //  X += j;
+                    } else if ((hsv[0] > 30) && (hsv[0] < 50) && j > pix) {
+                        BLUE_COUNTER++;
+                        //X1 += j;
+
+                    }
+                }
+            }
+            //if(RED_COUNTER > 0 && BLUE_COUNTER > 0) {
+            //        X /= RED_COUNTER;
+            //        X1 /= BLUE_COUNTER;
+            //}
+            if (RED_COUNTER > BLUE_COUNTER)
+
+                return 0;
+            else
+                return 1;
+
+
+    }
     private String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
     }
