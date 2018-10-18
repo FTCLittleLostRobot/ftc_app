@@ -81,8 +81,8 @@ public class HardwareMecanumBase
 
     /* Public OpMode members. */
     // Changed them all to public change back to private
-     DcMotor  left_front_drive   = null;
-     DcMotor  right_front_drive  = null;
+     public DcMotor  left_front_drive   = null;
+     public DcMotor  right_front_drive  = null;
      DcMotor  left_back_drive   = null;
      DcMotor  right_back_drive  = null;
 
@@ -117,9 +117,12 @@ public class HardwareMecanumBase
         right_front_drive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
         left_back_drive.setDirection(DcMotor.Direction.FORWARD);
         right_back_drive.setDirection(DcMotor.Direction.REVERSE);
+        ResetMotors();
 
 
+    }
 
+    public void ResetMotors() {
         // Set all motors to zero power
         left_front_drive.setPower(0);
         right_front_drive.setPower(0);
@@ -132,6 +135,20 @@ public class HardwareMecanumBase
         right_front_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         left_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         right_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void DriveMotorToPostion(int newLeftTarget, int newRightTarget){
+
+        left_front_drive.setTargetPosition(newLeftTarget);
+        right_front_drive.setTargetPosition(newRightTarget);
+        left_back_drive.setTargetPosition(newLeftTarget);
+        right_back_drive.setTargetPosition(newRightTarget);
+
+        // Turn On RUN_TO_POSITION
+        left_front_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        right_front_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        left_back_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        right_back_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     private void DrivePower(WheelControl wheel, double power) {
