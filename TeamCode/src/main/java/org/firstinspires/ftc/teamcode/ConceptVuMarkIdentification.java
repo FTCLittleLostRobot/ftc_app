@@ -62,32 +62,17 @@ import org.firstinspires.ftc.robotcore.internal.vuforia.VuforiaLocalizerImpl;
 //https://www.rapidtables.com/convert/color/rgb-to-hsv.html
 //https://www.youtube.com/watch?v=wckaGJFxwlw
 
-/**
- * This OpMode illustrates the basics of using the Vuforia engine to determine
- * the identity of Vuforia VuMarks encountered on the field. The code is structured as
- * a LinearOpMode. It shares much structure with {@link ConceptVuforiaNavigation}; we do not here
- * duplicate the core Vuforia documentation found there, but rather instead focus on the
- * differences between the use of Vuforia for navigation vs VuMark identification.
- *
- * @see ConceptVuforiaNavigation
- * @see VuforiaLocalizer
- * @see VuforiaTrackableDefaultListener
- * see  ftc_app/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
- *
- * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
- * is explained in {@link ConceptVuforiaNavigation}.
- */
-
 @TeleOp(name="Concept: VuMark Id", group ="Concept")
 public class ConceptVuMarkIdentification extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
-    OpenGLMatrix lastLocation = null;
+    private OpenGLMatrix lastLocation = null;
     private VuforiaLocalizer vuforia;
+    enum ColorTarget{
+        Yellow, Red, Blue, White, Green
+    }
+
     @Override public void runOpMode() {
 
         /*
@@ -99,18 +84,6 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
         // OR...  Do Not Activate the Camera Monitor View, to save power
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters()
 
-        /*
-         * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
-         * 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.
-         * A Vuforia 'Development' license key, can be obtained free of charge from the Vuforia developer
-         * web site at https://developer.vuforia.com/license-manager.
-         *
-         * Vuforia license keys are always 380 characters long, and look as if they contain mostly
-         * random data. As an example, here is a example of a fragment of a valid key:
-         *      ... yIgIzTqZ4mWjk9wd3cZO9T1axEqzuhxoGlfOOI2dRzKS4T0hQ8kT ...
-         * Once you've obtained a license key, copy the string from the Vuforia web site
-         * and paste it in to your code on the next line, between the double quotes.
-         */
         parameters.vuforiaLicenseKey = "Adqx6DT/////AAABmZlkTzS5r0pXkD69c956JPRphYPsOI8mY5p+KC7CmdxkdZcT8LaXbgvfDIigrnO/PtTjO70OelYnZ8Ch085qgo0syqNC1QYXs35CcbtxvYxBC5givpm8vLxnxgo+3Fd+O4XUFiUS2EDBKxlANbBCXm8yEuXYXxWJtwlzY92ivgQkdqedHoz/uzSBTgK8rnGhgiklZqKTBU9mJTbCJ9uEXTXH+w5w3p6UQw9uMXnT+DMZQE6OGfYkL19zxaI/nAfkgUaFFcuKlQamQC+MceMshEFhqogJtGoeUhj7Nrv8+DcBhkNeju8u1WV6FlZAD6OyWbdgPsHjKlALNDhvecd95mWDa1lflssHFgbtPhPHUIMo";
 
         /*
@@ -129,11 +102,11 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
         while (opModeIsActive()) {
 
             try {
-            Bitmap bm = getImage();
-            int colorMum = colorAnalyzer(bm, 0);
-                telemetry.addData("Color: ", colorMum);
-        } catch(InterruptedException ex){
-            telemetry.addData("error", ex.getMessage());
+                Bitmap bm = getImage();
+                int colorMum = FindColor(bm, ColorTarget.Yellow);
+                telemetry.addData("Column: ", colorMum);
+            } catch(InterruptedException ex){
+                telemetry.addData("error", ex.getMessage());
             }
 
             telemetry.update();
@@ -162,9 +135,14 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
 
         return null;
     }
+    /*
+     * This function has an image and what it does is it skips a few inches below the height to avoid it focusing on other things like
+     * people or other objects. It also converts the rgb to Hsv which is really useful to be specific when you scan an object.
+     * As you can see below, I added a lot of colors down below.
+     * https://www.rapidtables.com/convert/color/rgb-to-hsv.html - Great website for finding colors
+     */
 
-    public int colorAnalyzer(Bitmap bm_ing, int pix)  {
-        int RED_COUNTER = 0,BLUE_COUNTER = 0,X1 = 0, X =0; // color counters
+    public int FindColor(Bitmap bm_ing, ColorTarget colorTarget)  {
         Color cur_color = null;
         int cur_color_int, rgb[] = new int[3];
         float hsv[] = new float[3];
@@ -172,9 +150,16 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
 
         int width = bm_ing.getWidth(); // width in landscape mode
         int height = bm_ing.getHeight(); // height in landscape mode
+        int columnWidth = width / 5;
 
-            for (int i = 500; i < height; i += 3) {
-                for (int j = pix; j < width; j += 3) {
+        int columnFound = -1;
+        int columnMaxValue = 0;
+
+        for (int column = 0; column < 5; column++) {
+            int columnCounter = 0;
+
+            for (int i = 100; i < height; i += 3) {
+                for (int j = column * columnWidth; j < (column + 1) * columnWidth; j++) {
                     cur_color_int = bm_ing.getPixel(j, i);
                     rgb[0] = cur_color.red(cur_color_int);
                     rgb[1] = cur_color.green(cur_color_int);
@@ -184,28 +169,48 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
 
                     hueMax = Math.max((int) hsv[0], hueMax);
 
-                    if (hsv[0] < 15 && j > pix && hsv[0] > 8) {
-                        RED_COUNTER++;
-                      //  X += j;
-                    } else if ((hsv[0] > 30) && (hsv[0] < 50) && j > pix) {
-                        BLUE_COUNTER++;
-                        //X1 += j;
-
+                    if (colorTarget == ColorTarget.Yellow) {
+                        if ((hsv[0] > 30) && (hsv[0] < 50)) {
+                            columnCounter++;
+                        }
+                    }
+                    else if (colorTarget == ColorTarget.White)
+                    {
+                        if ((hsv[0] > 0) && (hsv[0] < 0) && (hsv[1] >= 0) && (hsv[1] < .25 )) {
+                            columnCounter++;
+                        }
+                    }
+                    else if (colorTarget == ColorTarget.Red)
+                    {
+                        if ((hsv[0] > 0) && (hsv[0] < 0) && (hsv[1] > .75) && (hsv[1] <= 1)) {
+                            columnCounter++;
+                        }
+                    }
+                    else if (colorTarget == ColorTarget.Blue)
+                    {
+                        if ((hsv[0] > 220) && (hsv[0] < 250)) {
+                            columnCounter++;
+                        }
+                    }
+                    else if (colorTarget == ColorTarget.Green)
+                    {
+                        if ((hsv[0] > 100) && (hsv[0] < 120) && (hsv[1] > .75) && (hsv[1] <= 1)) {
+                            columnCounter++;
+                        }
                     }
                 }
             }
-            //if(RED_COUNTER > 0 && BLUE_COUNTER > 0) {
-            //        X /= RED_COUNTER;
-            //        X1 /= BLUE_COUNTER;
-            //}
-            if (RED_COUNTER > BLUE_COUNTER)
+            if (columnCounter > 10) {
+                if (columnCounter > columnMaxValue) {
+                    columnMaxValue = columnCounter;
+                    columnFound = column;
+                }
+            }
+        }
 
-                return 0;
-            else
-                return 1;
-
-
+        return columnFound;
     }
+
     private String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
     }
