@@ -23,7 +23,7 @@ public class MecanumMove {
 
         this.hwBase.DriveMotorToPostion(newRightTarget, newLeftTarget);
         this.hwBase.SpeedMultiplier = 50;
-        this.hwBase.MoveMecanum(0,1,0);
+        this.hwBase.MoveMecanum(0,-1,0);
     }
 
     public boolean IsDone() {

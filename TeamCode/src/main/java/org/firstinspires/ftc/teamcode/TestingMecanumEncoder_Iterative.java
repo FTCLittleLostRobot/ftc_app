@@ -1,5 +1,5 @@
 /* Little Lost Robots
-   Core Devs: Danielle, Caden and Nathan
+   Core Devs: Danielle
 */
 
 /* Copyright (c) 2017 FIRST. All rights reserved.
@@ -101,18 +101,18 @@ public class TestingMecanumEncoder_Iterative extends OpMode {
         switch (state)
         {
             case Setup:
-                this.Start(FORWARD_SPEED, 12, 12);  // S1: Forward 47 Inches with 5 Sec timeout
+                this.moveFowards.Start(.5, 12);  // S1: Forward 47 Inches with 5 Sec timeout
                 state = RobotState.Start;
                 break;
 
             case Start:
-                if (encoderDrive_IsDone()) {
+                if (this.moveFowards.IsDone()) {
                     state = RobotState.Finish;
                 }
                 break;
 
             case Finish:
-                encoderDrive_Complete();
+                this.moveFowards.Complete();
                 state = RobotState.Done;
                 break;
         }

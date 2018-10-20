@@ -118,8 +118,6 @@ public class HardwareMecanumBase
         left_back_drive.setDirection(DcMotor.Direction.FORWARD);
         right_back_drive.setDirection(DcMotor.Direction.REVERSE);
         ResetMotors();
-
-
     }
 
     public void ResetMotors() {
