@@ -69,10 +69,8 @@ import java.math.BigDecimal;
  *   Output pulse per revolution of encoder shaft (ppr): 134.4
 
  */
-public class HardwareMecanumBase
-{
-    public enum WheelControl
-    {
+public class HardwareMecanumBase {
+    public enum WheelControl {
         LeftFrontDrive,
         RightFrontDrive,
         LeftBackDrive,
@@ -81,21 +79,21 @@ public class HardwareMecanumBase
 
     /* Public OpMode members. */
     // Changed them all to public change back to private
-     public DcMotor  left_front_drive   = null;
-     public DcMotor  right_front_drive  = null;
-     DcMotor  left_back_drive   = null;
-     DcMotor  right_back_drive  = null;
+    public DcMotor left_front_drive = null;
+    public DcMotor right_front_drive = null;
+    public DcMotor left_back_drive = null;
+    public DcMotor right_back_drive = null;
 
     /* local OpMode members. */
-    HardwareMap hardwareMap           =  null;
+    HardwareMap hardwareMap = null;
 
-    private static final double     COUNTS_PER_MOTOR_REV    = 537.6 ;  // eg: Countable events per revolution of Output shaft
-    private static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
-    private static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-    public static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    private static final double COUNTS_PER_MOTOR_REV = 537.6;  // eg: Countable events per revolution of Output shaft
+    private static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
+    private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
+    public static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
 
-    private ElapsedTime period  = new ElapsedTime();
+    private ElapsedTime period = new ElapsedTime();
     public int SpeedMultiplier = 50;
 
     /* Constructor *private HardwareMecanumBase(){
@@ -107,9 +105,9 @@ public class HardwareMecanumBase
         hardwareMap = ahwMap;
 
         // Define and Initialize Motors
-        left_front_drive  = hardwareMap.get(DcMotor.class, "left_front");
+        left_front_drive = hardwareMap.get(DcMotor.class, "left_front");
         right_front_drive = hardwareMap.get(DcMotor.class, "right_front");
-        left_back_drive  = hardwareMap.get(DcMotor.class, "left_back");
+        left_back_drive = hardwareMap.get(DcMotor.class, "left_back");
         right_back_drive = hardwareMap.get(DcMotor.class, "right_back");
 
         // need to test not sure if correct
@@ -135,37 +133,72 @@ public class HardwareMecanumBase
         right_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void DriveMotorToPostion(int newLeftTarget, int newRightTarget){
+    public void DriveMotorToPostion(int newLeftFrontTarget, int newRightFrontTarget, int newLeftBackTarget, int newRightBackTarget) {
 
-        left_front_drive.setTargetPosition(newLeftTarget);
-        right_front_drive.setTargetPosition(newRightTarget);
-        left_back_drive.setTargetPosition(newLeftTarget);
-        right_back_drive.setTargetPosition(newRightTarget);
+        left_front_drive.setTargetPosition( newLeftFrontTarget);
+        right_front_drive.setTargetPosition(newRightFrontTarget);
+        left_back_drive.setTargetPosition( newLeftBackTarget);
+        right_back_drive.setTargetPosition(newRightBackTarget);
 
         // Turn On RUN_TO_POSITION
         left_front_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         right_front_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         left_back_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         right_back_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
     }
 
     private void DrivePower(WheelControl wheel, double power) {
 
         switch (wheel) {
             case LeftBackDrive:
-                left_back_drive.setPower(power * ((double)SpeedMultiplier / 100));
+                left_back_drive.setPower(power * ((double) SpeedMultiplier / 100));
                 break;
             case RightBackDrive:
-                right_back_drive.setPower(power * ((double)SpeedMultiplier / 100));
+                right_back_drive.setPower(power * ((double) SpeedMultiplier / 100));
                 break;
             case LeftFrontDrive:
-                left_front_drive.setPower(power * ((double)SpeedMultiplier / 100));
+                left_front_drive.setPower(power * ((double) SpeedMultiplier / 100));
                 break;
             case RightFrontDrive:
-                right_front_drive.setPower(power * ((double)SpeedMultiplier / 100));
+                right_front_drive.setPower(power * ((double) SpeedMultiplier / 100));
                 break;
             default:
                 break;
+        }
+    }
+
+    public int GetWheelSpinDirection(WheelControl wheel, double x, double y, double rotation)
+    {
+        double r = Math.hypot( x, y);
+        double robotAngle = Math.atan2(y,x) - Math.PI / 4;
+        double v = 0;
+
+        switch (wheel)
+        {
+            case LeftFrontDrive:
+                v = r * Math.cos(robotAngle) + rotation;
+                break;
+
+            case RightFrontDrive:
+                v = r * Math.sin(robotAngle) - rotation;
+                break;
+
+            case LeftBackDrive:
+                v = r * Math.sin(robotAngle) + rotation;
+                break;
+
+            case RightBackDrive:
+                v = r * Math.sin(robotAngle) + rotation;
+                break;
+
+        }
+
+        if (v >= 0) {
+            return 1;
+        }
+        else {
+            return -1;
         }
     }
 
