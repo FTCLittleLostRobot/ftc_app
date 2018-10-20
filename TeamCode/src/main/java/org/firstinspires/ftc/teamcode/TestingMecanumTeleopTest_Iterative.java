@@ -110,6 +110,7 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
         left_bumper = gamepad1.left_bumper;
         right_bumper= gamepad1.right_bumper;
 
+
         if (left_bumper && right_bumper) {
             robot.ResetSpeed();
         }
@@ -119,7 +120,8 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
         else if (right_bumper) {
             robot.IncreaseSpeed();
         }
-        // todo make else reset state
+        // todo make else reset state; a state when when you push both buttons go in a reset loop until 0 state; check for 0, then continue
+        //todo track minmax see if greater then threshhold, starting devation
 
         robot.MoveMecanum(left_stick_x, left_stick_y, right_stick_x);
 
