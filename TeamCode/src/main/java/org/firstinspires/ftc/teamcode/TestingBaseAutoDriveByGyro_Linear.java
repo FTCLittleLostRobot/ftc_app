@@ -78,7 +78,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @Autonomous(name="TestingBase: Auto Drive By Gyro", group="TestingBase")
-
+@Disabled
 public class TestingBaseAutoDriveByGyro_Linear extends LinearOpMode {
 
     /* Declare OpMode members. */

@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.controllers;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
-import org.firstinspires.ftc.teamcode.HardwareTestingBase;
 
 public class MecanumMove {
 
@@ -17,10 +15,11 @@ public class MecanumMove {
         
     public void Start(int speed, double inches, double x, double y, double rotation) {
 
-        // Determine new target position, and pass to motor controller
-        int newLeftFrontTarget = this.hwBase.left_front_drive.getCurrentPosition() + (int) (inches * HardwareMecanumBase.COUNTS_PER_INCH);
         targetSpin  = this.hwBase.GetWheelSpinDirection(HardwareMecanumBase.WheelControl.LeftFrontDrive,x,y,rotation);
-        newLeftFrontTarget = newLeftFrontTarget * targetSpin;
+
+        // Determine new target position, and pass to motor controller
+        int newLeftFrontTarget = this.hwBase.left_front_drive.getCurrentPosition() +
+                (targetSpin * (int) (inches * HardwareMecanumBase.COUNTS_PER_INCH));
         targetEncoderValue = newLeftFrontTarget;
 
         this.hwBase.SpeedMultiplier = speed;
@@ -29,11 +28,13 @@ public class MecanumMove {
 
     public boolean IsDone() {
         boolean isDone;
+
+        // this tells the robot if it is positive or negative
         if(targetSpin > 0){
-            isDone = this.hwBase.left_front_drive.getCurrentPosition() >= targetEncoderValue;
+            isDone = this.hwBase.left_front_drive.getCurrentPosition() >= targetEncoderValue; // if it is positive
         }
         else {
-            isDone = this.hwBase.left_front_drive.getCurrentPosition() <= targetEncoderValue;
+            isDone = this.hwBase.left_front_drive.getCurrentPosition() <= targetEncoderValue; // if it is negative
         }
 
         return isDone;

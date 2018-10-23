@@ -34,6 +34,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -53,6 +54,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  */
 
 @TeleOp(name="TestingBase: New Test", group="TestingBase")
+@Disabled
+
 public class TestingBaseTeleopNewTest_Iterative extends OpMode{
 
     /* Declare OpMode members. */

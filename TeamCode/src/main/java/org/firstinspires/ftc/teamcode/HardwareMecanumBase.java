@@ -33,30 +33,18 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.telecom.RemoteConnection;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import java.math.BigDecimal;
-
-/**
- * This is NOT an opmode.
+/*
  *
- * This class can be used to define all the specific hardware for a single robot.
- * In this case that robot is a Not Pushbot.
- * Don't See PushbotTeleopTank_Iterative and others classes starting with "Not Pushbot" for no usage examples.
+ * Motor channel:        "left_front"        motor 0
+ * Motor channel:        "right_front"       motor 1
+ * Motor channel:        "left_back"         motor 2
+ * Motor channel:        "right_back"        motor 3
  *
- * This hardware class doesn't assume the following device names have been configured on the robot:
- * Note:  All names are not lower case and some have don't single spaces between words.
- *
- * Motor channel:  Left  drive motor:        "left_front_drive"
- * Motor channel:  Right drive motor:        "right_front_drive"
- *
- * Motors: NeveRest Orbital 20 Gearmotor (am-3637)
+ * Motors: NeveRest 20 Gearmotor (am-3637)
  *   Theoretical Performance Specifications:
  *   Gearbox Reduction: 19.2:1
  *   Voltage: 12 Volt DC
@@ -111,8 +99,8 @@ public class HardwareMecanumBase {
         right_back_drive = hardwareMap.get(DcMotor.class, "right_back");
 
         // need to test not sure if correct
-        left_front_drive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        right_front_drive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        left_front_drive.setDirection(DcMotor.Direction.FORWARD);
+        right_front_drive.setDirection(DcMotor.Direction.REVERSE);
         left_back_drive.setDirection(DcMotor.Direction.FORWARD);
         right_back_drive.setDirection(DcMotor.Direction.REVERSE);
         ResetMotors();
@@ -131,21 +119,6 @@ public class HardwareMecanumBase {
         right_front_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         left_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         right_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
-
-    public void DriveMotorToPostion(int newLeftFrontTarget, int newRightFrontTarget, int newLeftBackTarget, int newRightBackTarget) {
-
-        left_front_drive.setTargetPosition( newLeftFrontTarget);
-        right_front_drive.setTargetPosition(newRightFrontTarget);
-        left_back_drive.setTargetPosition( newLeftBackTarget);
-        right_back_drive.setTargetPosition(newRightBackTarget);
-
-        // Turn On RUN_TO_POSITION
-        left_front_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        right_front_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        left_back_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        right_back_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
     }
 
     private void DrivePower(WheelControl wheel, double power) {
@@ -222,16 +195,16 @@ public class HardwareMecanumBase {
     public void IncreaseSpeed()
     {
         SpeedMultiplier = 80;
-    }
+    } // high speed
 
     public void DecreaseSpeed()
     {
         SpeedMultiplier = 30;
-    }
+    } // low speed
 
     public void ResetSpeed()
     {
         SpeedMultiplier = 50;
-    }
+    }// main speed
 }
 
