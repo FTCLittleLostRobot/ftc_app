@@ -6,6 +6,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
+import org.firstinspires.ftc.teamcode.controllers.ColorFinder;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 
 @Autonomous(name="Mecanum: Landing and Sampling", group="Mecanum")
@@ -13,6 +15,7 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
 
     HardwareMecanumBase robot;
     MecanumMove moveRobot;
+    ColorFinder colorFinder;
 
     static final double GO_FORWARD = -1;
     static final double GO_BACK = 1;
@@ -51,9 +54,11 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
          */
         robot = new HardwareMecanumBase();
         moveRobot = new MecanumMove();
+        colorFinder = new ColorFinder();
 
         robot.init(hardwareMap);
         this.moveRobot.init(robot);
+        this.colorFinder.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
@@ -117,7 +122,8 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
 
             case CheckForGold:
                 // Check returns 0
-                int foundColumn;
+                int foundColumn = -1;
+                /**
                 if (testingLimitCounter == 0) {
                     foundColumn = 0;
                     testingLimitCounter = 1;
@@ -149,8 +155,12 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
                     telemetry.addData("Say", "You Shouldn't be here!!!!!");
                     break;
                 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////// todo cut the top part once you add the color sections
+                **/
+                try {
+                    foundColumn =  colorFinder.FindColor(ColorFinder.ColorTarget.Yellow);
+                } catch(InterruptedException ex){
+                    telemetry.addData("error", ex.getMessage());
+                }
                 if (foundColumn == 0 || foundColumn == 1)
                 {//
                     this.moveRobot.Start(30, 3,GO_LEFT,0,0 );

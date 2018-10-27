@@ -195,7 +195,7 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
                     else if (colorTarget == ColorTarget.Green)
                     {
                         if ((hsv[0] > 100) && (hsv[0] < 120) && (hsv[1] > .75) && (hsv[1] <= 1)) {
-                            columnCounter++; 
+                            columnCounter++;
                         }
                     }
                 }
