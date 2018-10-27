@@ -33,6 +33,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+        import com.qualcomm.hardware.ams.AMSColorSensor;
         import com.qualcomm.robotcore.eventloop.opmode.OpMode;
         import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -59,6 +60,8 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
     private float starting_left_x = 0;
     private float starting_left_y = 0;
     private float starting_right_x=0;
+    private boolean ButtonCheck = false;
+
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -68,6 +71,7 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
         starting_left_x = -gamepad1.left_stick_x;
         starting_left_y = gamepad1.left_stick_y;
         starting_right_x= -gamepad1.right_stick_x;
+
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
@@ -88,6 +92,7 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
     /*
      * Code to run ONCE when the driver hits PLAY
      */
+
     @Override
     public void start() {
     }
@@ -103,6 +108,7 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
         boolean left_bumper;
         boolean right_bumper;
 
+
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
         left_stick_x = -gamepad1.left_stick_x - starting_left_x;
         left_stick_y = gamepad1.left_stick_y - starting_left_y;
@@ -112,23 +118,39 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
 
 
         if (left_bumper && right_bumper) {
-            robot.ResetSpeed();
+            if (ButtonCheck == false){
+                robot.ResetSpeed();
+                ButtonCheck = true;
+
+            }
         }
         else if (left_bumper) {
-            robot.DecreaseSpeed();
+            if (ButtonCheck == false){
+                robot.DecreaseSpeed();
+                ButtonCheck = true;
+            }
+
         }
         else if (right_bumper) {
-            robot.IncreaseSpeed();
+            if (ButtonCheck == false) {
+
+                robot.IncreaseSpeed();
+                ButtonCheck = true;
+            }
         }
+        else{
+            ButtonCheck = false;
+        }
+
         // todo make else reset state; a state when when you push both buttons go in a reset loop until 0 state; check for 0, then continue
         //todo track minmax see if greater then threshhold, starting devation
-
+        //todo dont let it go moe then 3 times if -1
         robot.MoveMecanum(left_stick_x, left_stick_y, right_stick_x);
 
         // Send telemetry message to signify robot running;
-        telemetry.addData("left",  "%.2f", left_stick_x);
-        telemetry.addData("fwd", "%.2f", left_stick_y);
-        telemetry.addData("rot", "%.2f", right_stick_x);
+        telemetry.addData("Strafe",  "%.2f", left_stick_x);
+        telemetry.addData("foward, back", "%.2f", left_stick_y);
+        telemetry.addData("rotation", "%.2f", right_stick_x);
         telemetry.addData("left_bumper", left_bumper);
         telemetry.addData("right_bumper", right_bumper);
         telemetry.addData("SpeedMultplier", robot.SpeedMultiplier);
