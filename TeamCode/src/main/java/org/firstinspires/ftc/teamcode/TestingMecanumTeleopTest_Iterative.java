@@ -144,13 +144,13 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
 
         // todo make else reset state; a state when when you push both buttons go in a reset loop until 0 state; check for 0, then continue
         //todo track minmax see if greater then threshhold, starting devation
-
+        //todo dont let it go moe then 3 times if -1
         robot.MoveMecanum(left_stick_x, left_stick_y, right_stick_x);
 
         // Send telemetry message to signify robot running;
-        telemetry.addData("left",  "%.2f", left_stick_x);
-        telemetry.addData("fwd", "%.2f", left_stick_y);
-        telemetry.addData("rot", "%.2f", right_stick_x);
+        telemetry.addData("Strafe",  "%.2f", left_stick_x);
+        telemetry.addData("foward, back", "%.2f", left_stick_y);
+        telemetry.addData("rotation", "%.2f", right_stick_x);
         telemetry.addData("left_bumper", left_bumper);
         telemetry.addData("right_bumper", right_bumper);
         telemetry.addData("SpeedMultplier", robot.SpeedMultiplier);

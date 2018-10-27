@@ -194,12 +194,12 @@ public class HardwareMecanumBase {
 
     public void IncreaseSpeed()
     {
-        SpeedMultiplier = 80;
+        SpeedMultiplier = 70;
     } // high speed
 
     public void DecreaseSpeed()
     {
-        SpeedMultiplier = 30;
+        SpeedMultiplier = 20;
     } // low speed
 
     public void ResetSpeed()
