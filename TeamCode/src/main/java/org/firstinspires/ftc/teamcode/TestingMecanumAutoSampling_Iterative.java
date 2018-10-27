@@ -4,11 +4,17 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.vuforia.Image;
 
 import org.firstinspires.ftc.teamcode.controllers.ColorFinder;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
+
+import static java.lang.Thread.sleep;
 
 @Autonomous(name="Mecanum: Landing and Sampling", group="Mecanum")
 public class TestingMecanumAutoSampling_Iterative extends OpMode {
@@ -21,7 +27,9 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
     static final double GO_BACK = 1;
     static final double GO_RIGHT = -1;
     static final double GO_LEFT = 1;
-
+    private Image vuforiaImageObject;
+    private Bitmap bitmapFromVuforia;
+    public int foundColumn = -1;
     int testingLimitCounter = 0;
 
     enum RobotState
@@ -29,15 +37,19 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
         Drop,
         WaitForDrop,
         StrafingLeft,
-        WaitForStrafeLeftt,
+        WaitForStrafeLeft,
         StepOut,
         WaitForStepOut,
+        CheckScreen,
+        ConvertImageFromScreen,
+        DetectColorFromImage,
         CheckForGold,
         WaitForScoot,
         PushBloock,
         Done,
 
     }
+
     RobotState state;
 
 
@@ -46,9 +58,6 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
      */
     @Override
     public void init() {
-        int newLeftTarget;
-        int newRightTarget;
-
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
@@ -98,10 +107,10 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
 
             case StrafingLeft:
                 this.moveRobot.Start(30, 6,GO_LEFT,0,0 );
-                state = RobotState.WaitForStrafeLeftt;
+                state = RobotState.WaitForStrafeLeft;
                 break;
 
-            case WaitForStrafeLeftt:
+            case WaitForStrafeLeft:
                 if (this.moveRobot.IsDone()) {
                     this.moveRobot.Complete();
                     state = RobotState.StepOut;
@@ -116,13 +125,40 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
             case WaitForStepOut:
                 if (this.moveRobot.IsDone()) {
                     this.moveRobot.Complete();
-                    state = RobotState.CheckForGold;
+                    state = RobotState.CheckScreen;
                 }
+                break;
+
+            case CheckScreen:
+                try {
+                    vuforiaImageObject = colorFinder.getVuforiaImagefromFrame();
+                }
+                catch(InterruptedException ex){
+                    telemetry.addData("error", ex.getMessage());
+                    break;
+                }
+                state = RobotState.ConvertImageFromScreen;
+                break;
+
+            case ConvertImageFromScreen:
+                try {
+                    bitmapFromVuforia = colorFinder.getBitmapToAnalyze(vuforiaImageObject);
+                }
+                catch(InterruptedException ex) {
+                    telemetry.addData("error", ex.getMessage());
+                    break;
+                }
+                state = RobotState.DetectColorFromImage;
+                break;
+
+            case DetectColorFromImage:
+                foundColumn =  colorFinder.FindColor(bitmapFromVuforia, ColorFinder.ColorTarget.Yellow);
+                telemetry.addData("column", foundColumn);
+                state = RobotState.CheckForGold;
                 break;
 
             case CheckForGold:
                 // Check returns 0
-                int foundColumn = -1;
                 /**
                 if (testingLimitCounter == 0) {
                     foundColumn = 0;
@@ -156,19 +192,15 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
                     break;
                 }
                 **/
-                try {
-                    foundColumn =  colorFinder.FindColor(ColorFinder.ColorTarget.Yellow);
-                } catch(InterruptedException ex){
-                    telemetry.addData("error", ex.getMessage());
-                }
+
                 if (foundColumn == 0 || foundColumn == 1)
                 {//
-                    this.moveRobot.Start(30, 3,GO_LEFT,0,0 );
+                    this.moveRobot.Start(30, 1,GO_LEFT,0,0 );
                     state = RobotState.WaitForScoot;
                 }
                 else if (foundColumn == 3 || foundColumn == 4)
                 {
-                    this.moveRobot.Start(30, 3,GO_RIGHT,0,0 );
+                    this.moveRobot.Start(30, 1,GO_RIGHT,0,0 );
                     state = RobotState.WaitForScoot;
                 }
                 else if (foundColumn == 2)
@@ -179,7 +211,7 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
                 else if (foundColumn == -1)
                 {
                     // if not found
-                    this.moveRobot.Start(30, 6,GO_RIGHT,0,0 );
+                    this.moveRobot.Start(30, 4,GO_RIGHT,0,0 );
                     state = RobotState.WaitForScoot;
                 }
                 break;
@@ -187,7 +219,7 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
             case WaitForScoot:
                 if (this.moveRobot.IsDone()) {
                     this.moveRobot.Complete();
-                    state = RobotState.CheckForGold;
+                    state = RobotState.CheckScreen;
                 }
                 break;
 

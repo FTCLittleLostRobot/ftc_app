@@ -7,6 +7,8 @@ package org.firstinspires.ftc.teamcode.controllers;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.vuforia.Image;
@@ -57,7 +59,9 @@ public class ColorFinder {
      * https://www.rapidtables.com/convert/color/rgb-to-hsv.html - Great website for finding colors
      */
     @Nullable
-    private Image getImagefromFrame(VuforiaLocalizer.CloseableFrame frame, int format) {
+    public Image getVuforiaImagefromFrame()  throws InterruptedException {
+        VuforiaLocalizer.CloseableFrame frame = vuforia.getFrameQueue().take();
+        int format = PIXEL_FORMAT.RGB565;
         long numImgs = frame.getNumImages();
         for (int i = 0; i <numImgs; i++) {
             if (frame.getImage(i).getFormat() == format) {
@@ -67,43 +71,35 @@ public class ColorFinder {
         return null;
     }
 
-    private Bitmap getImage() throws InterruptedException {
-        Image img;
-        // get current frame and transform it to Bitmap
-        img = getImagefromFrame(vuforia.getFrameQueue().take(), PIXEL_FORMAT.RGB565);
+    public Bitmap getBitmapToAnalyze(Image img) throws InterruptedException {
         Bitmap bm_img = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Bitmap.Config.RGB_565);
         bm_img.copyPixelsFromBuffer(img.getPixels());
         return bm_img;
     }
 
-    public int FindColor (ColorTarget colorTarget) throws InterruptedException  {
+    public int FindColor (Bitmap bm_img, ColorTarget colorTarget) {
         Color cur_color = null;
         int cur_color_int, rgb[] = new int[3];
         float hsv[] = new float[3];
         int hueMax = 0;
-        Bitmap bm_ing;
 
-        try {
-            bm_ing = getImage();
-        }
-        catch(InterruptedException ex){
-            throw ex;
-        }
-
-        int width = bm_ing.getWidth(); // width in landscape mode
-        int height = bm_ing.getHeight(); // height in landscape mode
+        int width = bm_img.getWidth(); // width in landscape mode
+        int height = bm_img.getHeight(); // height in landscape mode
         int columnWidth = width / 5;
 
         int columnFound = -1;
         int columnMaxValue = 0;
+
+        ByteBuffer pixelBuffer = ByteBuffer.allocate(bm_img.getHeight() * bm_img.getRowBytes());
+        bm_img.copyPixelsToBuffer(pixelBuffer);
 
         for (int column = 0; column < 5; column++) {
             int columnCounter = 0;
 
             for (int i = 100; i < height; i += 3) {
                 for (int j = column * columnWidth; j < (column + 1) * columnWidth; j++) {
-                    cur_color_int = bm_ing.getPixel(j, i);
-                    rgb[0] = cur_color.red(cur_color_int);
+
+                    cur_color_int = pixelBuffer.get(j + (i * width))  ;
                     rgb[1] = cur_color.green(cur_color_int);
                     rgb[2] = cur_color.blue(cur_color_int);
 
