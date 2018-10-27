@@ -16,7 +16,7 @@ import com.vuforia.Vuforia;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.internal.vuforia.VuforiaLocalizerImpl;
 
-        // This function finds color using a set of code. 
+        // This function finds color using a set of code.
 public class ColorFinder {
 
     private VuforiaLocalizer vuforia;
