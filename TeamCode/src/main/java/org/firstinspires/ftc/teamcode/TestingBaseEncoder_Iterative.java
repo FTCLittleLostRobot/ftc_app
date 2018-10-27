@@ -45,6 +45,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 @Autonomous(name="TestingBase: Encoder Iterative Test", group="TestingBase")
+@Disabled
 public class TestingBaseEncoder_Iterative extends OpMode {
 
     /* Declare OpMode members. */

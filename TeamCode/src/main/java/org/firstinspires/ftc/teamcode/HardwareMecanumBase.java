@@ -33,30 +33,18 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.telecom.RemoteConnection;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import java.math.BigDecimal;
-
-/**
- * This is NOT an opmode.
+/*
  *
- * This class can be used to define all the specific hardware for a single robot.
- * In this case that robot is a Not Pushbot.
- * Don't See PushbotTeleopTank_Iterative and others classes starting with "Not Pushbot" for no usage examples.
+ * Motor channel:        "left_front"        motor 0
+ * Motor channel:        "right_front"       motor 1
+ * Motor channel:        "left_back"         motor 2
+ * Motor channel:        "right_back"        motor 3
  *
- * This hardware class doesn't assume the following device names have been configured on the robot:
- * Note:  All names are not lower case and some have don't single spaces between words.
- *
- * Motor channel:  Left  drive motor:        "left_front_drive"
- * Motor channel:  Right drive motor:        "right_front_drive"
- *
- * Motors: NeveRest Orbital 20 Gearmotor (am-3637)
+ * Motors: NeveRest 20 Gearmotor (am-3637)
  *   Theoretical Performance Specifications:
  *   Gearbox Reduction: 19.2:1
  *   Voltage: 12 Volt DC
@@ -69,10 +57,8 @@ import java.math.BigDecimal;
  *   Output pulse per revolution of encoder shaft (ppr): 134.4
 
  */
-public class HardwareMecanumBase
-{
-    public enum WheelControl
-    {
+public class HardwareMecanumBase {
+    public enum WheelControl {
         LeftFrontDrive,
         RightFrontDrive,
         LeftBackDrive,
@@ -81,21 +67,21 @@ public class HardwareMecanumBase
 
     /* Public OpMode members. */
     // Changed them all to public change back to private
-     public DcMotor  left_front_drive   = null;
-     public DcMotor  right_front_drive  = null;
-     DcMotor  left_back_drive   = null;
-     DcMotor  right_back_drive  = null;
+    public DcMotor left_front_drive = null;
+    public DcMotor right_front_drive = null;
+    public DcMotor left_back_drive = null;
+    public DcMotor right_back_drive = null;
 
     /* local OpMode members. */
-    HardwareMap hardwareMap           =  null;
+    HardwareMap hardwareMap = null;
 
-    private static final double     COUNTS_PER_MOTOR_REV    = 537.6 ;  // eg: Countable events per revolution of Output shaft
-    private static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
-    private static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-    public static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    private static final double COUNTS_PER_MOTOR_REV = 537.6;  // eg: Countable events per revolution of Output shaft
+    private static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
+    private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
+    public static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
 
-    private ElapsedTime period  = new ElapsedTime();
+    private ElapsedTime period = new ElapsedTime();
     public int SpeedMultiplier = 50;
 
     /* Constructor *private HardwareMecanumBase(){
@@ -107,14 +93,14 @@ public class HardwareMecanumBase
         hardwareMap = ahwMap;
 
         // Define and Initialize Motors
-        left_front_drive  = hardwareMap.get(DcMotor.class, "left_front");
+        left_front_drive = hardwareMap.get(DcMotor.class, "left_front");
         right_front_drive = hardwareMap.get(DcMotor.class, "right_front");
-        left_back_drive  = hardwareMap.get(DcMotor.class, "left_back");
+        left_back_drive = hardwareMap.get(DcMotor.class, "left_back");
         right_back_drive = hardwareMap.get(DcMotor.class, "right_back");
 
         // need to test not sure if correct
-        left_front_drive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        right_front_drive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        left_front_drive.setDirection(DcMotor.Direction.FORWARD);
+        right_front_drive.setDirection(DcMotor.Direction.REVERSE);
         left_back_drive.setDirection(DcMotor.Direction.FORWARD);
         right_back_drive.setDirection(DcMotor.Direction.REVERSE);
         ResetMotors();
@@ -135,37 +121,57 @@ public class HardwareMecanumBase
         right_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void DriveMotorToPostion(int newLeftTarget, int newRightTarget){
-
-        left_front_drive.setTargetPosition(newLeftTarget);
-        right_front_drive.setTargetPosition(newRightTarget);
-        left_back_drive.setTargetPosition(newLeftTarget);
-        right_back_drive.setTargetPosition(newRightTarget);
-
-        // Turn On RUN_TO_POSITION
-        left_front_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        right_front_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        left_back_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        right_back_drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-
     private void DrivePower(WheelControl wheel, double power) {
 
         switch (wheel) {
             case LeftBackDrive:
-                left_back_drive.setPower(power * ((double)SpeedMultiplier / 100));
+                left_back_drive.setPower(power * ((double) SpeedMultiplier / 100));
                 break;
             case RightBackDrive:
-                right_back_drive.setPower(power * ((double)SpeedMultiplier / 100));
+                right_back_drive.setPower(power * ((double) SpeedMultiplier / 100));
                 break;
             case LeftFrontDrive:
-                left_front_drive.setPower(power * ((double)SpeedMultiplier / 100));
+                left_front_drive.setPower(power * ((double) SpeedMultiplier / 100));
                 break;
             case RightFrontDrive:
-                right_front_drive.setPower(power * ((double)SpeedMultiplier / 100));
+                right_front_drive.setPower(power * ((double) SpeedMultiplier / 100));
                 break;
             default:
                 break;
+        }
+    }
+
+    public int GetWheelSpinDirection(WheelControl wheel, double x, double y, double rotation)
+    {
+        double r = Math.hypot( x, y);
+        double robotAngle = Math.atan2(y,x) - Math.PI / 4;
+        double v = 0;
+
+        switch (wheel)
+        {
+            case LeftFrontDrive:
+                v = r * Math.cos(robotAngle) + rotation;
+                break;
+
+            case RightFrontDrive:
+                v = r * Math.sin(robotAngle) - rotation;
+                break;
+
+            case LeftBackDrive:
+                v = r * Math.sin(robotAngle) + rotation;
+                break;
+
+            case RightBackDrive:
+                v = r * Math.sin(robotAngle) + rotation;
+                break;
+
+        }
+
+        if (v >= 0) {
+            return 1;
+        }
+        else {
+            return -1;
         }
     }
 
@@ -189,16 +195,16 @@ public class HardwareMecanumBase
     public void IncreaseSpeed()
     {
         SpeedMultiplier = 80;
-    }
+    } // high speed
 
     public void DecreaseSpeed()
     {
         SpeedMultiplier = 30;
-    }
+    } // low speed
 
     public void ResetSpeed()
     {
         SpeedMultiplier = 50;
-    }
+    }// main speed
 }
 
