@@ -20,7 +20,7 @@ import org.firstinspires.ftc.robotcore.internal.vuforia.VuforiaLocalizerImpl;
 public class ColorFinder {
 
     private VuforiaLocalizer vuforia;
-    enum ColorTarget{
+    public enum ColorTarget{
         Yellow, Red, Blue, White, Green
     }
     HardwareMap hwMap;
