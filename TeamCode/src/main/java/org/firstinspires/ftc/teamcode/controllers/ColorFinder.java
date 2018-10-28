@@ -49,7 +49,6 @@ public class ColorFinder {
         vuforia = new VuforiaLocalizerImpl(parameters);
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
         vuforia.setFrameQueueCapacity(1);
-
     }
 
     /*
@@ -90,16 +89,18 @@ public class ColorFinder {
         int columnFound = -1;
         int columnMaxValue = 0;
 
-        ByteBuffer pixelBuffer = ByteBuffer.allocate(bm_img.getHeight() * bm_img.getRowBytes());
-        bm_img.copyPixelsToBuffer(pixelBuffer);
+        //ByteBuffer pixelBuffer = ByteBuffer.allocate(bm_img.getHeight() * bm_img.getRowBytes());
+        //bm_img.copyPixelsToBuffer(pixelBuffer);
 
         for (int column = 0; column < 5; column++) {
             int columnCounter = 0;
 
             for (int i = 100; i < height; i += 3) {
-                for (int j = column * columnWidth; j < (column + 1) * columnWidth; j++) {
+                for (int j = column * columnWidth; j < (column + 1) * columnWidth; j += 3) {
+                    cur_color_int = bm_img.getPixel(j, i);
 
-                    cur_color_int = pixelBuffer.get(j + (i * width))  ;
+//                    cur_color_int = pixelBuffer.get(j + (i * width))  ;
+                    rgb[0] = cur_color.red(cur_color_int);
                     rgb[1] = cur_color.green(cur_color_int);
                     rgb[2] = cur_color.blue(cur_color_int);
 
@@ -107,30 +108,34 @@ public class ColorFinder {
 
                     hueMax = Math.max((int) hsv[0], hueMax);
 
-                    if (colorTarget == ColorTarget.Yellow) {
-                        if ((hsv[0] > 30) && (hsv[0] < 50)) {
-                            columnCounter++;
-                        }
-                    } else if (colorTarget == ColorTarget.White) {
-                        if ((hsv[0] > 0) && (hsv[0] < 0) && (hsv[1] >= 0) && (hsv[1] < .25)) {
-                            columnCounter++;
-                        }
-                    } else if (colorTarget == ColorTarget.Red) {
-                        if ((hsv[0] > 0) && (hsv[0] < 0) && (hsv[1] > .75) && (hsv[1] <= 1)) {
-                            columnCounter++;
-                        }
-                    } else if (colorTarget == ColorTarget.Blue) {
-                        if ((hsv[0] > 220) && (hsv[0] < 250)) {
-                            columnCounter++;
-                        }
-                    } else if (colorTarget == ColorTarget.Green) {
-                        if ((hsv[0] > 100) && (hsv[0] < 120) && (hsv[1] > .75) && (hsv[1] <= 1)) {
-                            columnCounter++;
+                    // Sites used for determining these values:
+                    // http://colorizer.org/
+                    if (hsv[2] > .15) {
+                        if (colorTarget == ColorTarget.Yellow) {
+                            if ((hsv[0] > 30) && (hsv[0] < 50) && (hsv[1] >= .75) && (hsv[1] <= 1)) {
+                                columnCounter++;
+                            }
+                        } else if (colorTarget == ColorTarget.White) {
+                            if ((hsv[0] > 0) && (hsv[0] < 0) && (hsv[1] >= 0) && (hsv[1] < .25)) {
+                                columnCounter++;
+                            }
+                        } else if (colorTarget == ColorTarget.Red) {
+                            if ((hsv[0] > 0) && (hsv[0] < 0) && (hsv[1] > .75) && (hsv[1] <= 1)) {
+                                columnCounter++;
+                            }
+                        } else if (colorTarget == ColorTarget.Blue) {
+                            if ((hsv[0] > 220) && (hsv[0] < 250)) {
+                                columnCounter++;
+                            }
+                        } else if (colorTarget == ColorTarget.Green) {
+                            if ((hsv[0] > 100) && (hsv[0] < 120) && (hsv[1] > .75) && (hsv[1] <= 1)) {
+                                columnCounter++;
+                            }
                         }
                     }
                 }
             }
-            if (columnCounter > 10) {
+            if (columnCounter > 25) {
                 if (columnCounter > columnMaxValue) {
                     columnMaxValue = columnCounter;
                     columnFound = column;

@@ -36,10 +36,12 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
     {
         Drop,
         WaitForDrop,
-        StrafingLeft,
-        WaitForStrafeLeft,
+        Unhook,
+        WaitForUnhook,
         StepOut,
         WaitForStepOut,
+        StrafingLeft,
+        WaitForStrafeLeft,
         CheckScreen,
         ConvertImageFromScreen,
         DetectColorFromImage,
@@ -102,30 +104,42 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
                 break;
 
             case WaitForDrop:
-                state = RobotState.StrafingLeft;
+                state = RobotState.Unhook;
                 break;
 
-            case StrafingLeft:
+            case Unhook:
                 this.moveRobot.Start(30, 6,GO_LEFT,0,0 );
+                state = RobotState.WaitForUnhook;
+                break;
+
+            case WaitForUnhook:
+                if (this.moveRobot.IsDone()) {
+                    this.moveRobot.Complete();
+                    state = RobotState.StepOut;
+                }
+                    break;
+
+            case StrafingLeft:
+                this.moveRobot.Start(30, 18,GO_LEFT,0,0 );
                 state = RobotState.WaitForStrafeLeft;
                 break;
 
             case WaitForStrafeLeft:
                 if (this.moveRobot.IsDone()) {
                     this.moveRobot.Complete();
-                    state = RobotState.StepOut;
+                    state = RobotState.CheckScreen;
                 }
                 break;
 
             case StepOut:
-                this.moveRobot.Start(30, 6,0,GO_FORWARD,0 );
+                this.moveRobot.Start(30, 12,0,GO_FORWARD,0 );
                 state = RobotState.WaitForStepOut;
                 break;
 
             case WaitForStepOut:
                 if (this.moveRobot.IsDone()) {
                     this.moveRobot.Complete();
-                    state = RobotState.CheckScreen;
+                    state = RobotState.StrafingLeft;
                 }
                 break;
 
@@ -211,7 +225,7 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
                 else if (foundColumn == -1)
                 {
                     // if not found
-                    this.moveRobot.Start(30, 4,GO_RIGHT,0,0 );
+                    this.moveRobot.Start(30, 3,GO_RIGHT,0,0 );
                     state = RobotState.WaitForScoot;
                 }
                 break;
