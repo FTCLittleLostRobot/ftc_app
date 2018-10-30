@@ -42,6 +42,7 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
         WaitForStepOut,
         StrafingLeft,
         WaitForStrafeLeft,
+        //Check
         CheckScreen,
         ConvertImageFromScreen,
         DetectColorFromImage,

@@ -71,6 +71,8 @@ public class HardwareMecanumBase {
     public DcMotor right_front_drive = null;
     public DcMotor left_back_drive = null;
     public DcMotor right_back_drive = null;
+    public DcMotor lift = null;
+
 
     /* local OpMode members. */
     HardwareMap hardwareMap = null;
@@ -97,7 +99,7 @@ public class HardwareMecanumBase {
         right_front_drive = hardwareMap.get(DcMotor.class, "right_front");
         left_back_drive = hardwareMap.get(DcMotor.class, "left_back");
         right_back_drive = hardwareMap.get(DcMotor.class, "right_back");
-
+        lift = hardwareMap.get(DcMotor.class, "lift");
         // need to test not sure if correct
         left_front_drive.setDirection(DcMotor.Direction.FORWARD);
         right_front_drive.setDirection(DcMotor.Direction.REVERSE);
@@ -112,6 +114,9 @@ public class HardwareMecanumBase {
         right_front_drive.setPower(0);
         right_back_drive.setPower(0);
         left_back_drive.setPower(0);
+        lift.setPower(0);
+
+
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
