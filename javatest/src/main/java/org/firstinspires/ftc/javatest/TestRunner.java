@@ -4,7 +4,7 @@ public class TestRunner {
     public static void main(String args[]){
 
         // Update this to execute the isolated test you want to run
-        MecanumDriver.Test();
-
+        ColorFinderTest testApp = new ColorFinderTest();
+        testApp.Test();
     }
 }
