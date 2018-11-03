@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.vuforia.Image;
 
 import org.firstinspires.ftc.teamcode.controllers.ColorFinder;
+import org.firstinspires.ftc.teamcode.controllers.Lander;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 
 import static java.lang.Thread.sleep;
@@ -20,8 +21,10 @@ import static java.lang.Thread.sleep;
 public class TestingMecanumAutoSampling_Iterative extends OpMode {
 
     HardwareMecanumBase robot;
+
     MecanumMove moveRobot;
     ColorFinder colorFinder;
+    private Lander lander    = new Lander();
 
     static final double GO_FORWARD = -1;
     static final double GO_BACK = 1;
@@ -42,7 +45,6 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
         WaitForStepOut,
         StrafingLeft,
         WaitForStrafeLeft,
-        //Check
         CheckScreen,
         ConvertImageFromScreen,
         DetectColorFromImage,
@@ -70,7 +72,10 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
 
         robot.init(hardwareMap);
         this.moveRobot.init(robot);
+        this.lander.init(robot, telemetry);
+
         this.colorFinder.init(hardwareMap);
+
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
@@ -100,12 +105,14 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
         switch (state)
         {
             case Drop:
-                // Start motor to drop
+                this.lander.DoLand();
                 state = RobotState.WaitForDrop;
                 break;
 
             case WaitForDrop:
-                state = RobotState.Unhook;
+                if (this.lander.IsDone()) {
+                    state = RobotState.Unhook;
+                }
                 break;
 
             case Unhook:
@@ -133,7 +140,7 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
                 break;
 
             case StepOut:
-                this.moveRobot.Start(30, 12,0,GO_FORWARD,0 );
+                this.moveRobot.Start(30, 18,0,GO_FORWARD,0 );
                 state = RobotState.WaitForStepOut;
                 break;
 

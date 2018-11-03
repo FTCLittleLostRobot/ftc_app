@@ -33,9 +33,11 @@
 
 package org.firstinspires.ftc.teamcode;
 
-        import com.qualcomm.hardware.ams.AMSColorSensor;
-        import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-        import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.hardware.ams.AMSColorSensor;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.teamcode.controllers.Lander;
 
 /**
  * This file provides basic Telop driving for a Pushbot robot.
@@ -61,6 +63,7 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
     private float starting_left_y = 0;
     private float starting_right_x=0;
     private boolean ButtonCheck = false;
+    private Lander lander    = new Lander();
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -77,6 +80,7 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
+        lander.init(robot, telemetry);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
@@ -140,6 +144,19 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
         }
         else{
             ButtonCheck = false;
+        }
+
+
+        if (gamepad2.a){
+            if (lander.IsDone()){
+                lander.DoLand();
+            }
+        }
+
+        if (gamepad2.b) {
+            if (lander.IsDone()) {
+                lander.GoUp();
+            }
         }
 
         // todo make else reset state; a state when when you push both buttons go in a reset loop until 0 state; check for 0, then continue
