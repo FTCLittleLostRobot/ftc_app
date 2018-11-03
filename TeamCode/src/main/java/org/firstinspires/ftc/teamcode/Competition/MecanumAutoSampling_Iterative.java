@@ -2,7 +2,7 @@
    Core Devs: Danielle
 */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Competition;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.vuforia.Image;
 
+import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 import org.firstinspires.ftc.teamcode.controllers.ColorFinder;
 import org.firstinspires.ftc.teamcode.controllers.Lander;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
@@ -18,7 +19,7 @@ import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 import static java.lang.Thread.sleep;
 
 @Autonomous(name="Mecanum: Landing and Sampling", group="Mecanum")
-public class TestingMecanumAutoSampling_Iterative extends OpMode {
+public class MecanumAutoSampling_Iterative extends OpMode {
 
     HardwareMecanumBase robot;
 
@@ -33,7 +34,6 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
     private Image vuforiaImageObject;
     private Bitmap bitmapFromVuforia;
     public int foundColumn = -1;
-    int testingLimitCounter = 0;
 
     enum RobotState
     {
@@ -73,9 +73,7 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
         robot.init(hardwareMap);
         this.moveRobot.init(robot);
         this.lander.init(robot, telemetry);
-
         this.colorFinder.init(hardwareMap);
-
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
@@ -91,7 +89,6 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
     @Override
     public void start() {
         state = RobotState.Drop;
-        testingLimitCounter = 0;
     }
 
     /*
@@ -100,7 +97,6 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
     @Override
     public void loop() {
         telemetry.addData("Current State", state.toString());
-        telemetry.addData("Gold Scenario",testingLimitCounter );
 
         switch (state)
         {
@@ -111,12 +107,13 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
 
             case WaitForDrop:
                 if (this.lander.IsDone()) {
+                    this.lander.Complete();
                     state = RobotState.Unhook;
                 }
                 break;
 
             case Unhook:
-                this.moveRobot.Start(30, 6,GO_LEFT,0,0 );
+                this.moveRobot.Start(30, 4,GO_LEFT,0,0 );
                 state = RobotState.WaitForUnhook;
                 break;
 
@@ -125,10 +122,10 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
                     this.moveRobot.Complete();
                     state = RobotState.StepOut;
                 }
-                    break;
+                break;
 
             case StrafingLeft:
-                this.moveRobot.Start(30, 18,GO_LEFT,0,0 );
+                this.moveRobot.Start(30, 15,GO_LEFT,0,0 );
                 state = RobotState.WaitForStrafeLeft;
                 break;
 
@@ -180,54 +177,29 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
                 break;
 
             case CheckForGold:
-                // Check returns 0
-                /**
-                if (testingLimitCounter == 0) {
-                    foundColumn = 0;
-                    testingLimitCounter = 1;
-                }
-                else if (testingLimitCounter == 1)
+                //In this the robot is checking the phone for what column the yellow square is in
+                if (foundColumn == 0 )
                 {
-                    foundColumn = 4;
-                    testingLimitCounter = 2 ;
+                    this.moveRobot.Start(50, 2,GO_LEFT,0,0 );
+                    state = RobotState.WaitForScoot;
                 }
-                else if (testingLimitCounter == 2) {
-                    foundColumn = -1;
-                    testingLimitCounter = 3;
-                }
-
-                else if (testingLimitCounter == 3) {
-                    foundColumn = 2;
-                    testingLimitCounter = 4;
-                }
-
-
-                else if (testingLimitCounter == 4) {
-                    foundColumn = 3;
-                    state = RobotState.Done;
-                    break;
-                }
-                else {
-                    foundColumn = -1;
-                    testingLimitCounter++;
-                    telemetry.addData("Say", "You Shouldn't be here!!!!!");
-                    break;
-                }
-                **/
-
-                if (foundColumn == 0 || foundColumn == 1)
-                {//
+                else if (foundColumn == 1 )
+                {
                     this.moveRobot.Start(30, 1,GO_LEFT,0,0 );
                     state = RobotState.WaitForScoot;
                 }
-                else if (foundColumn == 3 || foundColumn == 4)
+                else if (foundColumn == 3 )
                 {
                     this.moveRobot.Start(30, 1,GO_RIGHT,0,0 );
                     state = RobotState.WaitForScoot;
                 }
+                else if (foundColumn == 4 ) {
+                    this.moveRobot.Start(50, 2, GO_RIGHT, 0, 0);
+                    state = RobotState.WaitForScoot;
+                }
                 else if (foundColumn == 2)
                 {
-                    this.moveRobot.Start(30, 24,0,GO_FORWARD,0 );
+                    this.moveRobot.Start(50, 24,0,GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == -1)
@@ -255,8 +227,6 @@ public class TestingMecanumAutoSampling_Iterative extends OpMode {
             case Done:
                 state = RobotState.Done;
                 break;
-
-
         }
     }
 

@@ -2,68 +2,36 @@
    Core Devs: Danielle
 */
 
-/* Copyright (c) 2017 FIRST. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted (subject to the limitations in the disclaimer below) provided that
- * the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of FIRST nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Competition;
 
-import com.qualcomm.hardware.ams.AMSColorSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 import org.firstinspires.ftc.teamcode.controllers.Lander;
 
 /**
- * This file provides basic Telop driving for a Pushbot robot.
+ * This file provides basic Telop driving for the testing Mencanum robot.
  * The code is structured as an Iterative OpMode
  *
- * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
- * All device access is managed through the HardwarePushbot class.
- *
- * This particular OpMode executes a basic Tank Drive Teleop for a PushBot
- * It raises and lowers the claw using the Gampad Y and A buttons respectively.
- * It also opens and closes the claws slowly using the left and right Bumper buttons.
+ * This OpMode uses the common Mencanum hardware class to define the devices on the robot.
+ * All device access is managed through the HardwareMecanumBase class.
  *
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
 @TeleOp(name="TestingMecanum: New Test", group="TestingMecanum")
-public class TestingMecanumTeleopTest_Iterative extends OpMode{
+public class MecanumTeleop_Iterative extends OpMode{
 
     /* Declare OpMode members. */
-    private HardwareMecanumBase robot       = new HardwareMecanumBase(); // use the class created to define a Pushbot's hardware
-    private float starting_left_x = 0;
-    private float starting_left_y = 0;
-    private float starting_right_x=0;
-    private boolean ButtonCheck = false;
-    private Lander lander    = new Lander();
+    private HardwareMecanumBase robot       = new HardwareMecanumBase(); // use the class created to define a Mencanums 's hardware
+    private float starting_left_x = 0;  //this makes the robot strafe right and left
+    private float starting_left_y = 0;  //this makes the robot go forwards and backwards
+    private float starting_right_x = 0; // this makes the robot rotate
+    private boolean ButtonCheck = false;    //left and right bumper; faster, slower
+    private Lander lander    = new Lander();    //used for lifting and droping
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -83,7 +51,7 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
         lander.init(robot, telemetry);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "Hello Driver");    //
+        telemetry.addData("Say", "Hello Driver");    //this shows the robot is ready
     }
 
     /*
@@ -109,7 +77,7 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
         double left_stick_x;
         double left_stick_y;
         double right_stick_x;
-        boolean left_bumper;
+        boolean left_bumper;    //boolean means it can only be true or false
         boolean right_bumper;
 
 
@@ -121,6 +89,7 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
         right_bumper= gamepad1.right_bumper;
 
 
+        // if you hit the right bumper it will go faster if you hit the left bumper it will go slower, both will set it to regular
         if (left_bumper && right_bumper) {
             if (ButtonCheck == false){
                 robot.ResetSpeed();
@@ -159,9 +128,6 @@ public class TestingMecanumTeleopTest_Iterative extends OpMode{
             }
         }
 
-        // todo make else reset state; a state when when you push both buttons go in a reset loop until 0 state; check for 0, then continue
-        //todo track minmax see if greater then threshhold, starting devation
-        //todo dont let it go moe then 3 times if -1
         robot.MoveMecanum(left_stick_x, left_stick_y, right_stick_x);
 
         // Send telemetry message to signify robot running;

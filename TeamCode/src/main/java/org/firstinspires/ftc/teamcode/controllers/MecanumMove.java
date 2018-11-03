@@ -19,7 +19,7 @@ public class MecanumMove {
 
         // Determine new target position, and pass to motor controller
         int newLeftFrontTarget = this.hwBase.left_front_drive.getCurrentPosition() +
-                (targetSpin * (int) (inches * HardwareMecanumBase.COUNTS_PER_INCH));
+                (targetSpin * (int) (inches * HardwareMecanumBase.WHEEL_COUNTS_PER_INCH));
         targetEncoderValue = newLeftFrontTarget;
 
         this.hwBase.SpeedMultiplier = speed;

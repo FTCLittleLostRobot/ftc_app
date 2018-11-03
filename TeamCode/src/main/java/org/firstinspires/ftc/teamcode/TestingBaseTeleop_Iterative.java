@@ -56,7 +56,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name="TestingBase: New Test", group="TestingBase")
 @Disabled
 
-public class TestingBaseTeleopNewTest_Iterative extends OpMode{
+public class TestingBaseTeleop_Iterative extends OpMode{
 
     /* Declare OpMode members. */
     private HardwareTestingBase robot       = new HardwareTestingBase(); // use the class created to define a Pushbot's hardware
