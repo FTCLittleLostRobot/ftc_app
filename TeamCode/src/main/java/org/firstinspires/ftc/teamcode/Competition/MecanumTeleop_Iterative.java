@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.controllers.Lander;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="TestingMecanum: New Test", group="TestingMecanum")
+@TeleOp(name="TestingMecanum: Teleop", group="TestingMecanum")
 public class MecanumTeleop_Iterative extends OpMode{
 
     /* Declare OpMode members. */
@@ -118,13 +118,13 @@ public class MecanumTeleop_Iterative extends OpMode{
 
         if (gamepad2.a){
             if (lander.IsDone()){
-                lander.DoLand();
+                lander.DoLand(1);
             }
         }
 
         if (gamepad2.b) {
             if (lander.IsDone()) {
-                lander.GoUp();
+                lander.GoUp(1);
             }
         }
 
