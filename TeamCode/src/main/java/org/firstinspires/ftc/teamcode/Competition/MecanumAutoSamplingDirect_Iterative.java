@@ -5,7 +5,6 @@
 package org.firstinspires.ftc.teamcode.Competition;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -16,10 +15,8 @@ import org.firstinspires.ftc.teamcode.controllers.ColorFinder;
 import org.firstinspires.ftc.teamcode.controllers.Lander;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 
-import static java.lang.Thread.sleep;
-
-@Autonomous(name="Mecanum: Landing and Sampling", group="Mecanum")
-public class MecanumAutoSampling_Iterative extends OpMode {
+@Autonomous(name="Mecanum: SamplingDirect", group="Mecanum")
+public class MecanumAutoSamplingDirect_Iterative extends OpMode {
 
     HardwareMecanumBase robot;
 
@@ -124,18 +121,6 @@ public class MecanumAutoSampling_Iterative extends OpMode {
                 }
                 break;
 
-            case StrafingLeft:
-                this.moveRobot.Start(30, 15,GO_LEFT,0,0 );
-                state = RobotState.WaitForStrafeLeft;
-                break;
-
-            case WaitForStrafeLeft:
-                if (this.moveRobot.IsDone()) {
-                    this.moveRobot.Complete();
-                    state = RobotState.CheckScreen;
-                }
-                break;
-
             case StepOut:
                 this.moveRobot.Start(30, 18,0,GO_FORWARD,0 );
                 state = RobotState.WaitForStepOut;
@@ -145,6 +130,18 @@ public class MecanumAutoSampling_Iterative extends OpMode {
                 if (this.moveRobot.IsDone()) {
                     this.moveRobot.Complete();
                     state = RobotState.StrafingLeft;
+                }
+                break;
+
+            case StrafingLeft:
+                this.moveRobot.Start(30, 15,GO_LEFT,0,0 );
+                state = RobotState.WaitForStrafeLeft;
+                break;
+
+            case WaitForStrafeLeft:
+                if (this.moveRobot.IsDone()) {
+                    this.moveRobot.Complete();
+                    state = RobotState.CheckScreen;
                 }
                 break;
 
@@ -180,32 +177,32 @@ public class MecanumAutoSampling_Iterative extends OpMode {
                 //In this the robot is checking the phone for what column the yellow square is in
                 if (foundColumn == 0 )
                 {
-                    this.moveRobot.Start(50, 2,GO_LEFT,0,0 );
-                    state = RobotState.WaitForScoot;
+                    this.moveRobot.Start(50, 1.5,GO_LEFT,0,0 );
+                    state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 1 )
                 {
-                    this.moveRobot.Start(30, 1,GO_LEFT,0,0 );
-                    state = RobotState.WaitForScoot;
+                    this.moveRobot.Start(45, 0.75,GO_LEFT,0,0 );
+                    state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 3 )
                 {
-                    this.moveRobot.Start(30, 1,GO_RIGHT,0,0 );
-                    state = RobotState.WaitForScoot;
+                    this.moveRobot.Start(45, 0.75,GO_RIGHT,0,0 );
+                    state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 4 ) {
-                    this.moveRobot.Start(50, 2, GO_RIGHT, 0, 0);
-                    state = RobotState.WaitForScoot;
+                    this.moveRobot.Start(50, 1.5, GO_RIGHT, 0, 0);
+                    state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 2)
                 {
-                    this.moveRobot.Start(50, 24,0,GO_FORWARD,0 );
+                    this.moveRobot.Start(50, 20,0,GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == -1)
                 {
                     // if not found
-                    this.moveRobot.Start(30, 3,GO_RIGHT,0,0 );
+                    this.moveRobot.Start(45, 2.5,GO_RIGHT,0,0 );
                     state = RobotState.WaitForScoot;
                 }
                 break;
