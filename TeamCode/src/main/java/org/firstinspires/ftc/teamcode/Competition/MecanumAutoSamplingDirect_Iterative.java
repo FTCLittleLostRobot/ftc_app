@@ -98,7 +98,7 @@ public class MecanumAutoSamplingDirect_Iterative extends OpMode {
         switch (state)
         {
             case Drop:
-                this.lander.DoLand();
+                this.lander.DoLand(6);
                 state = RobotState.WaitForDrop;
                 break;
 
@@ -121,18 +121,6 @@ public class MecanumAutoSamplingDirect_Iterative extends OpMode {
                 }
                 break;
 
-            case StepOut:
-                this.moveRobot.Start(30, 18,0,GO_FORWARD,0 );
-                state = RobotState.WaitForStepOut;
-                break;
-
-            case WaitForStepOut:
-                if (this.moveRobot.IsDone()) {
-                    this.moveRobot.Complete();
-                    state = RobotState.StrafingLeft;
-                }
-                break;
-
             case StrafingLeft:
                 this.moveRobot.Start(30, 15,GO_LEFT,0,0 );
                 state = RobotState.WaitForStrafeLeft;
@@ -142,6 +130,18 @@ public class MecanumAutoSamplingDirect_Iterative extends OpMode {
                 if (this.moveRobot.IsDone()) {
                     this.moveRobot.Complete();
                     state = RobotState.CheckScreen;
+                }
+                break;
+
+            case StepOut:
+                this.moveRobot.Start(30, 18,0,GO_FORWARD,0 );
+                state = RobotState.WaitForStepOut;
+                break;
+
+            case WaitForStepOut:
+                if (this.moveRobot.IsDone()) {
+                    this.moveRobot.Complete();
+                    state = RobotState.StrafingLeft;
                 }
                 break;
 
@@ -182,27 +182,27 @@ public class MecanumAutoSamplingDirect_Iterative extends OpMode {
                 }
                 else if (foundColumn == 1 )
                 {
-                    this.moveRobot.Start(45, 0.75,GO_LEFT,0,0 );
+                    this.moveRobot.Start(30, 0.75,GO_LEFT,0,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 3 )
                 {
-                    this.moveRobot.Start(45, 0.75,GO_RIGHT,0,0 );
+                    this.moveRobot.Start(30, 0.75,GO_RIGHT,0,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 4 ) {
-                    this.moveRobot.Start(50, 1.5, GO_RIGHT, 0, 0);
+                    this.moveRobot.Start(50, 2, GO_RIGHT, 0, 0);
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 2)
-                { 
-                    this.moveRobot.Start(50, 20,0,GO_FORWARD,0 );
+                {
+                    this.moveRobot.Start(50, 24,0,GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == -1)
                 {
                     // if not found
-                    this.moveRobot.Start(45, 2.5,GO_RIGHT,0,0 );
+                    this.moveRobot.Start(30, 3,GO_RIGHT,0,0 );
                     state = RobotState.WaitForScoot;
                 }
                 break;
