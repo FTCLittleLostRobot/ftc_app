@@ -15,8 +15,8 @@ import org.firstinspires.ftc.teamcode.controllers.ColorFinder;
 import org.firstinspires.ftc.teamcode.controllers.Lander;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 
-@Autonomous(name="Mecanum:Sampling", group="Mecanum")
-public class MecanumAutoSampling_Iterative extends OpMode {
+@Autonomous(name="Mecanum: Sampling and Dropping", group="Mecanum")
+public class MecanumAutoSamplingAndDroping_Iterative extends OpMode {
 
     HardwareMecanumBase robot;
 
@@ -87,9 +87,7 @@ public class MecanumAutoSampling_Iterative extends OpMode {
 
     @Override
     public void start() {
-        state = RobotState.StrafingLeft;
-        state = RobotState.Unhook;
-
+        state = RobotState.Drop;
     }
 
     /*
@@ -101,16 +99,15 @@ public class MecanumAutoSampling_Iterative extends OpMode {
 
         switch (state)
         {
-  /*
             case Drop:
-                this.lander.DoLand(5);
+                this.lander.DoLand(6);
                 state = RobotState.WaitForDrop;
                 break;
 
             case WaitForDrop:
                 if (this.lander.IsDone()) {
                     this.lander.Complete();
-                    state = RobotState.Up;
+                    state = RobotState.Done;
                 }
                 break;
 
@@ -125,7 +122,7 @@ public class MecanumAutoSampling_Iterative extends OpMode {
                     state = RobotState.Unhook;
                 }
 
-*/
+
             case Unhook:
                 this.moveRobot.Start(30, 4,GO_LEFT,0,0 );
                 state = RobotState.WaitForUnhook;
@@ -134,11 +131,11 @@ public class MecanumAutoSampling_Iterative extends OpMode {
             case WaitForUnhook:
                 if (this.moveRobot.IsDone()) {
                     this.moveRobot.Complete();
-                    state = RobotState.StrafingLeft;
+                    state = RobotState.Done;
                 }
                 break;
 
-           case StrafingLeft:
+            case StrafingLeft:
                 this.moveRobot.Start(30, 15,GO_LEFT,0,0 );
                 state = RobotState.WaitForStrafeLeft;
                 break;

@@ -20,22 +20,23 @@ public class Lander {
         this.telemetry = telemetry;
         hwBase.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+
     }
 
-    public void DoLand() {
+    public void DoLand(int inches ) {
         hwBase.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        int newLiftTarget = hwBase.lift.getCurrentPosition() + (int)(5 * HardwareMecanumBase.LIFT_COUNTS_PER_INCH);
+        int newLiftTarget = hwBase.lift.getCurrentPosition() - (int)(inches * HardwareMecanumBase.LIFT_COUNTS_PER_INCH);
         hwBase.lift.setTargetPosition(newLiftTarget);
-        hwBase.lift.setPower(0.85);
+        hwBase.lift.setPower(1);
         telemetry.addData("State A", "Going Down");
         telemetry.update();
     }
 
-    public void GoUp() {
+    public void GoUp(int inches) {
         hwBase.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        int newLiftTarget = hwBase.lift.getCurrentPosition() - (int)(5 * HardwareMecanumBase.LIFT_COUNTS_PER_INCH);
+        int newLiftTarget = hwBase.lift.getCurrentPosition() + (int)(inches * HardwareMecanumBase.LIFT_COUNTS_PER_INCH);
         hwBase.lift.setTargetPosition(newLiftTarget);
-        hwBase.lift.setPower(-0.5);
+        hwBase.lift.setPower(-0.9);
         telemetry.addData("State B", "Going Up");
         telemetry.update();
     }
