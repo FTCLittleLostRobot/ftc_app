@@ -122,7 +122,7 @@ public class MecanumTeleop_Iterative extends OpMode{
             }
         }
 
-        if (gamepad2.b) {
+        if (gamepad2.y) {
             if (lander.IsDone()) {
                 lander.GoUp(1);
             }
