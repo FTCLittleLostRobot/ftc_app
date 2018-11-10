@@ -195,7 +195,7 @@ public class MecanumAutoSamplingDirect_Iterative extends OpMode {
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 2)
-                {
+                { 
                     this.moveRobot.Start(50, 20,0,GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
