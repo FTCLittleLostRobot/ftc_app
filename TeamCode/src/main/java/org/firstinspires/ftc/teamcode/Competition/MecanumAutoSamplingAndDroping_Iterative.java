@@ -12,7 +12,7 @@ import com.vuforia.Image;
 
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 import org.firstinspires.ftc.teamcode.controllers.ColorFinder;
-import org.firstinspires.ftc.teamcode.controllers.Lander;
+import org.firstinspires.ftc.teamcode.controllers.LanderEncoder;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 
 @Autonomous(name="Mecanum: Sampling and Dropping", group="Mecanum")
@@ -22,7 +22,7 @@ public class MecanumAutoSamplingAndDroping_Iterative extends OpMode {
 
     MecanumMove moveRobot;
     ColorFinder colorFinder;
-    private Lander lander    = new Lander();
+    private LanderEncoder lander    = new LanderEncoder();
 
     static final double GO_FORWARD = -1;
     static final double GO_BACK = 1;

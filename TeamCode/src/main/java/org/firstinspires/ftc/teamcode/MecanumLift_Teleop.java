@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name="TestingMecanum: lift", group="TestingMecanum")
+@Disabled
 public class MecanumLift_Teleop extends OpMode{
 
     HardwareMecanumBase robot       = new HardwareMecanumBase(); // use the class created to define a Mencanum's hardware

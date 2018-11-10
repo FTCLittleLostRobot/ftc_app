@@ -131,7 +131,7 @@ public class HardwareMecanumBase {
         right_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    private void DrivePower(WheelControl wheel, double power) {
+    public void DrivePower(WheelControl wheel, double power) {
 
         switch (wheel) {
             case LeftBackDrive:
