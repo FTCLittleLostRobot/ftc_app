@@ -177,26 +177,26 @@ public class MecanumAutoSamplingDirect_Iterative extends OpMode {
                 //In this the robot is checking the phone for what column the yellow square is in
                 if (foundColumn == 0 )
                 {
-                    this.moveRobot.Start(50, 1.5,GO_LEFT,0,0 );
+                    this.moveRobot.Start(50, 1.5,GO_LEFT, GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 1 )
                 {
-                    this.moveRobot.Start(30, 0.75,GO_LEFT,0,0 );
+                    this.moveRobot.Start(30, 0.75,GO_LEFT, GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 3 )
                 {
-                    this.moveRobot.Start(30, 0.75,GO_RIGHT,0,0 );
+                    this.moveRobot.Start(30, 0.75,GO_RIGHT, GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 4 ) {
-                    this.moveRobot.Start(50, 2, GO_RIGHT, 0, 0);
+                    this.moveRobot.Start(50, 2, GO_RIGHT, GO_FORWARD, 0);
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 2)
                 {
-                    this.moveRobot.Start(50, 24,0,GO_FORWARD,0 );
+                    this.moveRobot.Start(50, 24,0, GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == -1)
