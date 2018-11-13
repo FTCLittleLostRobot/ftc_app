@@ -102,33 +102,42 @@ public class HardwareMecanumBase {
 
         // Define and Initialize Motors
         left_front_drive = hardwareMap.get(DcMotor.class, "left_front");
+        left_front_drive.setDirection(DcMotor.Direction.FORWARD);
+
         right_front_drive = hardwareMap.get(DcMotor.class, "right_front");
+        right_front_drive.setDirection(DcMotor.Direction.REVERSE);
+
         left_back_drive = hardwareMap.get(DcMotor.class, "left_back");
+        left_back_drive.setDirection(DcMotor.Direction.FORWARD);
+
         right_back_drive = hardwareMap.get(DcMotor.class, "right_back");
-        lift = hardwareMap.get(DcMotor.class, "lift");
+        right_back_drive.setDirection(DcMotor.Direction.REVERSE);
 
         // need to test not sure if correct
-        left_front_drive.setDirection(DcMotor.Direction.FORWARD);
-        right_front_drive.setDirection(DcMotor.Direction.REVERSE);
-        left_back_drive.setDirection(DcMotor.Direction.FORWARD);
-        right_back_drive.setDirection(DcMotor.Direction.REVERSE);
-        lift.setDirection(DcMotor.Direction.FORWARD);
         ResetMotors();
+
+        //lift = hardwareMap.tryGet(DcMotor.class, "lift");
+        //if (lift != null) {
+         //   lift.setDirection(DcMotor.Direction.FORWARD);
+        //}
     }
 
     public void ResetMotors() {
         // Set all motors to zero power
-        left_front_drive.setPower(0);
-        right_front_drive.setPower(0);
-        right_back_drive.setPower(0);
-        left_back_drive.setPower(0);
-
         // Set all motors to run without encoders.
-        // May want to use RUN_USING_ENCODERS if encoders are installed.
+
+
+        left_front_drive.setPower(0);
         left_front_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        right_front_drive.setPower(0);
         right_front_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        left_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        right_back_drive.setPower(0);
         right_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        left_back_drive.setPower(0);
+        left_back_drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     private void DrivePower(WheelControl wheel, double power) {

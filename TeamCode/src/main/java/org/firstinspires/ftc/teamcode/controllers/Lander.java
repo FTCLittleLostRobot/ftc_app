@@ -18,9 +18,9 @@ public class Lander {
 
         this.hwBase = hwBase;
         this.telemetry = telemetry;
-        hwBase.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
+        //if null = false(hwBase.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //if null (
+                telemetry.addLine();
     }
 
     public void DoLand(int inches ) {
