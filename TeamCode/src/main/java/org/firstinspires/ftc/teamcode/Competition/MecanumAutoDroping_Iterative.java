@@ -5,7 +5,6 @@
 package org.firstinspires.ftc.teamcode.Competition;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -13,7 +12,7 @@ import com.vuforia.Image;
 
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 import org.firstinspires.ftc.teamcode.controllers.ColorFinder;
-import org.firstinspires.ftc.teamcode.controllers.Lander;
+import org.firstinspires.ftc.teamcode.controllers.LanderEncoder;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 
 import static java.lang.Thread.sleep;
@@ -25,7 +24,7 @@ public class MecanumAutoDroping_Iterative extends OpMode {
 
     MecanumMove moveRobot;
     ColorFinder colorFinder;
-    private Lander lander    = new Lander();
+    private LanderEncoder lander    = new LanderEncoder();
 
     static final double GO_FORWARD = -1;
     static final double GO_BACK = 1;

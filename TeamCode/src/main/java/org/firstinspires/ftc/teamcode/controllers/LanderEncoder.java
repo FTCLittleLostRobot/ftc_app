@@ -1,3 +1,7 @@
+/* Little Lost Robots
+   Core Devs: Danielle
+*/
+
 //Core Devs: Danielle
 
 //todo need to go up 22 up (bottom of handal) 23.5 (top of handal)
@@ -8,7 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 
-public class Lander {
+public class LanderEncoder {
 
 
     HardwareMecanumBase hwBase;
@@ -28,7 +32,7 @@ public class Lander {
         int newLiftTarget = hwBase.lift.getCurrentPosition() - (int)(inches * HardwareMecanumBase.LIFT_COUNTS_PER_INCH);
         hwBase.lift.setTargetPosition(newLiftTarget);
         hwBase.lift.setPower(1);
-        telemetry.addData("State A", "Going Down");
+        telemetry.addData("State A", "Robot is Going Down");
         telemetry.update();
     }
 
@@ -37,7 +41,7 @@ public class Lander {
         int newLiftTarget = hwBase.lift.getCurrentPosition() + (int)(inches * HardwareMecanumBase.LIFT_COUNTS_PER_INCH);
         hwBase.lift.setTargetPosition(newLiftTarget);
         hwBase.lift.setPower(-0.9);
-        telemetry.addData("State B", "Going Up");
+        telemetry.addData("State B", "Robot is Going Up");
         telemetry.update();
     }
 

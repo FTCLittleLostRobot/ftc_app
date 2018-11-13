@@ -7,9 +7,8 @@ package org.firstinspires.ftc.teamcode.Competition;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
+import org.firstinspires.ftc.teamcode.controllers.LanderNoEncoder;
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
-import org.firstinspires.ftc.teamcode.controllers.Lander;
 
 /**
  * This file provides basic Telop driving for the testing Mencanum robot.
@@ -31,7 +30,7 @@ public class MecanumTeleop_Iterative extends OpMode{
     private float starting_left_y = 0;  //this makes the robot go forwards and backwards
     private float starting_right_x = 0; // this makes the robot rotate
     private boolean ButtonCheck = false;    //left and right bumper; faster, slower
-    private Lander lander    = new Lander();    //used for lifting and droping
+    private LanderNoEncoder lander    = new LanderNoEncoder();    //used for lifting and droping
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -117,15 +116,15 @@ public class MecanumTeleop_Iterative extends OpMode{
 
 
         if (gamepad2.a){
-            if (lander.IsDone()){
-                lander.DoLand(1);
-            }
+            lander.DoLand();
         }
 
-        if (gamepad2.b) {
-            if (lander.IsDone()) {
-                lander.GoUp(1);
-            }
+        if (gamepad2.y) {
+            lander.GoUp();
+        }
+
+        else {
+            robot.lift.setPower(0);
         }
 
         robot.MoveMecanum(left_stick_x, left_stick_y, right_stick_x);

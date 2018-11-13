@@ -1,3 +1,7 @@
+/* Little Lost Robots
+   Core Devs: Danielle
+*/
+
 package org.firstinspires.ftc.teamcode.controllers;
 
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;

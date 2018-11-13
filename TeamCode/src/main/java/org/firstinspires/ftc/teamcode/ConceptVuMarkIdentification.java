@@ -63,6 +63,7 @@ import org.firstinspires.ftc.robotcore.internal.vuforia.VuforiaLocalizerImpl;
 //https://www.youtube.com/watch?v=wckaGJFxwlw
 
 @TeleOp(name="Concept: VuMark Id", group ="Concept")
+@Disabled
 public class ConceptVuMarkIdentification extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
