@@ -22,8 +22,10 @@ public class LanderEncoder {
 
         this.hwBase = hwBase;
         this.telemetry = telemetry;
-        hwBase.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        if (hwBase.lift != null) {
+            hwBase.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
 
     }
 

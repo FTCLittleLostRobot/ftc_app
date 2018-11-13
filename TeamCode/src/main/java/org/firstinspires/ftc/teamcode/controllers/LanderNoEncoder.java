@@ -14,7 +14,6 @@ import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 
 public class LanderNoEncoder {
 
-
     HardwareMecanumBase hwBase;
     Telemetry telemetry;
 
@@ -26,20 +25,27 @@ public class LanderNoEncoder {
     }
 
     public void DoLand( ) {
-        hwBase.lift.setPower(1);
-        telemetry.addData("State A", "Robot is Going Down");
-        telemetry.update();
+       if (hwBase.lift != null ) {
+           hwBase.lift.setPower(1);
+           telemetry.addData("State A", "Robot is Going Down");
+           telemetry.update();
+       }
     }
 
     public void GoUp() {
-        hwBase.lift.setPower(-1);
-        telemetry.addData("State B", "Robot is Going Up");
-        telemetry.update();
+        if (hwBase.lift != null ) {
+            hwBase.lift.setPower(-1);
+            telemetry.addData("State B", "Robot is Going Up");
+            telemetry.update();
+        }
     }
 
 
     public void Complete() {
         // Stop all motion;
-        hwBase.lift.setPower(0);
+        if (hwBase.lift != null)
+        {
+            hwBase.lift.setPower(0);
+        }
     }
 }
