@@ -21,10 +21,14 @@ public class MecanumMove {
 
         targetSpin  = this.hwBase.GetWheelSpinDirection(HardwareMecanumBase.WheelControl.LeftFrontDrive,x,y,rotation);
 
-        // Determine new target position, and pass to motor controller
-        int newLeftFrontTarget = this.hwBase.left_front_drive.getCurrentPosition() +
-                (targetSpin * (int) (inches * HardwareMecanumBase.WHEEL_COUNTS_PER_INCH));
-        targetEncoderValue = newLeftFrontTarget;
+
+        if (hwBase.left_front_drive != null){
+            // Determine new target position, and pass to motor controller
+            int newLeftFrontTarget = this.hwBase.left_front_drive.getCurrentPosition() +
+                    (targetSpin * (int) (inches * HardwareMecanumBase.WHEEL_COUNTS_PER_INCH));
+            targetEncoderValue = newLeftFrontTarget;
+
+        }
 
         this.hwBase.SpeedMultiplier = speed;
         this.hwBase.MoveMecanum(x,y,rotation);
@@ -33,14 +37,24 @@ public class MecanumMove {
     public boolean IsDone() {
         boolean isDone;
 
-        // this tells the robot if it is positive or negative
-        if(targetSpin > 0){
-            isDone = this.hwBase.left_front_drive.getCurrentPosition() >= targetEncoderValue; // if it is positive
+        if (hwBase.left_front_drive != null){
+            // this tells the robot if it is positive or negative
+            if(targetSpin > 0){
+                isDone = this.hwBase.left_front_drive.getCurrentPosition() >= targetEncoderValue; // if it is positive
+            }
+            else {
+                isDone = this.hwBase.left_front_drive.getCurrentPosition() <= targetEncoderValue; // if it is negative
+            }
+
+            if (targetSpin > 0) {
+                isDone = this.hwBase.left_front_drive.getCurrentPosition() >= targetEncoderValue; // if it is positive
+            } else {
+                isDone = this.hwBase.left_front_drive.getCurrentPosition() <= targetEncoderValue; // if it is negative
+            }
         }
         else {
-            isDone = this.hwBase.left_front_drive.getCurrentPosition() <= targetEncoderValue; // if it is negative
+            isDone = true;
         }
-
         return isDone;
     }
 

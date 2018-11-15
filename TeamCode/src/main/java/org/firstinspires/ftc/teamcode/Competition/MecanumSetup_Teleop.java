@@ -10,7 +10,8 @@ import android.graphics.Bitmap;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.vuforia.Image;
+import org.firstinspires.ftc.teamcode.controllers.LanderNoEncoder;
+
 
 
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
@@ -34,14 +35,19 @@ public class MecanumSetup_Teleop extends OpMode {
 
     /* Declare OpMode members. */
     private HardwareMecanumBase robot = new HardwareMecanumBase(); // use the class created to define a Mencanums 's hardware
-
+    private LanderNoEncoder lander = new LanderNoEncoder();
     private boolean ButtonCheck = false;    //left and right bumper; faster, slower
     public DcMotor left_front_drive = null;
     public DcMotor right_front_drive = null;
     public DcMotor left_back_drive = null;
     public DcMotor right_back_drive = null;
 
-  //  private LanderNoEncoder lander = new LanderNoEncoder();    //used for lifting and droping
+    private void CheckMotor(DcMotor motor, String  motorName)
+    {
+        if (motor == null) {
+            telemetry.addData("Error", motorName + " not found");
+        }
+    }
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -49,6 +55,15 @@ public class MecanumSetup_Teleop extends OpMode {
     @Override
     public void init() {
         robot.init(hardwareMap);
+
+        this.CheckMotor(robot.left_front_drive, "left_front");
+        this.CheckMotor(robot.right_front_drive, "right_front");
+        this.CheckMotor(robot.left_back_drive, "left_back");
+        this.CheckMotor(robot.right_back_drive, "right_back");
+        this.CheckMotor(robot.lift, "lift");
+
+
+
         telemetry.addData("Say", "Hello Driver");    //this shows the robot is ready
 
     }
@@ -92,17 +107,21 @@ public class MecanumSetup_Teleop extends OpMode {
             robot.DrivePower(HardwareMecanumBase.WheelControl.RightBackDrive, 0);
         }
 
-/*
-        if (gamepad2.a) {
-            lander.DoLand();
-        }
 
-        if (gamepad2.y) {
+        if (gamepad2.a) {
+            telemetry.addData("Testing:", "DoLand");
+            lander.DoLand();
+
+        }
+        else if (gamepad2.y) {
+            telemetry.addData("Testing:", "GoUp");
             lander.GoUp();
-        } else {
+        }
+        else {
+            telemetry.addData("Testing:", "Complete");
             lander.Complete();
         }
-*/
+
     }
 }
 
