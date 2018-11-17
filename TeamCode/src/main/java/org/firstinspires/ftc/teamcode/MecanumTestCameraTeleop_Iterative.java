@@ -88,10 +88,11 @@ public class MecanumTestCameraTeleop_Iterative extends OpMode {
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
-        robot.init(hardwareMap);
-        moveRobot = new MecanumMove();
-        ColorFinder colorFinder;
+        this.robot.init(hardwareMap);
+        this.moveRobot = new MecanumMove();
+        this.colorFinder = new ColorFinder();
 
+        this.colorFinder.init(hardwareMap);
         this.moveRobot.init(robot);
 
         // Send telemetry message to signify robot waiting;
@@ -146,26 +147,26 @@ public class MecanumTestCameraTeleop_Iterative extends OpMode {
                 //In this the robot is checking the phone for what column the yellow square is in
                 if (foundColumn == 0 )
                 {
-                    this.moveRobot.Start(50, 6,GO_LEFT, GO_FORWARD,0 );
+                    this.moveRobot.Start(50, 24,GO_LEFT, GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 1 )
                 {
-                    this.moveRobot.Start(30, 6,GO_LEFT,GO_FORWARD,0 );
+                    this.moveRobot.Start(30, 24,GO_LEFT,GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 3 )
                 {
-                    this.moveRobot.Start(30, 6,GO_RIGHT,GO_FORWARD,0 );
+                    this.moveRobot.Start(30, 24,GO_RIGHT,GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 4 ) {
-                    this.moveRobot.Start(50, 6, GO_RIGHT, GO_FORWARD, 0);
+                    this.moveRobot.Start(50, 24, GO_RIGHT, GO_FORWARD, 0);
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 2)
                 {
-                    this.moveRobot.Start(50, 6,0,GO_FORWARD,0 );
+                    this.moveRobot.Start(50, 24,0,GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == -1)
