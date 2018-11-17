@@ -15,8 +15,10 @@ import org.firstinspires.ftc.teamcode.controllers.ColorFinder;
 import org.firstinspires.ftc.teamcode.controllers.LanderEncoder;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 
-@Autonomous(name="Mecanum: Sampling and Dropping", group="Mecanum")
-public class MecanumAutoSamplingAndDroping_Iterative extends OpMode {
+import static java.lang.Thread.sleep;
+
+@Autonomous(name="Mecanum: Dropping", group="Mecanum")
+public class MecanumAutoDropping_Iterative extends OpMode {
 
     HardwareMecanumBase robot;
 
@@ -111,7 +113,7 @@ public class MecanumAutoSamplingAndDroping_Iterative extends OpMode {
                 }
                 break;
 
-            case Up:
+        /*    case Up:
                 this.lander.GoUp(3);
                 state = RobotState.WaitForUp;
                 break;
@@ -234,7 +236,7 @@ public class MecanumAutoSamplingAndDroping_Iterative extends OpMode {
                     state = RobotState.Done;
                 }
                 break;
-
+            */
             case Done:
                 state = RobotState.Done;
                 break;
