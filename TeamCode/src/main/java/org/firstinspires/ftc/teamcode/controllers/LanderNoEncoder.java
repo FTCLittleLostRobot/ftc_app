@@ -29,7 +29,7 @@ public class LanderNoEncoder {
            hwBase.lift.setPower(1);
            telemetry.addData("State A", "Robot is Going Down");
            telemetry.update();
-       }
+        }
     }
 
     public void GoUp() {

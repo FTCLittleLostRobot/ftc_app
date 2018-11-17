@@ -42,7 +42,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.vuforia.Image;
 
-import org.firstinspires.ftc.teamcode.Competition.MecanumAutoSamplingAndDroping_Iterative;
 import org.firstinspires.ftc.teamcode.controllers.ColorFinder;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 

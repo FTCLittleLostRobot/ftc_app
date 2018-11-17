@@ -55,13 +55,13 @@ public class MecanumSetup_Teleop extends OpMode {
     @Override
     public void init() {
         robot.init(hardwareMap);
+        this.lander.init(robot, telemetry);
 
         this.CheckMotor(robot.left_front_drive, "left_front");
         this.CheckMotor(robot.right_front_drive, "right_front");
         this.CheckMotor(robot.left_back_drive, "left_back");
         this.CheckMotor(robot.right_back_drive, "right_back");
         this.CheckMotor(robot.lift, "lift");
-
 
 
         telemetry.addData("Say", "Hello Driver");    //this shows the robot is ready
@@ -108,17 +108,14 @@ public class MecanumSetup_Teleop extends OpMode {
         }
 
 
-        if (gamepad2.a) {
-            telemetry.addData("Testing:", "DoLand");
+        if (gamepad1.a) {
             lander.DoLand();
 
         }
-        else if (gamepad2.y) {
-            telemetry.addData("Testing:", "GoUp");
+        else if (gamepad1.y) {
             lander.GoUp();
         }
         else {
-            telemetry.addData("Testing:", "Complete");
             lander.Complete();
         }
 
