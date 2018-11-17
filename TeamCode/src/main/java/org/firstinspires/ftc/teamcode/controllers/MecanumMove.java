@@ -8,6 +8,11 @@ import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 
 public class MecanumMove {
 
+    public static final double GO_FORWARD = -1;
+    public static final double GO_BACK = 1;
+    public static final double GO_RIGHT = -1;
+    public static final double GO_LEFT = 1;
+
     HardwareMecanumBase hwBase;
 
     int targetSpin = 0;
