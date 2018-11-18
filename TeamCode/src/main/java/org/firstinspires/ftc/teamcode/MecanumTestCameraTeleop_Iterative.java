@@ -147,17 +147,17 @@ public class MecanumTestCameraTeleop_Iterative extends OpMode {
                 //In this the robot is checking the phone for what column the yellow square is in
                 if (foundColumn == 0 )
                 {
-                    this.moveRobot.Start(50, 24,GO_LEFT, GO_FORWARD,0 );
+                    this.moveRobot.Start(50, 24, GO_LEFT, GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 1 )
                 {
-                    this.moveRobot.Start(30, 24,GO_LEFT,GO_FORWARD,0 );
+                    this.moveRobot.Start(30, 24, GO_LEFT, GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 3 )
                 {
-                    this.moveRobot.Start(30, 24,GO_RIGHT,GO_FORWARD,0 );
+                    this.moveRobot.Start(30, 24, GO_RIGHT, GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 4 ) {
@@ -166,11 +166,12 @@ public class MecanumTestCameraTeleop_Iterative extends OpMode {
                 }
                 else if (foundColumn == 2)
                 {
-                    this.moveRobot.Start(50, 24,0,GO_FORWARD,0 );
+                    this.moveRobot.Start(50, 30,0, GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == -1)
                 {
+                    state = RobotState.CheckScreen;
                     // if not found
                 }
                 break;
