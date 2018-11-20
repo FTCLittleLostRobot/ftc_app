@@ -18,15 +18,9 @@ import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 import org.firstinspires.ftc.teamcode.controllers.LanderNoEncoder;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 
-/**
- * This file provides basic Telop driving for the testing Mencanum robot.
- * The code is structured as an Iterative OpMode
- *
- * This OpMode uses the common Mencanum hardware class to define the devices on the robot.
- * All device access is managed through the HardwareMecanumBase class.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+/*
+ *   This program should be used to make sure all wires are in and in the correct ports.
+ *   If a wire is in the wrong port or not in at all this program will let you know
  */
 
 @TeleOp(name="Mecanum: Setup", group="TestingMecanum")
@@ -36,14 +30,15 @@ public class MecanumSetup_Teleop extends OpMode {
     /* Declare OpMode members. */
     private HardwareMecanumBase robot = new HardwareMecanumBase(); // use the class created to define a Mencanums 's hardware
     private LanderNoEncoder lander = new LanderNoEncoder();
-    private boolean ButtonCheck = false;    //left and right bumper; faster, slower
-    public DcMotor left_front_drive = null;
-    public DcMotor right_front_drive = null;
-    public DcMotor left_back_drive = null;
-    public DcMotor right_back_drive = null;
+    private boolean ButtonCheck = false;      //left and right bumper; faster, slower
+    public DcMotor left_front_drive = null;   //front left wheel
+    public DcMotor right_front_drive = null;  //front right wheel
+    public DcMotor left_back_drive = null;    //back left wheel
+    public DcMotor right_back_drive = null;   //back right wheel
 
     private void CheckMotor(DcMotor motor, String  motorName)
     {
+        // if a motor is not found it will tell the driver which wheel isn't in
         if (motor == null) {
             telemetry.addData("Error", motorName + " not found");
         }
@@ -57,6 +52,7 @@ public class MecanumSetup_Teleop extends OpMode {
         robot.init(hardwareMap);
         this.lander.init(robot, telemetry);
 
+        // Is every motor on correctly? This checks each motor and lift.
         this.CheckMotor(robot.left_front_drive, "left_front");
         this.CheckMotor(robot.right_front_drive, "right_front");
         this.CheckMotor(robot.left_back_drive, "left_back");

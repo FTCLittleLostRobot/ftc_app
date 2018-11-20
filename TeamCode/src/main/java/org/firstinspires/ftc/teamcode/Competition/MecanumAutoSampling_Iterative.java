@@ -34,12 +34,11 @@ public class MecanumAutoSampling_Iterative extends OpMode {
 
     enum RobotState
     {
-        Drop,
-        WaitForDrop,
+
+
+
         Unhook,
         WaitForUnhook,
-        Up,
-        WaitForUp,
         StepOut,
         WaitForStepOut,
         StrafingLeft,
@@ -101,31 +100,7 @@ public class MecanumAutoSampling_Iterative extends OpMode {
 
         switch (state)
         {
-  /*
-            case Drop:
-                this.lander.DoLand(5);
-                state = RobotState.WaitForDrop;
-                break;
 
-            case WaitForDrop:
-                if (this.lander.IsDone()) {
-                    this.lander.Complete();
-                    state = RobotState.Up;
-                }
-                break;
-
-            case Up:
-                this.lander.GoUp(3);
-                state = RobotState.WaitForUp;
-                break;
-
-            case WaitForUp:
-                if (this.lander.IsDone()) {
-                    this.lander.Complete();
-                    state = RobotState.Unhook;
-                }
-
-*/
             case Unhook:
                 this.moveRobot.Start(30, 4,GO_LEFT,0,0 );
                 state = RobotState.WaitForUnhook;

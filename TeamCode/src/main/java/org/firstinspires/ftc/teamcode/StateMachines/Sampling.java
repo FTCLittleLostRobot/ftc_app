@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import com.vuforia.Image;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Competition.MecanumAutoSampling_Iterative;
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 import org.firstinspires.ftc.teamcode.controllers.ColorFinder;
 import org.firstinspires.ftc.teamcode.controllers.LanderEncoder;
@@ -36,6 +35,8 @@ public class Sampling {
 
     public void ProcessState(RobotState state)
     {
+        telemetry.addData("Current State", state.toString());
+
         switch (state) {
             case Unhook:
                 this.moveRobot.Start(30, 4,MecanumMove.GO_LEFT,0,0 );
