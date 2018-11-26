@@ -4,19 +4,12 @@
 
 package org.firstinspires.ftc.teamcode.Competition;
 
-import android.graphics.Bitmap;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.vuforia.Image;
-
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 import org.firstinspires.ftc.teamcode.StateMachines.LandingStateMachine;
-import org.firstinspires.ftc.teamcode.controllers.ColorFinder;
 import org.firstinspires.ftc.teamcode.controllers.LanderEncoder;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
-
-import static java.lang.Thread.sleep;
 
 @Autonomous(name="Mecanum: Dropping", group="Mecanum")
 public class MecanumAutoDropping_Iterative extends OpMode {
@@ -47,12 +40,7 @@ public class MecanumAutoDropping_Iterative extends OpMode {
         telemetry.addData("Say", "Hello Driver");    //
     }
 
-    /*
-     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
-     */
-    @Override
-    public void init_loop() {
-    }
+
 
     @Override
     public void start() {
@@ -63,10 +51,10 @@ public class MecanumAutoDropping_Iterative extends OpMode {
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
     @Override
-    public void loop() {
+    public void loop()
+    {
         landingStateMachine.ProcessState();
     }
-
     /*
      * Code to run ONCE after the driver hits STOP
      */

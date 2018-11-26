@@ -9,10 +9,8 @@ import android.graphics.Bitmap;
 import com.vuforia.Image;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Competition.MecanumTestCameraTeleop_Iterative;
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 import org.firstinspires.ftc.teamcode.controllers.ColorFinder;
-import org.firstinspires.ftc.teamcode.controllers.LanderEncoder;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 
 public class SamplingStateMachine {
