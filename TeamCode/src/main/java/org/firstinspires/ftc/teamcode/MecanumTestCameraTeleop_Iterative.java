@@ -114,7 +114,7 @@ public class MecanumTestCameraTeleop_Iterative extends OpMode {
                 //In this the robot is checking the phone for what column the yellow square is in
                 /**
                  * Huge Problem: When the camera stops seeing the image it immediately breaks out of the operation it's doing.
-                 * Need to find a way to fix this problem.
+                 * I need to find a way to fix this problem.
                  *
                  * I'm also going to try and code a way to make it so that when the camera stops seeing the image it just keeps going or goes to -1
                  * which will start the loop over. However, it would be much better if the camera just kept going and if it saw the object again it would go
