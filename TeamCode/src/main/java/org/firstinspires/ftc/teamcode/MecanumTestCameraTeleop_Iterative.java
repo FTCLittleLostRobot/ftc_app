@@ -70,9 +70,6 @@ public class MecanumTestCameraTeleop_Iterative extends OpMode {
         telemetry.addData("Say", "Hello Driver");    //
     }
 
-    /*
-     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
-     */
     @Override
     public void init_loop() {
     }
@@ -116,6 +113,14 @@ public class MecanumTestCameraTeleop_Iterative extends OpMode {
 
             case CheckForGold:
                 //In this the robot is checking the phone for what column the yellow square is in
+                /**
+                 * Huge Problem: When the camera stops seeing the image it immediately breaks out of the operation it's doing.
+                 * I need to find a way to fix this problem.
+                 *
+                 * I'm also going to try and code a way to make it so that when the camera stops seeing the image it just keeps going or goes to -1
+                 * which will start the loop over. However, it would be much better if the camera just kept going and if it saw the object again it would go
+                 * to that column and go from there but still maintain how much inches left to drive.
+                 */
                 if (foundColumn == 0 )
                 {
                     this.moveRobot.Start(50, 24, GO_LEFT, GO_FORWARD,0 );
@@ -124,6 +129,11 @@ public class MecanumTestCameraTeleop_Iterative extends OpMode {
                 else if (foundColumn == 1 )
                 {
                     this.moveRobot.Start(30, 24, GO_LEFT, GO_FORWARD,0 );
+                    state = RobotState.PushBloock;
+                }
+                else if (foundColumn == 2)
+                {
+                    this.moveRobot.Start(50, 30,0, GO_FORWARD,0 );
                     state = RobotState.PushBloock;
                 }
                 else if (foundColumn == 3 )
@@ -135,15 +145,18 @@ public class MecanumTestCameraTeleop_Iterative extends OpMode {
                     this.moveRobot.Start(50, 24, GO_RIGHT, GO_FORWARD, 0);
                     state = RobotState.PushBloock;
                 }
-                else if (foundColumn == 2)
-                {
-                    this.moveRobot.Start(50, 30,0, GO_FORWARD,0 );
-                    state = RobotState.PushBloock;
-                }
-                else if (foundColumn == -1)
-                {
-                    state = RobotState.CheckScreen;
-                    // if not found
+
+                else if (foundColumn == -1 ) {
+                    {
+                        this.moveRobot.Start(30, 4, GO_RIGHT, 0, 0);
+                        state = RobotState.PushBloock;
+                    }
+
+                    if (foundColumn == -1) {
+                        this.moveRobot.Start(30, 8, GO_LEFT, 0, 0);
+                        state = RobotState.PushBloock;
+                        // When the camera sees nothing, it will go to this area and then go back to CheckScreen, until it finds the object it's looking for
+                    }
                 }
                 break;
 
