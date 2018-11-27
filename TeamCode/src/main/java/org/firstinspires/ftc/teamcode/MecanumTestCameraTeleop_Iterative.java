@@ -148,11 +148,12 @@ public class MecanumTestCameraTeleop_Iterative extends OpMode {
                 else if (foundColumn == -1 ) {
                     {
                         this.moveRobot.Start(30, 4, GO_RIGHT, 0, 0);
+                        state = RobotState.PushBloock;
                     }
 
                     if (foundColumn == -1) {
-                        this.moveRobot.Start(30, 4, GO_LEFT, 0, 0);
-                        state = RobotState.CheckScreen;
+                        this.moveRobot.Start(30, 8, GO_LEFT, 0, 0);
+                        state = RobotState.PushBloock;
                         // When the camera sees nothing, it will go to this area and then go back to CheckScreen, until it finds the object it's looking for
                     }
                 }
