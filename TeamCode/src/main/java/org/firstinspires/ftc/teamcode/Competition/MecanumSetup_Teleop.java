@@ -1,4 +1,5 @@
-/* Little Lost Robots
+/*
+   Little Lost Robots
    Core Devs: Danielle
 */
 
@@ -20,7 +21,7 @@ import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 
 /*
  *   This program should be used to make sure all wires are in and in the correct ports.
- *   If a wire is in the wrong port or not in at all this program will let you know
+ *   If a wire is in the wrong port or not in at all this program will let you know!
  */
 
 @TeleOp(name="Mecanum: Setup", group="TestingMecanum")
@@ -39,6 +40,7 @@ public class MecanumSetup_Teleop extends OpMode {
     private void CheckMotor(DcMotor motor, String  motorName)
     {
         // if a motor is not found it will tell the driver which wheel isn't in
+        // this helps drivers tell why the program is giving an error and how to fix it easily
         if (motor == null) {
             telemetry.addData("Error", motorName + " not found");
         }
@@ -67,7 +69,7 @@ public class MecanumSetup_Teleop extends OpMode {
     @Override
     public void loop () {
 
-
+        // this moves the right front wheel; You need to press the left up
         if (gamepad1.left_stick_y == -1) {
             robot.DrivePower(HardwareMecanumBase.WheelControl.RightFrontDrive, -0.3);
             telemetry.addData("Testing:", "right_front");
@@ -76,7 +78,7 @@ public class MecanumSetup_Teleop extends OpMode {
             robot.DrivePower(HardwareMecanumBase.WheelControl.RightFrontDrive, 0);
         }
 
-
+        // this moves the left front wheel; You need to press the left stick to the left
         if (gamepad1.left_stick_x == -1) {
             robot.DrivePower(HardwareMecanumBase.WheelControl.LeftFrontDrive, -0.3);
             telemetry.addData("Testing:", "left_front");
@@ -85,7 +87,7 @@ public class MecanumSetup_Teleop extends OpMode {
             robot.DrivePower(HardwareMecanumBase.WheelControl.LeftFrontDrive, 0);
         }
 
-
+        // this moves the left back wheel; You need to press the left stick down
         if (gamepad1.left_stick_y == 1) {
             robot.DrivePower(HardwareMecanumBase.WheelControl.LeftBackDrive, -0.3);
             telemetry.addData("Testing:", "left_back");
@@ -94,7 +96,7 @@ public class MecanumSetup_Teleop extends OpMode {
             robot.DrivePower(HardwareMecanumBase.WheelControl.LeftBackDrive, 0);
         }
 
-
+        // this moves the right back wheel; You need to press the left stick to the right
         if (gamepad1.left_stick_x == 1) {
             robot.DrivePower(HardwareMecanumBase.WheelControl.RightBackDrive, -0.3);
             telemetry.addData("Testing:", "right_back");
@@ -106,10 +108,14 @@ public class MecanumSetup_Teleop extends OpMode {
 
         if (gamepad1.a) {
             lander.DoLand();
+            telemetry.addData("Testing:", "Bringing robot down; lift up");
+
 
         }
         else if (gamepad1.y) {
             lander.GoUp();
+            telemetry.addData("Testing:", "Bringing robot up; lift down");
+
         }
         else {
             lander.Complete();

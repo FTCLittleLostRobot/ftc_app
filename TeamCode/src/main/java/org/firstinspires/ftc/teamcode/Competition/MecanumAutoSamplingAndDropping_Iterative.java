@@ -41,7 +41,7 @@ public class MecanumAutoSamplingAndDropping_Iterative extends OpMode {
         this.samplingStateMachine.init(telemetry, colorFinder, moveRobot);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "Hello Driver");    //
+        telemetry.addData("Say", "Hello Driver");
     }
 
     /*
@@ -60,8 +60,10 @@ public class MecanumAutoSamplingAndDropping_Iterative extends OpMode {
     @Override
     public void loop() {
 
+        //this goes into the StateMachine, "LandingStateMachine" and then goes through all the states it needs
         landingStateMachine.ProcessState();
 
+        //Once the robot has landed it will start the sampling program and states
         if (landingStateMachine.IsDone()){
             samplingStateMachine.ProcessState();
 

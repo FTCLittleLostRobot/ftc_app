@@ -53,6 +53,7 @@ public class MecanumAutoDropping_Iterative extends OpMode {
     @Override
     public void loop()
     {
+        //this goes into the StateMachine, "LandingStateMachine" and then goes through all the states it needs
         landingStateMachine.ProcessState();
     }
     /*
