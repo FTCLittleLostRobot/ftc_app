@@ -4,28 +4,51 @@
 
 package org.firstinspires.ftc.teamcode.StateMachines;
 
-import org.firstinspires.ftc.robotcore.external.StateMachine;
+import com.qualcomm.robotcore.robot.Robot;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 import org.firstinspires.ftc.teamcode.controllers.LanderEncoder;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 
-public class Landing {
+public class LandingStateMachine {
 
     Telemetry telemetry;
+    LandingStateMachine.RobotState state;
     private LanderEncoder lander    = null;
     private MecanumMove moveRobot    = null;
 
-
-
-    public void init(HardwareMecanumBase hwBase, Telemetry telemetry) {
-
-        this.telemetry = telemetry;
-
+    private static enum RobotState {
+        Start,
+        Drop,
+        WaitForDrop,
+        Unhook,
+        WaitForUnhook,
+        Done
     }
 
-    public void ProcessState(RobotState state)
+    public void init(Telemetry telemetry, LanderEncoder lander, MecanumMove mecanumMove) {
+
+        this.telemetry = telemetry;
+        this.lander = lander;
+        this.moveRobot = mecanumMove;
+        state = RobotState.Start;
+    }
+
+    public void Start()
     {
+        state = RobotState.Drop;
+    }
+
+    public boolean IsDone()
+    {
+        return (state == RobotState.Done);
+    }
+
+    public void ProcessState()
+    {
+        telemetry.addData("Current Landing State", state.toString());
+
         switch (state) {
             case Drop:
                 this.lander.DoLand(6);
@@ -51,6 +74,9 @@ public class Landing {
                 }
                 break;
 
+            case Done:
+                state = RobotState.Done;
+                break;
         }
     }
 }
