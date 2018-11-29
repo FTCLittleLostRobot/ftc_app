@@ -112,7 +112,7 @@ public class ColorFinder {
                     // http://colorizer.org/
                     if (hsv[2] > .15) {
                         if (colorTarget == ColorTarget.Yellow) {
-                            if ((hsv[0] > 30) && (hsv[0] < 50) && (hsv[1] >= .75) && (hsv[1] <= 1)) {
+                            if ((hsv[0] > 30) && (hsv[0] < 50) && (hsv[1] >= .75) && (hsv[1] <= 1) && (hsv[2] >= 0.8) ) {
                                 columnCounter++;
                             }
                         } else if (colorTarget == ColorTarget.White) {
