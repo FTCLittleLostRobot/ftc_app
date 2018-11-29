@@ -29,7 +29,7 @@ public class LanderEncoder {
 
     }
 
-    public void DoLand(int inches ) {
+    public void DoLand(double inches ) {
         hwBase.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         int newLiftTarget = hwBase.lift.getCurrentPosition() - (int)(inches * HardwareMecanumBase.LIFT_COUNTS_PER_INCH);
         hwBase.lift.setTargetPosition(newLiftTarget);

@@ -51,7 +51,7 @@ public class LandingStateMachine {
 
         switch (state) {
             case Drop:
-                this.lander.DoLand(6);
+                this.lander.DoLand(2);
                 state = RobotState.WaitForDrop;
                 break;
 
@@ -63,7 +63,7 @@ public class LandingStateMachine {
                 break;
 
             case Unhook:
-                this.moveRobot.Start(30, 2,MecanumMove.GO_LEFT,0,0 );
+                this.moveRobot.Start(30, 2,MecanumMove.GO_RIGHT,0,0 );
                 state = RobotState.WaitForUnhook;
                 break;
 
