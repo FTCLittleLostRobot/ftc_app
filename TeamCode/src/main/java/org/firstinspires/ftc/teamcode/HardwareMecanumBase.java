@@ -47,6 +47,9 @@ public class HardwareMecanumBase {
     public DcMotor left_back_drive = null;
     public DcMotor right_back_drive = null;
     public DcMotor lift = null;
+    public DcMotor ArmExtendRight = null;
+    public DcMotor ArmExtendLeft = null;
+    public DcMotor ArmDrop = null;
 
 
     /* local OpMode members. */
@@ -101,6 +104,22 @@ public class HardwareMecanumBase {
             lift.setDirection(DcMotor.Direction.FORWARD);
         }
         // need to test not sure if correct
+
+        ArmExtendRight = hardwareMap.tryGet(DcMotor.class, "ArmExtendRight");
+        if (ArmExtendRight != null) {
+            ArmExtendRight.setDirection(DcMotor.Direction.FORWARD);
+        }
+
+        ArmExtendLeft = hardwareMap.tryGet(DcMotor.class, "ArmExtendLeft");
+        if (ArmExtendLeft != null) {
+            ArmExtendLeft.setDirection(DcMotor.Direction.FORWARD);
+        }
+
+        ArmDrop = hardwareMap.tryGet(DcMotor.class, "ArmDrop");
+        if (ArmDrop != null) {
+            ArmDrop.setDirection(DcMotor.Direction.FORWARD);
+        }
+
         ResetMotors();
     }
 
