@@ -39,10 +39,10 @@ public class MecanumAutoDropping_Iterative extends OpMode {
         this.lander.init(robot, telemetry);
 
         /* Step 4: Setup of state machines  */
-        landingStateMachine.init(telemetry, this.lander, this.moveRobot);
+        landingStateMachine.init(telemetry, this.lander, this.moveRobot, robot);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "Hello Driver");    //
+        telemetry.addData("Say", "Hello Driver");
     }
 
 
@@ -59,6 +59,7 @@ public class MecanumAutoDropping_Iterative extends OpMode {
     public void loop()
     {
         //this goes into the StateMachine, "LandingStateMachine" and then goes through all the states it needs
+
         landingStateMachine.ProcessState();
     }
     /*

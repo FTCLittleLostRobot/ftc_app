@@ -25,7 +25,7 @@ public class SamplingStateMachine {
     static final double GO_BACK = 1;
     static final double GO_RIGHT = -0.95;
     static final double GO_LEFT = 1.9;
-    static final double GO_BETWEENLEFT = 0.95;
+    static final double GO_BETWEENLEFT = 0.945;
     static final double GO_HALFFOWARD = -0.5;
     static final double GO_BETWEENFOWARD = -0.94;
     private Image vuforiaImageObject;

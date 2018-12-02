@@ -4,6 +4,7 @@
 
 package org.firstinspires.ftc.teamcode.StateMachines;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.robot.Robot;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -17,9 +18,11 @@ public class LandingStateMachine {
     LandingStateMachine.RobotState state;
     private LanderEncoder lander    = null;
     private MecanumMove moveRobot    = null;
+    HardwareMecanumBase robot = new HardwareMecanumBase(); // use the class created to define a Pushbot's hardware
 
     private static enum RobotState {
         Start,
+       // RaiseArm,
         Drop,
         WaitForDrop,
         Unhook,
@@ -27,12 +30,13 @@ public class LandingStateMachine {
         Done
     }
 
-    public void init(Telemetry telemetry, LanderEncoder lander, MecanumMove mecanumMove) {
+    public void init(Telemetry telemetry, LanderEncoder lander, MecanumMove mecanumMove, HardwareMecanumBase robot) {
 
         this.telemetry = telemetry;
         this.lander = lander;
         this.moveRobot = mecanumMove;
         state = RobotState.Start;
+        this.robot = robot;
     }
 
     public void Start()
@@ -40,6 +44,16 @@ public class LandingStateMachine {
         state = RobotState.Drop;
     }
 
+ /*   public void RaiseArm() {
+        robot.ArmDropLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.ArmDropLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        int newLiftTarget = robot.ArmDropLeft.getCurrentPosition();
+        robot.ArmDropLeft.setTargetPosition(252);
+        robot.ArmDropLeft.setPower(0.75);
+        telemetry.addData("ArmDrop", "Left is going to position");
+        telemetry.update();
+        state = RobotState.Drop;
+    }*/
     public boolean IsDone()
     {
         return (state == RobotState.Done);
@@ -50,6 +64,17 @@ public class LandingStateMachine {
         telemetry.addData("Current Landing State", state.toString());
 
         switch (state) {
+            /*case RaiseArm:
+                robot.ArmDropLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.ArmDropLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                int newLiftTarget = robot.ArmDropLeft.getCurrentPosition();
+                robot.ArmDropLeft.setTargetPosition(252);
+                robot.ArmDropLeft.setPower(0.75);
+                telemetry.addData("ArmDrop", "Left is going to position");
+                telemetry.update();
+                state = RobotState.Drop;
+                break;
+                */
             case Drop:
                 this.lander.DoLand(2);
                 state = RobotState.WaitForDrop;

@@ -49,7 +49,7 @@ public class MecanumAutoSamplingAndDropping_Iterative extends OpMode {
         this.moveRobot.init(robot);
 
         /* Step 4: Setup of state machines  */
-        this.landingStateMachine.init(telemetry, this.lander, this.moveRobot);
+        this.landingStateMachine.init(telemetry, this.lander, this.moveRobot, this.robot);
         this.samplingStateMachine.init(telemetry, colorFinder, moveRobot);
 
         // Send telemetry message to signify robot waiting;

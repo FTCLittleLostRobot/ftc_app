@@ -5,8 +5,14 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.controllers.ArmDropEncoder;
+
+import org.firstinspires.ftc.teamcode.controllers.ArmDropNoEncoder;
 
 /*
  *  Hub 2
@@ -37,7 +43,9 @@ public class HardwareMecanumBase {
         LeftFrontDrive,
         RightFrontDrive,
         LeftBackDrive,
-        RightBackDrive
+        RightBackDrive,
+        ArmDropRight,
+        ArmDropLeft
     }
 
     /* Public OpMode members. */
@@ -47,9 +55,9 @@ public class HardwareMecanumBase {
     public DcMotor left_back_drive = null;
     public DcMotor right_back_drive = null;
     public DcMotor lift = null;
-    public DcMotor ArmExtendRight = null;
-    public DcMotor ArmExtendLeft = null;
-    public DcMotor ArmDrop = null;
+    public DcMotor ArmExtend = null;
+    public DcMotor ArmDropRight = null;
+    public DcMotor ArmDropLeft = null;
 
 
     /* local OpMode members. */
@@ -76,7 +84,7 @@ public class HardwareMecanumBase {
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hardwareMap = ahwMap;
-
+        //todo i changed the front two motors fron Reverse to Fowards or Fowards to reverse
         // Define and Initialize Motors
         left_front_drive = hardwareMap.tryGet(DcMotor.class, "left_front");
         if (left_front_drive != null) {
@@ -105,19 +113,19 @@ public class HardwareMecanumBase {
         }
         // need to test not sure if correct
 
-        ArmExtendRight = hardwareMap.tryGet(DcMotor.class, "ArmExtendRight");
-        if (ArmExtendRight != null) {
-            ArmExtendRight.setDirection(DcMotor.Direction.FORWARD);
+        ArmExtend = hardwareMap.tryGet(DcMotor.class, "ArmExtend");
+        if (ArmExtend != null) {
+            ArmExtend.setDirection(DcMotor.Direction.FORWARD);
         }
 
-        ArmExtendLeft = hardwareMap.tryGet(DcMotor.class, "ArmExtendLeft");
-        if (ArmExtendLeft != null) {
-            ArmExtendLeft.setDirection(DcMotor.Direction.FORWARD);
+        ArmDropRight = hardwareMap.tryGet(DcMotor.class, "ArmDropRight");
+        if (ArmDropRight != null) {
+            ArmDropRight.setDirection(DcMotor.Direction.FORWARD);
         }
 
-        ArmDrop = hardwareMap.tryGet(DcMotor.class, "ArmDrop");
-        if (ArmDrop != null) {
-            ArmDrop.setDirection(DcMotor.Direction.FORWARD);
+        ArmDropLeft = hardwareMap.tryGet(DcMotor.class, "ArmDropLeft");
+        if (ArmDropLeft != null) {
+            ArmDropLeft.setDirection(DcMotor.Direction.FORWARD);
         }
 
         ResetMotors();
@@ -160,8 +168,15 @@ public class HardwareMecanumBase {
             case RightFrontDrive:
                 right_front_drive.setPower(power * ((double) SpeedMultiplier / 100));
                 break;
+            case ArmDropLeft:
+                ArmDropLeft.setPower(power * ((double) SpeedMultiplier / 100));
+                break;
+            case ArmDropRight:
+                ArmDropRight.setPower(power * ((double) SpeedMultiplier / 100));
+                break;
             default:
                 break;
+
         }
     }
 
@@ -173,6 +188,14 @@ public class HardwareMecanumBase {
 
         switch (wheel)
         {
+ /*
+            case LeftFrontDrive:  //Julia 12-1-6:35 switch left front with right front
+                v = r * Math.sin(robotAngle) - rotation;
+                break;
+            case RightFrontDrive:
+                v = r * Math.cos(robotAngle) + rotation;
+                break;
+*/
             case LeftFrontDrive:
                 v = r * Math.cos(robotAngle) + rotation;
                 break;
@@ -186,6 +209,14 @@ public class HardwareMecanumBase {
                 break;
 
             case RightBackDrive:
+                v = r * Math.sin(robotAngle) + rotation;
+                break;
+
+            case ArmDropRight:
+                v = r * Math.sin(robotAngle) + rotation;
+                break;
+
+            case ArmDropLeft:
                 v = r * Math.sin(robotAngle) + rotation;
                 break;
 
@@ -207,12 +238,32 @@ public class HardwareMecanumBase {
         final double v1 = r * Math.cos(robotAngle) + rotation;
         final double v2 = r * Math.sin(robotAngle) - rotation;
         final double v3 = r * Math.sin(robotAngle) + rotation;
-        final double v4 = r * Math.cos(robotAngle) - rotation;
+        final double v4 = r * Math.cos(robotAngle) + rotation;
 
+        //DrivePower(WheelControl.LeftFrontDrive, v2);  //Julia 12-1-6:35 switch left front with right front
+        //DrivePower(WheelControl.RightFrontDrive, v1);
         DrivePower(WheelControl.LeftFrontDrive, v1);
         DrivePower(WheelControl.RightFrontDrive, v2);
         DrivePower(WheelControl.LeftBackDrive,v3);
         DrivePower(WheelControl.RightBackDrive, v4);
+    }
+
+    public void ArmDrop(double x, double y,Telemetry telemetry)
+    {
+        telemetry.addData("Stae", "We are in ArmDrop");
+        if (x < 0) {
+            DrivePower(WheelControl.ArmDropLeft, x );
+        }
+        else
+            DrivePower(WheelControl.ArmDropLeft, x * 0.75);
+
+
+        if (y < 0){
+            DrivePower(WheelControl.ArmDropRight, y );
+        }
+        else
+            DrivePower(WheelControl.ArmDropRight, y * 0.75);
+
     }
 
 

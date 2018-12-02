@@ -23,49 +23,33 @@ public class ArmExtend {
         this.hwBase = hwBase;
         this.telemetry = telemetry;
 
-        if (hwBase.ArmExtendLeft != null) {
-            hwBase.ArmExtendLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        if (hwBase.ArmExtend != null) {
+            hwBase.ArmExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
-        if (hwBase.ArmExtendRight != null) {
-            hwBase.ArmExtendRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
 
     }
 
-    public void DoLand(double inches ) {
-        hwBase.ArmExtendLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        hwBase.ArmExtendRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    public void ExtendingArm(double inches ) {
+        hwBase.ArmExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        int newArmExtentLeft = hwBase.ArmExtendLeft.getCurrentPosition() - (int)(inches * HardwareMecanumBase.WHEEL_COUNTS_PER_INCH);
-        hwBase.ArmExtendLeft.setTargetPosition(newArmExtentLeft);
-        hwBase.ArmExtendLeft.setPower(0.5);
-        telemetry.addData("ArmExtend", " Left Arm is Extending");
-        telemetry.update();
 
-        int newArmExtentRight = hwBase.ArmExtendRight.getCurrentPosition() - (int)(inches * HardwareMecanumBase.WHEEL_COUNTS_PER_INCH);
-        hwBase.ArmExtendRight.setTargetPosition(newArmExtentRight);
-        hwBase.ArmExtendRight.setPower(0.5);
-        telemetry.addData("ArmExtend", " Right Arm is Extending");
+        int newArmExtentLeft = hwBase.ArmExtend.getCurrentPosition() - (int)(inches * HardwareMecanumBase.WHEEL_COUNTS_PER_INCH);
+        hwBase.ArmExtend.setTargetPosition(newArmExtentLeft);
+        hwBase.ArmExtend.setPower(0.5);
+        telemetry.addData("ArmExtend", " Arm is Extending");
         telemetry.update();
     }
 
-    public void ArmExtend(int inches) {
-        hwBase.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        int newLiftTarget = hwBase.lift.getCurrentPosition() + (int)(inches * HardwareMecanumBase.LIFT_COUNTS_PER_INCH);
-        hwBase.lift.setTargetPosition(newLiftTarget);
-        hwBase.lift.setPower(-0.9);
-        telemetry.addData("State B", "Robot is Going Up");
-        telemetry.update();
-    }
+
 
 
     public boolean IsDone() {
-        return (!hwBase.lift.isBusy());
+        return (!hwBase.ArmExtend.isBusy());
     }
 
     public void Complete() {
         // Stop all motion;
-        hwBase.lift.setPower(0);
+        hwBase.ArmExtend.setPower(0);
     }
 }
