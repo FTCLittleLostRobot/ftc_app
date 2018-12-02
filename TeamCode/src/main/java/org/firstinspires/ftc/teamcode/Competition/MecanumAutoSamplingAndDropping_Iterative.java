@@ -17,12 +17,12 @@ import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 @Autonomous(name="Mecanum: Sampling and Dropping", group="Mecanum")
 public class MecanumAutoSamplingAndDropping_Iterative extends OpMode {
 
-    HardwareMecanumBase robot;
-    private SamplingStateMachine samplingStateMachine = new SamplingStateMachine();
-    MecanumMove moveRobot;
-    ColorFinder colorFinder;
-    private LandingStateMachine landingStateMachine = new LandingStateMachine();
-    private LanderEncoder lander    = new LanderEncoder();
+    private HardwareMecanumBase robot;
+    private SamplingStateMachine samplingStateMachine;
+    private MecanumMove moveRobot;
+    private ColorFinder colorFinder;
+    private LandingStateMachine landingStateMachine;
+    private LanderEncoder lander;
 
 
 
@@ -32,12 +32,24 @@ public class MecanumAutoSamplingAndDropping_Iterative extends OpMode {
          * The init() method of the hardware class does all the work here
          */
 
-        this.lander.init(robot, telemetry);
-        landingStateMachine.init(telemetry, this.lander, this.moveRobot);
+        /* Step 1: Setup of variables  */
+        robot = new HardwareMecanumBase();
+        colorFinder = new ColorFinder();
+        moveRobot = new MecanumMove();
+        samplingStateMachine = new SamplingStateMachine();
+        landingStateMachine = new LandingStateMachine();
+        lander = new LanderEncoder();
 
+        /* Step 2: Setup of hardware  */
         robot.init(hardwareMap);
-        this.moveRobot.init(robot);
+
+        /* Step 3: Setup of controllers  */
         this.colorFinder.init(hardwareMap);
+        this.lander.init(robot, telemetry);
+        this.moveRobot.init(robot);
+
+        /* Step 4: Setup of state machines  */
+        this.landingStateMachine.init(telemetry, this.lander, this.moveRobot);
         this.samplingStateMachine.init(telemetry, colorFinder, moveRobot);
 
         // Send telemetry message to signify robot waiting;

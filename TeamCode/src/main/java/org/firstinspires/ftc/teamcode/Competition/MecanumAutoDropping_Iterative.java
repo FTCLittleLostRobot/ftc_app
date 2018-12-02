@@ -15,9 +15,9 @@ import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 public class MecanumAutoDropping_Iterative extends OpMode {
 
     private HardwareMecanumBase robot;
-    private LandingStateMachine landingStateMachine = new LandingStateMachine();
+    private LandingStateMachine landingStateMachine;
     private MecanumMove moveRobot;
-    private LanderEncoder lander    = new LanderEncoder();
+    private LanderEncoder lander;
 
 
     /*
@@ -25,15 +25,20 @@ public class MecanumAutoDropping_Iterative extends OpMode {
      */
     @Override
     public void init() {
-        /* Initialize the hardware variables.
-         * The init() method of the hardware class does all the work here
-         */
+        /* Step 1: Setup of variables  */
         robot = new HardwareMecanumBase();
         moveRobot = new MecanumMove();
+        landingStateMachine = new LandingStateMachine();
+        lander = new LanderEncoder();
 
+        /* Step 2: Setup of hardware  */
         robot.init(hardwareMap);
+
+        /* Step 3: Setup of controllers  */
         this.moveRobot.init(robot);
         this.lander.init(robot, telemetry);
+
+        /* Step 4: Setup of state machines  */
         landingStateMachine.init(telemetry, this.lander, this.moveRobot);
 
         // Send telemetry message to signify robot waiting;

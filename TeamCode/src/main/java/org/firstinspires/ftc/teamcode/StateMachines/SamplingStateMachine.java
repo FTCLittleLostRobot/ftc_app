@@ -23,10 +23,11 @@ public class SamplingStateMachine {
     static final double TURN_SPEED = 0.25;
     static final double GO_FORWARD = -1;
     static final double GO_BACK = 1;
-    static final double GO_RIGHT = -1;
-    static final double GO_LEFT = 1;
+    static final double GO_RIGHT = -0.95;
+    static final double GO_LEFT = 1.9;
+    static final double GO_BETWEENLEFT = 0.95;
     static final double GO_HALFFOWARD = -0.5;
-    static final double GO_BETWEENFOWARD = -0.95;
+    static final double GO_BETWEENFOWARD = -0.94;
     private Image vuforiaImageObject;
     private Bitmap bitmapFromVuforia;
     public int foundColumn = -1;
@@ -35,6 +36,8 @@ public class SamplingStateMachine {
     enum RobotState
     {
         Start,
+        StepOut,
+        SteppingOut,
         CheckScreen,
         ConvertImageFromScreen,
         DetectColorFromImage,
@@ -57,7 +60,7 @@ public class SamplingStateMachine {
 
     public void Start()
     {
-        state = SamplingStateMachine.RobotState.CheckScreen;
+        state = SamplingStateMachine.RobotState.StepOut;
     }
 
     public boolean IsDone()
@@ -71,6 +74,17 @@ public class SamplingStateMachine {
 
         switch (state)
         {
+
+            case StepOut:
+                this.moveRobot.Start(20, 0.25, GO_LEFT, GO_BETWEENFOWARD, 0 );
+                state = SamplingStateMachine.RobotState.SteppingOut;
+
+            case SteppingOut:
+                if (this.moveRobot.IsDone()) {
+                    this.moveRobot.Complete();
+                    state = SamplingStateMachine.RobotState.CheckScreen;
+                }
+                break;
 
             case CheckScreen:
                 try {
@@ -100,24 +114,16 @@ public class SamplingStateMachine {
                 state = SamplingStateMachine.RobotState.CheckForGold;
                 break;
 
-            /**
-             * Huge Problem: When the camera stops seeing the image it immediately breaks out of the operation it's doing.
-             * I need to find a way to fix this problem.
-             *
-             * I'm also going to try and code a way to make it so that when the camera stops seeing the image it just keeps going or goes to -1
-             * which will start the loop over. However, it would be much better if the camera just kept going and if it saw the object again it would go
-             * to that column and go from there but still maintain how much inches left to drive.
-             */
             case CheckForGold:
                 //In this the robot is checking the phone for what column the yellow square is in
                 if (foundColumn == 0 )
                 {
-                    this.moveRobot.Start(30, 60, GO_LEFT, GO_BETWEENFOWARD,0 );
+                    this.moveRobot.Start(30, 60, GO_BETWEENLEFT, GO_BETWEENFOWARD,0 );
                     state = SamplingStateMachine.RobotState.PushBloock;
                 }
                 else if (foundColumn == 1 )
                 {
-                    this.moveRobot.Start(30, 60, GO_LEFT, GO_BETWEENFOWARD,0 );
+                    this.moveRobot.Start(30, 60, GO_BETWEENLEFT, GO_BETWEENFOWARD, 0 );
                     state = SamplingStateMachine.RobotState.PushBloock;
                 }
                 else if (foundColumn == 2)
