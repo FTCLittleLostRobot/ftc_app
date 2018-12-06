@@ -250,19 +250,19 @@ public class HardwareMecanumBase {
 
     public void ArmDrop(double x, double y,Telemetry telemetry)
     {
-        telemetry.addData("Stae", "We are in ArmDrop");
+        telemetry.addData("State", "We are in ArmDrop");
         if (x < 0) {
             DrivePower(WheelControl.ArmDropLeft, x );
         }
         else
-            DrivePower(WheelControl.ArmDropLeft, x * 0.75);
+            DrivePower(WheelControl.ArmDropLeft, x * 0.55);
 
 
         if (y < 0){
             DrivePower(WheelControl.ArmDropRight, y );
         }
         else
-            DrivePower(WheelControl.ArmDropRight, y * 0.75);
+            DrivePower(WheelControl.ArmDropRight, y * 0.55);
 
     }
 

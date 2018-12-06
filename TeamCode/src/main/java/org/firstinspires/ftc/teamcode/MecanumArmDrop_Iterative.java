@@ -3,7 +3,7 @@
 */
 
 
-package org.firstinspires.ftc.teamcode.Competition;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -48,7 +48,7 @@ public class MecanumArmDrop_Iterative extends OpMode{
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
-        ArmDropNoEncoder.init(robot, telemetry);
+        ArmDropNoEncoder.init(robot,telemetry, hardwareMap);
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //this shows the robot is ready
     }

@@ -4,21 +4,25 @@
 
 //Core Devs: Danielle
 
-//todo need to go up 22 up (bottom of handal) 23.5 (top of handal)
 package org.firstinspires.ftc.teamcode.controllers;
 
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
-
+import org.firstinspires.ftc.teamcode.SensorServo;
 public class ArmDropNoEncoder {
 
     HardwareMecanumBase hwBase;
     Telemetry telemetry;
+    //public Servo servo = null;
 
-    public void init(HardwareMecanumBase hwBase, Telemetry telemetry){
+    public void init(HardwareMecanumBase hwBase, Telemetry telemetry, HardwareMap hardwareMap){
 
         this.hwBase = hwBase;
         this.telemetry = telemetry;
+       // servo = hardwareMap.servo.get("servo");
 
     }
 
@@ -48,4 +52,5 @@ public class ArmDropNoEncoder {
 
         }
     }
+
 }

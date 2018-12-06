@@ -12,33 +12,54 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 @TeleOp(name = "Sensor: Servo", group = "Iterative OpMode")
 public class SensorServo extends OpMode {
 
-    public Servo servo = null;
-
-
+    public Servo servoLeft = null;
+    public Servo servoRight = null;
+    boolean servoLeftActive = false;
+    boolean servoLeftDirection = false;
+    boolean servoRightDirection = false;
     public void init()
     {
-        servo = hardwareMap.servo.get("servo");
-
+        servoLeft = hardwareMap.servo.get("servoLeft");
+        servoRight = hardwareMap.servo.get("servoRight");
     }
 
 
     @Override
     public void loop() {
 
-        telemetry.addData("Servo is at", servo.getPosition());
+        telemetry.addData("Servo is at", servoLeft.getPosition());
+        telemetry.addData("Servo is at", servoRight.getPosition());
 
-
-        if (gamepad2.dpad_down) {
-            servo.setPosition(servo.getPosition() - (double)0.01);
-            telemetry.addData("Say", "Servo is going clockwise");
-
+        if (gamepad2.left_bumper) {
+            if (servoLeftDirection) {
+                servoLeft.setPosition(servoLeft.getPosition() - (double)0.01);
+            } else
+            {
+                servoLeft.setPosition(servoLeft.getPosition() + (double)0.01);
+            }
+            telemetry.addData("Say", "Left Servo is moving");
+        }
+        else
+        {
+            servoLeftDirection = !servoLeftDirection;
         }
 
-        if (gamepad2.dpad_up) {
-            servo.setPosition(servo.getPosition() + (double)0.01);
-            telemetry.addData("Say", "Servo is going counter clockwise");
 
-        }
+        if (gamepad2.right_bumper) {
+            if (servoRightDirection){
+                servoRight.setPosition(servoRight.getPosition() - (double)0.01);
+            }else {
+
+                servoRight.setPosition(servoRight.getPosition() + (double)0.01);
+            }
+            telemetry.addData("Say", "Right Servo is moving");
+
+        }else
+            {
+            servoRightDirection = !servoRightDirection;
+            }
+
+
 
     }
 

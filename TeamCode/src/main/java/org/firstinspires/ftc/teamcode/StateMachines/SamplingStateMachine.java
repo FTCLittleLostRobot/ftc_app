@@ -42,7 +42,9 @@ public class SamplingStateMachine {
         ConvertImageFromScreen,
         DetectColorFromImage,
         CheckForGold,
-        PushBloock,
+        PushBlock,
+        BackOff,
+        WaitForBackOff,
         Done
     }
 
@@ -119,29 +121,41 @@ public class SamplingStateMachine {
                 if (foundColumn == 0 )
                 {
                     this.moveRobot.Start(30, 60, GO_BETWEENLEFT, GO_BETWEENFOWARD,0 );
-                    state = SamplingStateMachine.RobotState.PushBloock;
+                    state = SamplingStateMachine.RobotState.PushBlock;
                 }
                 else if (foundColumn == 1 )
                 {
                     this.moveRobot.Start(30, 60, GO_BETWEENLEFT, GO_BETWEENFOWARD, 0 );
-                    state = SamplingStateMachine.RobotState.PushBloock;
+                    state = SamplingStateMachine.RobotState.PushBlock;
                 }
                 else if (foundColumn == 2)
                 {
                     this.moveRobot.Start(30, 60,0, GO_FORWARD,0 );
-                    state = SamplingStateMachine.RobotState.PushBloock;
+                    state = SamplingStateMachine.RobotState.PushBlock;
                 }
                 else if (foundColumn == 3 || foundColumn == 4)
                 {
                     this.moveRobot.Start(30, 60, GO_RIGHT, GO_BETWEENFOWARD,0 );
-                    state = SamplingStateMachine.RobotState.PushBloock;
+                    state = SamplingStateMachine.RobotState.PushBlock;
                 }
                 else if (foundColumn == -1 ) {
                     state = SamplingStateMachine.RobotState.CheckScreen;
                     break;
                 }
 
-            case PushBloock:
+            case PushBlock:
+                if (this.moveRobot.IsDone()) {
+                    this.moveRobot.Complete();
+                    state = SamplingStateMachine.RobotState.BackOff;
+                }
+                break;
+
+            case BackOff:
+                this.moveRobot.Start(20, 20, 0, GO_BACK,0);
+                state = RobotState.WaitForBackOff;
+                break ;
+
+            case WaitForBackOff:
                 if (this.moveRobot.IsDone()) {
                     this.moveRobot.Complete();
                     state = SamplingStateMachine.RobotState.Done;
