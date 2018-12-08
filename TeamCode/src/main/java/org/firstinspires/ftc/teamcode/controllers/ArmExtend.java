@@ -17,6 +17,7 @@ public class ArmExtend {
 
     HardwareMecanumBase hwBase;
     Telemetry telemetry;
+    int startValue = 0;
 
     public void init(HardwareMecanumBase hwBase, Telemetry telemetry){
 
@@ -25,19 +26,23 @@ public class ArmExtend {
 
         if (hwBase.ArmExtend != null) {
             hwBase.ArmExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            startValue = hwBase.ArmExtend.getCurrentPosition();
         }
 
 
     }
 
-    public void ExtendingArm(double inches ) {
+    public void ExtendingArm(double encoderTicks, double power ) {
         hwBase.ArmExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-        int newArmExtentLeft = hwBase.ArmExtend.getCurrentPosition() - (int)(inches * HardwareMecanumBase.WHEEL_COUNTS_PER_INCH);
-        hwBase.ArmExtend.setTargetPosition(newArmExtentLeft);
-        hwBase.ArmExtend.setPower(0.5);
+        int newArmExtend = hwBase.ArmExtend.getCurrentPosition() - (int)(encoderTicks);
+        hwBase.ArmExtend.setTargetPosition(newArmExtend);
+        hwBase.ArmExtend.setPower(power);
         telemetry.addData("ArmExtend", " Arm is Extending");
+        telemetry.addData("Start Value", startValue);
+        telemetry.addData("Current Value", newArmExtend);
+
         telemetry.update();
     }
 

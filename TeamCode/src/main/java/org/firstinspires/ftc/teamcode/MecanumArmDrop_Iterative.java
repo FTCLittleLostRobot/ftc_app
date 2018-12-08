@@ -8,6 +8,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 import org.firstinspires.ftc.teamcode.controllers.ArmDropNoEncoder;
@@ -34,6 +35,12 @@ public class MecanumArmDrop_Iterative extends OpMode{
     private float starting_right_y = 0; // this makes the robot rotate
     private org.firstinspires.ftc.teamcode.controllers.ArmDropNoEncoder ArmDropNoEncoder = new ArmDropNoEncoder();
 
+    public Servo servoLeft = null;
+    public Servo servoRight = null;
+    boolean servoLeftActive = false;
+    boolean servoLeftDirection = false;
+    boolean servoRightDirection = false;
+
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -42,7 +49,8 @@ public class MecanumArmDrop_Iterative extends OpMode{
 
         starting_left_y = -gamepad2.left_stick_y;
         starting_right_y= gamepad2.right_stick_y;
-
+        servoLeft = hardwareMap.servo.get("servoLeft");
+        servoRight = hardwareMap.servo.get("servoRight");
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
@@ -58,6 +66,7 @@ public class MecanumArmDrop_Iterative extends OpMode{
      */
     @Override
     public void init_loop() {
+
     }
 
     /*
@@ -103,9 +112,44 @@ public class MecanumArmDrop_Iterative extends OpMode{
         telemetry.update();
 
 
+        
+
         // Send telemetry message to signify robot running;
         //telemetry.addData("LeftArm", "%.2f", left_stick_y);
         telemetry.addData("RightArm", "%.2f", right_stick_y);
+
+        telemetry.addData("Servo is at", servoLeft.getPosition());
+        telemetry.addData("Servo is at", servoRight.getPosition());
+
+        if (gamepad2.left_bumper) {
+            if (servoLeftDirection) {
+                servoLeft.setPosition(servoLeft.getPosition() - (double)0.01);
+            } else
+            {
+                servoLeft.setPosition(servoLeft.getPosition() + (double)0.01);
+            }
+            telemetry.addData("Say", "Left Servo is moving");
+        }
+        else
+        {
+            servoLeftDirection = !servoLeftDirection;
+        }
+
+
+        if (gamepad2.right_bumper) {
+            if (servoRightDirection){
+                servoRight.setPosition(servoRight.getPosition() - (double)0.01);
+            }else {
+
+                servoRight.setPosition(servoRight.getPosition() + (double)0.01);
+            }
+            telemetry.addData("Say", "Right Servo is moving");
+
+        }else
+        {
+            servoRightDirection = !servoRightDirection;
+        }
+
 
     }
 
