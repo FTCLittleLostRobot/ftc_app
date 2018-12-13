@@ -12,7 +12,7 @@ public class ArmExtendStateMachine {
 
     Telemetry telemetry;
     ArmExtendStateMachine.RobotState state;
-    private ArmExtend armExtend= new ArmExtend();
+    private ArmExtend armExtend = new ArmExtend();
     HardwareMecanumBase robot = new HardwareMecanumBase(); // use the class created to define a Pushbot's hardware
 
     private static enum RobotState {

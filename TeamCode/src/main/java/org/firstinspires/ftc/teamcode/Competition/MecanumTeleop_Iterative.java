@@ -42,13 +42,13 @@ public class MecanumTeleop_Iterative extends OpMode{
     private float starting_left_y = 0;  //this makes the robot go forwards and backwards
     private float starting_right_x = 0; // this makes the robot rotate
     private boolean ButtonCheck = false;    //left and right bumper; faster, slower
-    public Servo servoLeft = null;
-    public Servo servoRight = null;
-    boolean servoLeftActive = false;
-    boolean servoLeftDirection = false;
-    boolean servoRightDirection = false;
-    boolean servoLeftDirectionActual = false;
-    boolean servoRightDirectionActual = false;
+    private Servo servoLeft = null;
+    private Servo servoRight = null;
+    private boolean servoLeftActive = false;
+    private boolean servoLeftDirection = false;
+    private boolean servoRightDirection = false;
+    private boolean servoLeftDirectionActual = false;
+    private boolean servoRightDirectionActual = false;
 
 
     /*
@@ -73,7 +73,6 @@ public class MecanumTeleop_Iterative extends OpMode{
         armDropEncoderRight.init(robot.ArmDropRight, telemetry, false);
         servoLeft = hardwareMap.servo.get("servoLeft");
         servoRight = hardwareMap.servo.get("servoRight");
-
 
         /* Step 4: Setup of state machines  */
         // NONE

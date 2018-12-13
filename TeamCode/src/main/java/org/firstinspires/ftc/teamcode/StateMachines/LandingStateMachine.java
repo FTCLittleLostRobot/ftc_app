@@ -26,7 +26,7 @@ public class LandingStateMachine {
         Start,
         Drop,
         WaitForDrop,
-        ChechInitalColumn,
+        CheckInitalColumn,
         WaitForInitalCheck,
         Unhook,
         WaitForUnhook,
@@ -46,7 +46,7 @@ public class LandingStateMachine {
         ColorFinder colorFinder = new ColorFinder();
         colorFinder.init(robot.hardwareMap);
         this.colorFinderStateMachine = new ColorFindStateMachine();
-        this.colorFinderStateMachine.init(telemetry,colorFinder);
+        this.colorFinderStateMachine.init(telemetry, colorFinder);
     }
 
     public void Start()
@@ -72,16 +72,17 @@ public class LandingStateMachine {
             case WaitForDrop:
                 if (this.lander.IsDone()) {
                     this.lander.Complete();
-                    state = RobotState.ChechInitalColumn;
+                    state = RobotState.CheckInitalColumn;
                 }
                 break;
 
-            case ChechInitalColumn:
+            case CheckInitalColumn:
                 this.colorFinderStateMachine.Start();
                 state = RobotState.WaitForInitalCheck;
                 break;
 
             case WaitForInitalCheck:
+                colorFinderStateMachine.ProcessState();
                 if (this.colorFinderStateMachine.IsDone()){
                     this.firstFoundColumn = this.colorFinderStateMachine.GetFoundColumn();
                     state = RobotState.Unhook;
@@ -106,6 +107,7 @@ public class LandingStateMachine {
                 break;
 
             case WaitForFinalColumn:
+                this.colorFinderStateMachine.ProcessState();
                 if (this.colorFinderStateMachine.IsDone()) {
                     int finalColumn = this.colorFinderStateMachine.GetFoundColumn();
                     if (finalColumn != this.firstFoundColumn)

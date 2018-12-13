@@ -56,9 +56,7 @@ public class SamplingStateMachine {
 
         telemetry.addData("Say", "Hello Driver");    //
         state = SamplingStateMachine.RobotState.Start;
-
     }
-
 
     public void Start()
     {
@@ -76,7 +74,6 @@ public class SamplingStateMachine {
 
         switch (state)
         {
-
             case StepOut:
                 this.moveRobot.Start(20, 0.25, GO_LEFT, GO_BETWEENFOWARD, 0 );
                 state = SamplingStateMachine.RobotState.SteppingOut;
