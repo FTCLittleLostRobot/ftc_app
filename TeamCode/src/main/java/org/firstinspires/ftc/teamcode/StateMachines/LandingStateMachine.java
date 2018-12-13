@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.robot.Robot;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
+import org.firstinspires.ftc.teamcode.controllers.ColorFinder;
 import org.firstinspires.ftc.teamcode.controllers.LanderEncoder;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 
@@ -19,14 +20,18 @@ public class LandingStateMachine {
     private LanderEncoder lander    = null;
     private MecanumMove moveRobot    = null;
     HardwareMecanumBase robot = new HardwareMecanumBase(); // use the class created to define a Pushbot's hardware
-
+    ColorFindStateMachine colorFinderStateMachine = null;
+    private int firstFoundColumn = -1;
     private static enum RobotState {
         Start,
-       // RaiseArm,
         Drop,
         WaitForDrop,
+        ChechInitalColumn,
+        WaitForInitalCheck,
         Unhook,
         WaitForUnhook,
+        CheckForFinalColumn,
+        WaitForFinalColumn,
         Done
     }
 
@@ -37,6 +42,11 @@ public class LandingStateMachine {
         this.moveRobot = mecanumMove;
         state = RobotState.Start;
         this.robot = robot;
+
+        ColorFinder colorFinder = new ColorFinder();
+        colorFinder.init(robot.hardwareMap);
+        this.colorFinderStateMachine = new ColorFindStateMachine();
+        this.colorFinderStateMachine.init(telemetry,colorFinder);
     }
 
     public void Start()
@@ -44,16 +54,6 @@ public class LandingStateMachine {
         state = RobotState.Drop;
     }
 
- /*   public void RaiseArm() {
-        robot.ArmDropLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.ArmDropLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        int newLiftTarget = robot.ArmDropLeft.getCurrentPosition();
-        robot.ArmDropLeft.setTargetPosition(252);
-        robot.ArmDropLeft.setPower(0.75);
-        telemetry.addData("ArmDrop", "Left is going to position");
-        telemetry.update();
-        state = RobotState.Drop;
-    }*/
     public boolean IsDone()
     {
         return (state == RobotState.Done);
@@ -64,17 +64,6 @@ public class LandingStateMachine {
         telemetry.addData("Current Landing State", state.toString());
 
         switch (state) {
-            /*case RaiseArm:
-                robot.ArmDropLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                robot.ArmDropLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                int newLiftTarget = robot.ArmDropLeft.getCurrentPosition();
-                robot.ArmDropLeft.setTargetPosition(252);
-                robot.ArmDropLeft.setPower(0.75);
-                telemetry.addData("ArmDrop", "Left is going to position");
-                telemetry.update();
-                state = RobotState.Drop;
-                break;
-                */
             case Drop:
                 this.lander.DoLand(2);
                 state = RobotState.WaitForDrop;
@@ -83,6 +72,18 @@ public class LandingStateMachine {
             case WaitForDrop:
                 if (this.lander.IsDone()) {
                     this.lander.Complete();
+                    state = RobotState.ChechInitalColumn;
+                }
+                break;
+
+            case ChechInitalColumn:
+                this.colorFinderStateMachine.Start();
+                state = RobotState.WaitForInitalCheck;
+                break;
+
+            case WaitForInitalCheck:
+                if (this.colorFinderStateMachine.IsDone()){
+                    this.firstFoundColumn = this.colorFinderStateMachine.GetFoundColumn();
                     state = RobotState.Unhook;
                 }
                 break;
@@ -93,14 +94,30 @@ public class LandingStateMachine {
                 break;
 
             case WaitForUnhook:
-                if (this.moveRobot.IsDone()) {
+                if (this.moveRobot.IsDone()){
                     this.moveRobot.Complete();
-                    state = RobotState.Done;
+                    state = RobotState.CheckForFinalColumn;
                 }
                 break;
 
-            case Done:
-                state = RobotState.Done;
+            case CheckForFinalColumn:
+                this.colorFinderStateMachine.Start();
+                state = RobotState.WaitForFinalColumn;
+                break;
+
+            case WaitForFinalColumn:
+                if (this.colorFinderStateMachine.IsDone()) {
+                    int finalColumn = this.colorFinderStateMachine.GetFoundColumn();
+                    if (finalColumn != this.firstFoundColumn)
+                    {
+                        state = RobotState.Done;
+                    }
+                    else
+                    {
+                        state = RobotState.Unhook;
+                    }
+                }
+
                 break;
         }
     }
