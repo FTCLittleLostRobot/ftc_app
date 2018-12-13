@@ -125,7 +125,7 @@ public class HardwareMecanumBase {
 
         ArmDropLeft = hardwareMap.tryGet(DcMotor.class, "ArmDropLeft");
         if (ArmDropLeft != null) {
-            ArmDropLeft.setDirection(DcMotor.Direction.FORWARD);
+            ArmDropLeft.setDirection(DcMotor.Direction.REVERSE);
         }
 
         ResetMotors();

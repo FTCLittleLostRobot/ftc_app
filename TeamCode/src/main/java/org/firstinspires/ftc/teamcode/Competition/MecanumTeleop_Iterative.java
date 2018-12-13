@@ -7,6 +7,12 @@ package org.firstinspires.ftc.teamcode.Competition;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.controllers.ArmDropEncoder;
+import org.firstinspires.ftc.teamcode.controllers.ArmDropNoEncoder;
+import org.firstinspires.ftc.teamcode.controllers.ArmExtend;
 import org.firstinspires.ftc.teamcode.controllers.LanderNoEncoder;
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 
@@ -25,29 +31,54 @@ import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 public class MecanumTeleop_Iterative extends OpMode{
 
     /* Declare OpMode members. */
-    private HardwareMecanumBase robot       = new HardwareMecanumBase(); // use the class created to define a Mencanums 's hardware
+    private HardwareMecanumBase robot = null;
+    private ArmDropEncoder armDropEncoderRight = null;
+    private ArmDropEncoder armDropEncoderLeft = null;
+    private ArmDropNoEncoder ArmDropNoEncoder = null;
+    private ArmExtend armExtend = null;
+    private LanderNoEncoder lander = null;//used for lifting and droping
+
     private float starting_left_x = 0;  //this makes the robot strafe right and left
     private float starting_left_y = 0;  //this makes the robot go forwards and backwards
     private float starting_right_x = 0; // this makes the robot rotate
     private boolean ButtonCheck = false;    //left and right bumper; faster, slower
-    private LanderNoEncoder lander    = new LanderNoEncoder();    //used for lifting and droping
+    public Servo servoLeft = null;
+    public Servo servoRight = null;
+    boolean servoLeftActive = false;
+    boolean servoLeftDirection = false;
+    boolean servoRightDirection = false;
+
 
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
+        /* Step 1: Setup of variables  */
+        armDropEncoderRight = new ArmDropEncoder();
+        armDropEncoderLeft = new ArmDropEncoder();
+        lander = new LanderNoEncoder();
+        armExtend = new ArmExtend();
+        robot = new HardwareMecanumBase();
+
+        /* Step 2: Setup of hardware  */
+        robot.init(hardwareMap);
+
+        /* Step 3: Setup of controllers  */
+        lander.init(robot, telemetry);
+        this.armExtend.init(robot, telemetry);
+        armDropEncoderLeft.init(robot.ArmDropLeft, telemetry, true);
+        armDropEncoderRight.init(robot.ArmDropRight, telemetry, false);
+        servoLeft = hardwareMap.servo.get("servoLeft");
+        servoRight = hardwareMap.servo.get("servoRight");
+
+
+        /* Step 4: Setup of state machines  */
+        // NONE
 
         starting_left_x = -gamepad1.left_stick_x;
         starting_left_y = gamepad1.left_stick_y;
         starting_right_x= -gamepad1.right_stick_x;
-
-
-        /* Initialize the hardware variables.
-         * The init() method of the hardware class does all the work here
-         */
-        robot.init(hardwareMap);
-        lander.init(robot, telemetry);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //this shows the robot is ready
@@ -78,6 +109,9 @@ public class MecanumTeleop_Iterative extends OpMode{
         double right_stick_x;
         boolean left_bumper;    //boolean means it can only be true or false
         boolean right_bumper;
+        armDropEncoderLeft.ArmDrop(gamepad2.left_stick_y);
+        armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
+
 
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
@@ -126,6 +160,59 @@ public class MecanumTeleop_Iterative extends OpMode{
         else {
             robot.lift.setPower(0);
         }
+        if (gamepad2.dpad_up) {
+            robot.ArmExtend.setDirection(DcMotor.Direction.FORWARD);
+            armExtend.ExtendingArm(100, 0.1);
+        }
+        else{
+            robot.ArmExtend.setDirection(DcMotor.Direction.FORWARD);
+            robot.ArmExtend.setPower(0);
+
+        }
+
+        if (gamepad2.dpad_down){
+            robot.ArmExtend.setDirection(DcMotor.Direction.REVERSE);
+            armExtend.ExtendingArm(100, 0.1);
+        }
+
+
+
+        if (gamepad2.left_bumper) {
+            if (servoLeftDirection) {
+                servoLeft.setPosition(servoLeft.getPosition() - (double)0.01);
+            } else
+            {
+                servoLeft.setPosition(servoLeft.getPosition() + (double)0.01);
+            }
+            telemetry.addData("Say", "Left Servo is moving");
+        }
+        else
+        {
+            servoLeftDirection = !servoLeftDirection;
+        }
+
+
+        if (gamepad2.right_bumper) {
+            if (servoRightDirection){
+                servoRight.setPosition(servoRight.getPosition() - (double)0.01);
+            }else {
+
+                servoRight.setPosition(servoRight.getPosition() + (double)0.01);
+            }
+            telemetry.addData("Say", "Right Servo is moving");
+
+        }else
+        {
+            servoRightDirection = !servoRightDirection;
+        }
+
+        armDropEncoderLeft.ArmDrop(gamepad2.left_stick_y);
+        armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
+
+        telemetry.addData("Servo is at", servoLeft.getPosition());
+        telemetry.addData("Servo is at", servoRight.getPosition());
+
+
 
         robot.MoveMecanum(left_stick_x, left_stick_y, right_stick_x);
 

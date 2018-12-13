@@ -12,8 +12,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 import org.firstinspires.ftc.teamcode.controllers.ArmDropNoEncoder;
-import org.firstinspires.ftc.teamcode.controllers.ArmDropNoEncoder;
-import org.firstinspires.ftc.teamcode.controllers.LanderNoEncoder;
 
 /**
  * This file provides basic Telop driving for the testing Mencanum robot.

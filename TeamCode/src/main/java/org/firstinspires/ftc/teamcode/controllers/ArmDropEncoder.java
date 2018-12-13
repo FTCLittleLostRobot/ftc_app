@@ -15,55 +15,85 @@ import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 public class ArmDropEncoder {
 
 
-    HardwareMecanumBase hwBase;
+    DcMotor arm = null;
     Telemetry telemetry;
+    int startValue = 0;
+    double maxValue = 550.0;
+    boolean recordReadings = false;
 
-    public void init(HardwareMecanumBase hwBase, Telemetry telemetry){
+    public void init(DcMotor armToMove, Telemetry telemetry, boolean recordReadings){
 
-        this.hwBase = hwBase;
         this.telemetry = telemetry;
+        this.arm = armToMove;
+        this.recordReadings = recordReadings;
 
-        if (hwBase.ArmDropLeft != null) {
-            hwBase.ArmDropLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        if (armToMove != null) {
+            arm.setPower(0);
+            armToMove.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            startValue = armToMove.getCurrentPosition();
+        }
+    }
+
+    public void ArmDrop(double yPosition ) {
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        int encoderRangeValue = arm.getCurrentPosition();
+
+        if (yPosition <= -0.75) {
+            encoderRangeValue = 430;
         }
 
-        if (hwBase.ArmDropRight != null) {
-            hwBase.ArmDropRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        if (yPosition > -0.75 && yPosition < -0.1) {
+            encoderRangeValue = 350;
         }
 
+
+        if (yPosition <= 0.75 && yPosition > 0.1) {
+            encoderRangeValue = 200;
+        }
+        if (yPosition > 0.75) {
+            encoderRangeValue = 100;
+        }
+
+    /*    // Convert the joystick -1 to 1 range to a # of units of movement from 0 to 2.
+        double positionInUnits = yPosition + 1.0;
+
+        // Remap the Y value (from 0-2 range) to be within the 0-640(or whatever) encoder range
+        // treating this like two ratios and solving for x (in this case, y)
+        int encoderRangeValue = (int) ((positionInUnits * this.maxValue) / 2.0); */
+
+        // The target value expected is now determined, but the motor is always inc/decreasing
+        // so we need to shift the target value to be the motor's initial  starting position +
+        // the new value
+        int newPosition = encoderRangeValue + this.startValue;
+
+        if (yPosition <= 0.1 && yPosition >= -0.1) {
+            // do nothing
+        }
+        else
+        {
+            arm.setTargetPosition(newPosition);
+            arm.setPower(0.1);
+        }
+
+        if (recordReadings) {
+            telemetry.addData("Y Position", yPosition);
+            telemetry.addData("Start Value", startValue);
+            telemetry.addData("Max Value", maxValue);
+            telemetry.addData("Get Current Postion", arm.getCurrentPosition());
+            //telemetry.addData("1 - Position in Units", positionInUnits);
+           // telemetry.addData("2 - Encoder Range Value", encoderRangeValue);
+          //  telemetry.addData("3 - New Position", newPosition);
+            telemetry.update();
+        }
     }
 
-    public void ArmDropRight(double inches ) {
-        hwBase.ArmDropRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        int newArmDropRightTarget = hwBase.ArmDropRight.getCurrentPosition() - (int)(inches * HardwareMecanumBase.LIFT_COUNTS_PER_INCH);
-        hwBase.ArmDropRight.setTargetPosition(newArmDropRightTarget);
-        hwBase.ArmDropRight.setPower(0.01);
-        telemetry.addData("ArmDropTarget", newArmDropRightTarget);
-        telemetry.addData("ArmDrop", "Right arm is moving");
-        telemetry.update();
-    }
-
-    public void ArmDropLeft(int inches) {
-        hwBase.ArmDropLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        int newArmDropLeftTarget = hwBase.ArmDropLeft.getCurrentPosition() + (int)(inches * HardwareMecanumBase.LIFT_COUNTS_PER_INCH);
-        hwBase.ArmDropLeft.setTargetPosition(newArmDropLeftTarget);
-        hwBase.ArmDropLeft.setPower(0.01);
-        telemetry.addData("ArmDrop", "Left arm is moving");
-        telemetry.update();
-    }
-
-    public boolean IsDoneRight() {
-        return (!hwBase.ArmDropRight.isBusy());
-    }
-
-    public boolean IsDoneLeft() {
-        return (!hwBase.ArmDropLeft.isBusy());
+    public boolean IsDone() {
+        return (!arm.isBusy());
     }
 
     public void Complete() {
         // Stop all motion;
-        hwBase.ArmDropLeft.setPower(0);
-        hwBase.ArmDropRight.setPower(0);
+        arm.setPower(0);
     }
 
 

@@ -26,7 +26,6 @@ public class MecanumArmExtend_Teleop extends OpMode {
 
     /* Declare OpMode members. */
     private HardwareMecanumBase robot = new HardwareMecanumBase(); // use the class created to define a Mencanums 's hardware
-    private LanderNoEncoder lander = new LanderNoEncoder();
     private ArmExtend armExtend = new ArmExtend();
 
     /*
@@ -35,7 +34,6 @@ public class MecanumArmExtend_Teleop extends OpMode {
     @Override
     public void init() {
         robot.init(hardwareMap);
-        this.lander.init(robot, telemetry);
         this.armExtend.init(robot, telemetry);
 
 
@@ -47,7 +45,6 @@ public class MecanumArmExtend_Teleop extends OpMode {
     @Override
     public void loop () {
 
-        // this moves the right front wheel; You need to press the left up
         if (gamepad2.dpad_up) {
             robot.ArmExtend.setDirection(DcMotor.Direction.FORWARD);
             armExtend.ExtendingArm(100, 0.1);
