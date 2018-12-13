@@ -6,6 +6,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -21,7 +22,7 @@ import org.firstinspires.ftc.teamcode.controllers.LanderNoEncoder;
  */
 
 @TeleOp(name="Mecanum: Arm Extend", group="TestingMecanum")
-
+@Disabled
 public class MecanumArmExtend_Teleop extends OpMode {
 
     /* Declare OpMode members. */

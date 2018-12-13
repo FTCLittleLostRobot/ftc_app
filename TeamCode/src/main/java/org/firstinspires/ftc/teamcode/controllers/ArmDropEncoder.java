@@ -39,19 +39,19 @@ public class ArmDropEncoder {
         int encoderRangeValue = arm.getCurrentPosition();
 
         if (yPosition <= -0.75) {
-            encoderRangeValue = 430;
+            encoderRangeValue = 550;
         }
 
         if (yPosition > -0.75 && yPosition < -0.1) {
-            encoderRangeValue = 350;
+            encoderRangeValue = 490;
         }
 
 
         if (yPosition <= 0.75 && yPosition > 0.1) {
-            encoderRangeValue = 200;
+            encoderRangeValue = 260;
         }
         if (yPosition > 0.75) {
-            encoderRangeValue = 100;
+            encoderRangeValue = 50;
         }
 
     /*    // Convert the joystick -1 to 1 range to a # of units of movement from 0 to 2.
@@ -67,10 +67,13 @@ public class ArmDropEncoder {
         int newPosition = encoderRangeValue + this.startValue;
 
         if (yPosition <= 0.1 && yPosition >= -0.1) {
+            arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            arm.setPower(0);
             // do nothing
         }
         else
         {
+            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             arm.setTargetPosition(newPosition);
             arm.setPower(0.1);
         }
@@ -83,7 +86,6 @@ public class ArmDropEncoder {
             //telemetry.addData("1 - Position in Units", positionInUnits);
            // telemetry.addData("2 - Encoder Range Value", encoderRangeValue);
           //  telemetry.addData("3 - New Position", newPosition);
-            telemetry.update();
         }
     }
 

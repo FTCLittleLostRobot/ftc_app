@@ -42,6 +42,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @Autonomous(name="Test: Motor Encoder RunTo", group="Mencanum")
+@Disabled
 public class SensorMotorEncoder_Test extends OpMode {
 
     DcMotor motorToTest = null;

@@ -5,6 +5,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -25,6 +26,7 @@ import org.firstinspires.ftc.teamcode.controllers.ArmDropNoEncoder;
  */
 
 @TeleOp(name="TestingMecanum: ArmDrop", group="TestingMecanum")
+@Disabled
 public class MecanumArmDrop_Iterative extends OpMode{
 
     /* Declare OpMode members. */

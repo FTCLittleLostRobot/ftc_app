@@ -27,7 +27,7 @@ import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="TestingMecanum: Teleop", group="TestingMecanum")
+@TeleOp(name="Mecanum: Teleop", group="Mecanum")
 public class MecanumTeleop_Iterative extends OpMode{
 
     /* Declare OpMode members. */
@@ -47,6 +47,8 @@ public class MecanumTeleop_Iterative extends OpMode{
     boolean servoLeftActive = false;
     boolean servoLeftDirection = false;
     boolean servoRightDirection = false;
+    boolean servoLeftDirectionActual = false;
+    boolean servoRightDirectionActual = false;
 
 
     /*
@@ -178,39 +180,39 @@ public class MecanumTeleop_Iterative extends OpMode{
 
 
         if (gamepad2.left_bumper) {
-            if (servoLeftDirection) {
-                servoLeft.setPosition(servoLeft.getPosition() - (double)0.01);
+            servoLeftDirectionActual = servoLeftDirection;
+            if (servoLeftDirectionActual) {
+                servoLeft.setPosition(servoLeft.getPosition() - (double)0.4);
             } else
             {
-                servoLeft.setPosition(servoLeft.getPosition() + (double)0.01);
+                servoLeft.setPosition(servoLeft.getPosition() + (double)0.4);
             }
             telemetry.addData("Say", "Left Servo is moving");
         }
         else
         {
-            servoLeftDirection = !servoLeftDirection;
+            servoLeftDirection = !servoLeftDirectionActual;
         }
 
 
         if (gamepad2.right_bumper) {
-            if (servoRightDirection){
-                servoRight.setPosition(servoRight.getPosition() - (double)0.01);
+            servoRightDirectionActual = servoRightDirection;
+            if (servoRightDirectionActual){
+                servoRight.setPosition(servoRight.getPosition() - (double)0.5);
             }else {
 
-                servoRight.setPosition(servoRight.getPosition() + (double)0.01);
+                servoRight.setPosition(servoRight.getPosition() + (double)0.5);
             }
             telemetry.addData("Say", "Right Servo is moving");
 
         }else
         {
-            servoRightDirection = !servoRightDirection;
+            servoRightDirection = !servoRightDirectionActual;
         }
 
         armDropEncoderLeft.ArmDrop(gamepad2.left_stick_y);
         armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
 
-        telemetry.addData("Servo is at", servoLeft.getPosition());
-        telemetry.addData("Servo is at", servoRight.getPosition());
 
 
 
@@ -223,6 +225,9 @@ public class MecanumTeleop_Iterative extends OpMode{
         telemetry.addData("left_bumper", left_bumper);
         telemetry.addData("right_bumper", right_bumper);
         telemetry.addData("SpeedMultplier", robot.SpeedMultiplier);
+        telemetry.addData("Left Servo is at", servoLeft.getPosition());
+        telemetry.addData("Right Servo is at", servoRight.getPosition());
+
 
     }
 
