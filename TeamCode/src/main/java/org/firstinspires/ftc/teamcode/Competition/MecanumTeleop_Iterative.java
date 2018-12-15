@@ -153,11 +153,9 @@ public class MecanumTeleop_Iterative extends OpMode{
         if (gamepad2.a){
             lander.DoLand();
         }
-
-        if (gamepad2.y) {
+        else if (gamepad2.y) {
             lander.GoUp();
         }
-
         else {
             robot.lift.setPower(0);
         }

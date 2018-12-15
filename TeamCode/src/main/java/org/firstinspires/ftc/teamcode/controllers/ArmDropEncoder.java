@@ -18,7 +18,6 @@ public class ArmDropEncoder {
     DcMotor arm = null;
     Telemetry telemetry;
     int startValue = 0;
-    double maxValue = 550.0;
     boolean recordReadings = false;
 
     public void init(DcMotor armToMove, Telemetry telemetry, boolean recordReadings){
@@ -40,18 +39,26 @@ public class ArmDropEncoder {
 
         if (yPosition <= -0.75) {
             encoderRangeValue = 550;
+      //      encoderRangeValue = 3500;
+
         }
 
         if (yPosition > -0.75 && yPosition < -0.1) {
             encoderRangeValue = 490;
+       //     encoderRangeValue = 2000;
+
         }
 
 
         if (yPosition <= 0.75 && yPosition > 0.1) {
             encoderRangeValue = 260;
+       //      encoderRangeValue = 340;
+
         }
         if (yPosition > 0.75) {
             encoderRangeValue = 50;
+        //    encoderRangeValue = 150;
+
         }
 
     /*    // Convert the joystick -1 to 1 range to a # of units of movement from 0 to 2.
@@ -80,8 +87,6 @@ public class ArmDropEncoder {
 
         if (recordReadings) {
             telemetry.addData("Y Position", yPosition);
-            telemetry.addData("Start Value", startValue);
-            telemetry.addData("Max Value", maxValue);
             telemetry.addData("Get Current Postion", arm.getCurrentPosition());
             //telemetry.addData("1 - Position in Units", positionInUnits);
            // telemetry.addData("2 - Encoder Range Value", encoderRangeValue);
