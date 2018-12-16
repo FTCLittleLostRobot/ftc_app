@@ -25,7 +25,7 @@ public class SamplingStateMachine {
     static final double GO_BACK = 1;
     static final double GO_RIGHT = -0.95;
     static final double GO_LEFT = 1.9;
-    static final double GO_BETWEENLEFT = 0.99;
+    static final double GO_BETWEENLEFT = 1.05;
     static final double GO_HALFFOWARD = -0.5;
     static final double GO_BETWEENFOWARD = -0.94;
     private Image vuforiaImageObject;
@@ -122,7 +122,7 @@ public class SamplingStateMachine {
                 //In this the robot is checking the phone for what column the yellow square is in
                 if (foundColumn == 0  || foundColumn == 1)
                 {
-                    this.moveRobot.Start(25, 18, GO_BETWEENLEFT, GO_FORWARD,0 );
+                    this.moveRobot.Start(30, 22, GO_BETWEENLEFT, GO_FORWARD,0 );
                     state = SamplingStateMachine.RobotState.WaitForPushFoward;
                 }
                 else if (foundColumn == 2)
