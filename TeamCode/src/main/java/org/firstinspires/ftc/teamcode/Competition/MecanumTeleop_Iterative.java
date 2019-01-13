@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-
+import org.firstinspires.ftc.teamcode.controllers.ArmDropEncoderShift;
 import org.firstinspires.ftc.teamcode.controllers.ArmDropEncoder;
 import org.firstinspires.ftc.teamcode.controllers.ArmDropNoEncoder;
 import org.firstinspires.ftc.teamcode.controllers.ArmExtend;
@@ -33,6 +33,7 @@ public class MecanumTeleop_Iterative extends OpMode{
     /* Declare OpMode members. */
     private HardwareMecanumBase robot = null;
     private ArmDropEncoder armDropEncoderRight = null;
+    private ArmDropEncoderShift armDropEncoderShift = null;
     private ArmDropEncoder armDropEncoderLeft = null;
     private ArmDropNoEncoder ArmDropNoEncoder = null;
     private ArmExtend armExtend = null;
@@ -59,6 +60,7 @@ public class MecanumTeleop_Iterative extends OpMode{
         /* Step 1: Setup of variables  */
         armDropEncoderRight = new ArmDropEncoder();
         armDropEncoderLeft = new ArmDropEncoder();
+        armDropEncoderShift = new ArmDropEncoderShift();
         lander = new LanderNoEncoder();
         armExtend = new ArmExtend();
         robot = new HardwareMecanumBase();
@@ -69,8 +71,9 @@ public class MecanumTeleop_Iterative extends OpMode{
         /* Step 3: Setup of controllers  */
         lander.init(robot, telemetry);
         this.armExtend.init(robot, telemetry);
-        armDropEncoderLeft.init(robot.ArmDropLeft, telemetry, true);
-        armDropEncoderRight.init(robot.ArmDropRight, telemetry, false);
+        armDropEncoderLeft.init(robot.ArmDropLeft, telemetry, false);
+        armDropEncoderRight.init(robot.ArmDropRight, telemetry, true);
+        armDropEncoderShift.init(robot.ArmDropRight, telemetry, true);
         servoLeft = hardwareMap.servo.get("servoLeft");
         servoRight = hardwareMap.servo.get("servoRight");
 
@@ -110,8 +113,9 @@ public class MecanumTeleop_Iterative extends OpMode{
         double right_stick_x;
         boolean left_bumper;    //boolean means it can only be true or false
         boolean right_bumper;
-        armDropEncoderLeft.ArmDrop(gamepad2.left_stick_y);
+        //armDropEncoderLeft.ArmDrop(gamepad2.left_stick_y);
         armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
+        armDropEncoderShift.ArmDrop(gamepad2.right_stick_y);
 
 
 
@@ -209,7 +213,7 @@ public class MecanumTeleop_Iterative extends OpMode{
 
         armDropEncoderLeft.ArmDrop(gamepad2.left_stick_y);
         armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
-
+        //armDropEncoderShift.ArmDrop(gamepad2.right_stick_y);
 
 
 

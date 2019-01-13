@@ -10,21 +10,23 @@ package org.firstinspires.ftc.teamcode.controllers;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 
-public class ArmDropEncoder {
+public class ArmDropEncoderShift {
 
 
     DcMotor arm = null;
     Telemetry telemetry;
     int startValue = 0;
     boolean recordReadings = false;
+    int shiftValue = 1;
+    boolean isShifting = false;
 
     public void init(DcMotor armToMove, Telemetry telemetry, boolean recordReadings){
 
         this.telemetry = telemetry;
         this.arm = armToMove;
         this.recordReadings = recordReadings;
+        this.shiftValue = shiftValue;
 
         if (armToMove != null) {
             arm.setPower(0);
@@ -37,27 +39,50 @@ public class ArmDropEncoder {
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         int encoderRangeValue = arm.getCurrentPosition();
 
-        if (yPosition <= -0.75) {
+       if (yPosition > -.75 || yPosition < .75) {
+           isShifting = false;
+       }
+
+       if (isShifting == false) {
+
+           if (yPosition >= .75) {
+               isShifting = true;
+               shiftValue = (shiftValue + 1);
+
+           } else if (yPosition <= -0.75) {
+               isShifting = true;
+               shiftValue = (shiftValue - 1);
+           }
+       }
+
+     if (shiftValue >= 5){
+           shiftValue = 4;
+     }
+
+     if (shiftValue <= 0){
+           shiftValue = 1;
+     }
+
+
+
+
+        if (shiftValue == 4) {
             encoderRangeValue = -530;
-      //      encoderRangeValue = 3500;
 
         }
 
-        if (yPosition > -0.75 && yPosition < -0.1) {
+        if (shiftValue == 3) {
             encoderRangeValue = -440;
-       //     encoderRangeValue = 2000;
 
         }
 
 
-        if (yPosition <= 0.75 && yPosition > 0.1) {
+        if (shiftValue == 2) {
             encoderRangeValue = -160;
-       //      encoderRangeValue = 340;
 
         }
-        if (yPosition > 0.75) {
+        if (shiftValue == 1) {
             encoderRangeValue = -50;
-       //     encoderRangeValue = 150;
 
         }
 
