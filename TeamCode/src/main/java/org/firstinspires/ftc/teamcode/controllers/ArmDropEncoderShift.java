@@ -39,8 +39,9 @@ public class ArmDropEncoderShift {
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         int encoderRangeValue = arm.getCurrentPosition();
 
-       if (yPosition > -.75 || yPosition < .75) {
+       if (yPosition > -.75 && yPosition < .75) {
            isShifting = false;
+           return;
        }
 
        if (isShifting == false) {
@@ -78,7 +79,7 @@ public class ArmDropEncoderShift {
 
 
         if (shiftValue == 2) {
-            encoderRangeValue = -160;
+            encoderRangeValue = -120;
 
         }
         if (shiftValue == 1) {
@@ -114,6 +115,8 @@ public class ArmDropEncoderShift {
         if (recordReadings) {
             telemetry.addData("Y Position", yPosition);
             telemetry.addData("Get Current Postion", arm.getCurrentPosition());
+            telemetry.addData("Shift value", shiftValue);
+            telemetry.addData("isShifting", isShifting);
             //telemetry.addData("1 - Position in Units", positionInUnits);
            // telemetry.addData("2 - Encoder Range Value", encoderRangeValue);
           //  telemetry.addData("3 - New Position", newPosition);

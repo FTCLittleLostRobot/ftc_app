@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.controllers.ArmDropEncoderShift;
 import org.firstinspires.ftc.teamcode.controllers.ArmDropEncoder;
 import org.firstinspires.ftc.teamcode.controllers.ArmDropNoEncoder;
@@ -32,8 +34,8 @@ public class MecanumTeleop_Iterative extends OpMode{
 
     /* Declare OpMode members. */
     private HardwareMecanumBase robot = null;
-    private ArmDropEncoder armDropEncoderRight = null;
-    private ArmDropEncoderShift armDropEncoderShift = null;
+    //private ArmDropEncoder armDropEncoderRight = null;
+    private ArmDropEncoderShift armDropEncoderShiftLeft = null;
     private ArmDropEncoder armDropEncoderLeft = null;
     private ArmDropNoEncoder ArmDropNoEncoder = null;
     private ArmExtend armExtend = null;
@@ -58,9 +60,9 @@ public class MecanumTeleop_Iterative extends OpMode{
     @Override
     public void init() {
         /* Step 1: Setup of variables  */
-        armDropEncoderRight = new ArmDropEncoder();
-        armDropEncoderLeft = new ArmDropEncoder();
-        armDropEncoderShift = new ArmDropEncoderShift();
+        //armDropEncoderRight = new ArmDropEncoder();
+        //armDropEncoderLeft = new ArmDropEncoder();
+        armDropEncoderShiftLeft = new ArmDropEncoderShift();
         lander = new LanderNoEncoder();
         armExtend = new ArmExtend();
         robot = new HardwareMecanumBase();
@@ -71,9 +73,10 @@ public class MecanumTeleop_Iterative extends OpMode{
         /* Step 3: Setup of controllers  */
         lander.init(robot, telemetry);
         this.armExtend.init(robot, telemetry);
-        armDropEncoderLeft.init(robot.ArmDropLeft, telemetry, false);
-        armDropEncoderRight.init(robot.ArmDropRight, telemetry, true);
-        armDropEncoderShift.init(robot.ArmDropRight, telemetry, true);
+        // armDropEncoderLeft.init(robot.ArmDropLeft, telemetry, false);
+        //armDropEncoderRight.init(robot.ArmDropRight, telemetry, true);
+        //armDropEncoderShift.init(robot.ArmDropRight, telemetry, true);
+        armDropEncoderShiftLeft.init(robot.ArmDropLeft, telemetry, true);
         servoLeft = hardwareMap.servo.get("servoLeft");
         servoRight = hardwareMap.servo.get("servoRight");
 
@@ -114,8 +117,8 @@ public class MecanumTeleop_Iterative extends OpMode{
         boolean left_bumper;    //boolean means it can only be true or false
         boolean right_bumper;
         //armDropEncoderLeft.ArmDrop(gamepad2.left_stick_y);
-        armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
-        armDropEncoderShift.ArmDrop(gamepad2.right_stick_y);
+        //armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
+        armDropEncoderShiftLeft.ArmDrop(gamepad2.left_stick_y);
 
 
 
@@ -211,20 +214,21 @@ public class MecanumTeleop_Iterative extends OpMode{
             servoRightDirection = !servoRightDirectionActual;
         }
 
-        armDropEncoderLeft.ArmDrop(gamepad2.left_stick_y);
-        armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
-        //armDropEncoderShift.ArmDrop(gamepad2.right_stick_y);
+        //armDropEncoderLeft.ArmDrop(gamepad2.left_stick_y);
+        //armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
+        //    public void init(DcMotor armToMove, Telemetry telemetry, boolean recordReadings){
+        //zarmDropEncoderShiftLeft.ArmDrop(gamepad2.right_stick_y);
 
 
 
         robot.MoveMecanum(left_stick_x, left_stick_y, right_stick_x);
 
         // Send telemetry message to signify robot running;
-        telemetry.addData("Strafe",  "%.2f", left_stick_x);
-        telemetry.addData("foward, back", "%.2f", left_stick_y);
-        telemetry.addData("rotation", "%.2f", right_stick_x);
-        telemetry.addData("left_bumper", left_bumper);
-        telemetry.addData("right_bumper", right_bumper);
+        //telemetry.addData("Strafe",  "%.2f", left_stick_x);
+        //telemetry.addData("foward, back", "%.2f", left_stick_y);
+        //telemetry.addData("rotation", "%.2f", right_stick_x);
+        //telemetry.addData("left_bumper", left_bumper);
+        //telemetry.addData("right_bumper", right_bumper);
         telemetry.addData("SpeedMultplier", robot.SpeedMultiplier);
         telemetry.addData("Left Servo is at", servoLeft.getPosition());
         telemetry.addData("Right Servo is at", servoRight.getPosition());
