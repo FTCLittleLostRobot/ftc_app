@@ -5,7 +5,18 @@ public class GameBoard {
 
     public void DisplayBoard() {
     }
-    public boolean IsGameOver(){return true;}
-    public void TicTacTurn(String player, int square){}
-    public void DisplayEndGame(String WinLossTie){}
+    private String board;
+
+
+    public boolean IsGameOver(){
+        return true;
+    }
+
+    public void TicTacTurn(String player, int square){
+
+    }
+
+    public void DisplayEndGame(String WinLossTie){
+
+    }
 }
