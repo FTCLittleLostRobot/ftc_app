@@ -16,11 +16,10 @@ import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 public class ColorFindStateMachine {
 
     Telemetry telemetry;
-    HardwareMecanumBase robot = new HardwareMecanumBase(); // use the class created to define a Pushbot's hardware
     ColorFinder colorFinder = null;
     private Image vuforiaImageObject;
     private Bitmap bitmapFromVuforia;
-    public int foundColumn = -1;
+    private int foundColumn = -1;
     ColorFindStateMachine.RobotState state;
 
     enum RobotState
@@ -88,9 +87,6 @@ public class ColorFindStateMachine {
                 state = ColorFindStateMachine.RobotState.Done;
                 break;
 
-            case Done:
-                state = ColorFindStateMachine.RobotState.Done;
-                break;
         }
     }
 }

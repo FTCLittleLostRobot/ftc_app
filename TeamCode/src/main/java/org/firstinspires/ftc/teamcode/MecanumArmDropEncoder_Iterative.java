@@ -12,7 +12,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.controllers.ArmDropEncoder;
 
 @TeleOp(name="TestingMecanum: ArmDrop Emcoder", group="TestingMecanum")
-@Disabled
 
 public class MecanumArmDropEncoder_Iterative extends OpMode{
 

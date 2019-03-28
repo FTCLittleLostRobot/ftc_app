@@ -25,7 +25,7 @@ public class SamplingStateMachine {
     static final double GO_BACK = 1;
     static final double GO_RIGHT = -0.95;
     static final double GO_LEFT = 1.9;
-    static final double GO_BETWEENLEFT = 0.945;
+    static final double GO_BETWEENLEFT = 1.05;
     static final double GO_HALFFOWARD = -0.5;
     static final double GO_BETWEENFOWARD = -0.94;
     private Image vuforiaImageObject;
@@ -43,7 +43,12 @@ public class SamplingStateMachine {
         DetectColorFromImage,
         CheckForGold,
         PushBlock,
-        BackOff,
+        StrafeRight,
+        WaitForStrafingRight,
+        PushFoward,
+        WaitForPushFoward,
+        PushToCrater,
+        PushingToCrater,
         WaitForBackOff,
         Done
     }
@@ -56,9 +61,7 @@ public class SamplingStateMachine {
 
         telemetry.addData("Say", "Hello Driver");    //
         state = SamplingStateMachine.RobotState.Start;
-
     }
-
 
     public void Start()
     {
@@ -76,7 +79,6 @@ public class SamplingStateMachine {
 
         switch (state)
         {
-
             case StepOut:
                 this.moveRobot.Start(20, 0.25, GO_LEFT, GO_BETWEENFOWARD, 0 );
                 state = SamplingStateMachine.RobotState.SteppingOut;
@@ -118,24 +120,19 @@ public class SamplingStateMachine {
 
             case CheckForGold:
                 //In this the robot is checking the phone for what column the yellow square is in
-                if (foundColumn == 0 )
+                if (foundColumn == 0  || foundColumn == 1)
                 {
-                    this.moveRobot.Start(30, 60, GO_BETWEENLEFT, GO_BETWEENFOWARD,0 );
-                    state = SamplingStateMachine.RobotState.PushBlock;
-                }
-                else if (foundColumn == 1 )
-                {
-                    this.moveRobot.Start(30, 60, GO_BETWEENLEFT, GO_BETWEENFOWARD, 0 );
-                    state = SamplingStateMachine.RobotState.PushBlock;
+                    this.moveRobot.Start(30, 22, GO_BETWEENLEFT, GO_FORWARD,0 );
+                    state = SamplingStateMachine.RobotState.WaitForPushFoward;
                 }
                 else if (foundColumn == 2)
                 {
-                    this.moveRobot.Start(30, 60,0, GO_FORWARD,0 );
-                    state = SamplingStateMachine.RobotState.PushBlock;
+                    this.moveRobot.Start(30, 32,0, GO_FORWARD,0 );
+                    state = SamplingStateMachine.RobotState.WaitForPushFoward;
                 }
                 else if (foundColumn == 3 || foundColumn == 4)
                 {
-                    this.moveRobot.Start(30, 60, GO_RIGHT, GO_BETWEENFOWARD,0 );
+                    this.moveRobot.Start(30, 20, 0,GO_FORWARD,0 );
                     state = SamplingStateMachine.RobotState.PushBlock;
                 }
                 else if (foundColumn == -1 ) {
@@ -146,16 +143,37 @@ public class SamplingStateMachine {
             case PushBlock:
                 if (this.moveRobot.IsDone()) {
                     this.moveRobot.Complete();
-                    state = SamplingStateMachine.RobotState.BackOff;
+                    state = SamplingStateMachine.RobotState.StrafeRight;
                 }
                 break;
 
-            case BackOff:
-                this.moveRobot.Start(20, 20, 0, GO_BACK,0);
-                state = RobotState.WaitForBackOff;
-                break ;
+            case StrafeRight:
+                this.moveRobot.Start(30, 15, GO_RIGHT,0, 0 );
+                state = SamplingStateMachine.RobotState.WaitForStrafingRight;
 
-            case WaitForBackOff:
+            case WaitForStrafingRight:
+                if (this.moveRobot.IsDone()) {
+                    this.moveRobot.Complete();
+                    state = SamplingStateMachine.RobotState.PushFoward;
+                }
+                break;
+
+            case PushFoward:
+                this.moveRobot.Start(30, 10, 0, GO_FORWARD, 0 );
+                state = SamplingStateMachine.RobotState.WaitForPushFoward;
+
+            case WaitForPushFoward:
+                if (this.moveRobot.IsDone()) {
+                    this.moveRobot.Complete();
+                    state = SamplingStateMachine.RobotState.PushToCrater;
+                }
+                break;
+
+            case PushToCrater:
+                this.moveRobot.Start(30, 10, 0, GO_FORWARD, 0 );
+                state = SamplingStateMachine.RobotState.PushingToCrater;
+
+            case PushingToCrater:
                 if (this.moveRobot.IsDone()) {
                     this.moveRobot.Complete();
                     state = SamplingStateMachine.RobotState.Done;
