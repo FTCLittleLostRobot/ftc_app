@@ -14,24 +14,27 @@ import org.firstinspires.ftc.teamcode.StateMachines.SamplingStateMachine;
 @Autonomous(name="Mecanum:Sampling", group="Mecanum")
 public class MecanumAutoSampling_Iterative extends OpMode {
 
-    HardwareMecanumBase robot;
-    private SamplingStateMachine samplingStateMachine = new SamplingStateMachine();
-    MecanumMove moveRobot;
-    ColorFinder colorFinder;
-
+    private HardwareMecanumBase robot;
+    private SamplingStateMachine samplingStateMachine;
+    private MecanumMove moveRobot;
+    private ColorFinder colorFinder;
 
     @Override
     public void init() {
-        /* Initialize the hardware variables.
-         * The init() method of the hardware class does all the work here
-         */
-        robot = new HardwareMecanumBase();
-        moveRobot = new MecanumMove();
-        colorFinder = new ColorFinder();
+        /* Step 1: Setup of variables  */
+        this.robot = new HardwareMecanumBase();
+        this.moveRobot = new MecanumMove();
+        this.colorFinder = new ColorFinder();
+        this.samplingStateMachine = new SamplingStateMachine();
 
+        /* Step 2: Setup of hardware  */
         robot.init(hardwareMap);
+
+        /* Step 3: Setup of controllers  */
         this.moveRobot.init(robot);
         this.colorFinder.init(hardwareMap);
+
+        /* Step 4: Setup of state machines  */
         this.samplingStateMachine.init(telemetry, colorFinder, moveRobot);
 
         // Send telemetry message to signify robot waiting;

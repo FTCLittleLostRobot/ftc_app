@@ -1,7 +1,6 @@
 /* Little Lost Robots
-   Core Devs: Caden, Nathan and Soham
+   Core Devs: Danielle,
 */
-
 
 /* Copyright (c) 2017 FIRST. All rights reserved.
  *
@@ -34,33 +33,30 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-/**
- * This file provides basic Telop driving for a Pushbot robot.
- * The code is structured as an Iterative OpMode
- *
- * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
- * All device access is managed through the HardwarePushbot class.
- *
- * This particular OpMode executes a basic Tank Drive Teleop for a PushBot
- * It raises and lowers the claw using the Gampad Y and A buttons respectively.
- * It also opens and closes the claws slowly using the left and right Bumper buttons.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@TeleOp(name="TestingBase: New Test", group="TestingBase")
+@Autonomous(name="Test: Motor Encoder RunTo", group="Mencanum")
 @Disabled
-public class TestingBaseTeleop_Iterative extends OpMode{
+public class SensorMotorEncoder_Test extends OpMode {
 
-    /* Declare OpMode members. */
-    private HardwareTestingBase robot       = new HardwareTestingBase(); // use the class created to define a Pushbot's hardware
-    private float starting_left = 0;
-    private float starting_right = 0;
+    DcMotor motorToTest = null;
+    int newTarget = -1;
+    int startingPos = -1;
+
+    enum RobotState
+    {
+        Setup,
+        Start,
+        Finish,
+        Done
+    }
+    RobotState state = RobotState.Setup;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -68,13 +64,9 @@ public class TestingBaseTeleop_Iterative extends OpMode{
     @Override
     public void init() {
 
-        starting_left = -gamepad1.left_stick_y;
-        starting_right = -gamepad1.right_stick_y;
-
-        /* Initialize the hardware variables.
-         * The init() method of the hardware class does all the work here
-         */
-        robot.init(hardwareMap);
+        motorToTest = hardwareMap.get(DcMotor.class, "ArmDropRight");
+        motorToTest.setDirection(DcMotor.Direction.FORWARD);
+        startingPos = motorToTest.getCurrentPosition();
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
@@ -87,9 +79,6 @@ public class TestingBaseTeleop_Iterative extends OpMode{
     public void init_loop() {
     }
 
-    /*
-     * Code to run ONCE when the driver hits PLAY
-     */
     @Override
     public void start() {
     }
@@ -99,25 +88,55 @@ public class TestingBaseTeleop_Iterative extends OpMode{
      */
     @Override
     public void loop() {
-        double left;
-        double right;
+        telemetry.addData("Current State", state.toString());
 
-        // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
-        left = -gamepad1.left_stick_y - starting_left;
-        right = -gamepad1.right_stick_y - starting_right;
+        switch (state)
+        {
+            case Setup:
+                encoderDrive_Start();
+                state = RobotState.Start;
+                break;
 
-        robot.left_drive.setPower(left);
-        robot.right_drive.setPower(right);
+            case Start:
+                if (encoderDrive_IsDone()) {
+                    state = RobotState.Finish;
+                }
+                break;
 
-        // Send telemetry message to signify robot running;
-        telemetry.addData("left",  "%.2f", left);
-        telemetry.addData("right", "%.2f", right);
+            case Finish:
+                encoderDrive_Complete();
+                telemetry.addData("Robot", "Robot is done");
+                state = RobotState.Done;
+                break;
+        }
+        telemetry.addData("Starting Position", startingPos);
+        telemetry.addData("Current Position", motorToTest.getCurrentPosition());
+        telemetry.addData("New Target", newTarget);
     }
 
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
-    @Override
-    public void stop() {
+    public void encoderDrive_Start() {
+
+
+        // Determine new target position, and pass to motor controller
+        newTarget = motorToTest.getCurrentPosition() + 1000;
+
+        // Turn On RUN_TO_POSITION
+        motorToTest.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorToTest.setTargetPosition(newTarget);
+
+        // reset the timeout time and start motion.
+        motorToTest.setPower(.05);
+
+        }
+
+    public boolean encoderDrive_IsDone() {
+        return !(motorToTest.isBusy()) ;
+    }
+
+    public void encoderDrive_Complete() {
+        // Turn off RUN_TO_POSITION
+        motorToTest.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        // Stop all motion;
+        motorToTest.setPower(0);
     }
 }

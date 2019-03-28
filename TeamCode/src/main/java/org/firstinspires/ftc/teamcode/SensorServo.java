@@ -4,12 +4,14 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 
 @TeleOp(name = "Sensor: Servo", group = "Iterative OpMode")
+@Disabled
 public class SensorServo extends OpMode {
 
     public Servo servoLeft = null;
@@ -32,10 +34,10 @@ public class SensorServo extends OpMode {
 
         if (gamepad2.left_bumper) {
             if (servoLeftDirection) {
-                servoLeft.setPosition(servoLeft.getPosition() - (double)0.01);
+                servoLeft.setPosition(servoLeft.getPosition() - (double)0.5);
             } else
             {
-                servoLeft.setPosition(servoLeft.getPosition() + (double)0.01);
+                servoLeft.setPosition(servoLeft.getPosition() + (double)0.5);
             }
             telemetry.addData("Say", "Left Servo is moving");
         }
@@ -47,10 +49,10 @@ public class SensorServo extends OpMode {
 
         if (gamepad2.right_bumper) {
             if (servoRightDirection){
-                servoRight.setPosition(servoRight.getPosition() - (double)0.01);
+                servoRight.setPosition(servoRight.getPosition() - (double)0.5);
             }else {
 
-                servoRight.setPosition(servoRight.getPosition() + (double)0.01);
+                servoRight.setPosition(servoRight.getPosition() + (double)0.5);
             }
             telemetry.addData("Say", "Right Servo is moving");
 
@@ -59,6 +61,9 @@ public class SensorServo extends OpMode {
             servoRightDirection = !servoRightDirection;
             }
 
+
+        telemetry.addData("Left Servo is at", servoLeft.getPosition());
+        telemetry.addData("Right Servo is at", servoRight.getPosition());
 
 
     }

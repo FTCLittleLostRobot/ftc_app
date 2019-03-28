@@ -28,17 +28,13 @@ public class MecanumAutoSamplingAndDropping_Iterative extends OpMode {
 
     @Override
     public void init() {
-        /* Initialize the hardware variables.
-         * The init() method of the hardware class does all the work here
-         */
-
         /* Step 1: Setup of variables  */
-        robot = new HardwareMecanumBase();
-        colorFinder = new ColorFinder();
-        moveRobot = new MecanumMove();
-        samplingStateMachine = new SamplingStateMachine();
-        landingStateMachine = new LandingStateMachine();
-        lander = new LanderEncoder();
+        this.robot = new HardwareMecanumBase();
+        this.colorFinder = new ColorFinder();
+        this.moveRobot = new MecanumMove();
+        this.samplingStateMachine = new SamplingStateMachine();
+        this.landingStateMachine = new LandingStateMachine();
+        this.lander = new LanderEncoder();
 
         /* Step 2: Setup of hardware  */
         robot.init(hardwareMap);

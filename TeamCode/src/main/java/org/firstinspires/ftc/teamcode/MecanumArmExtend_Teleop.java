@@ -6,6 +6,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -21,12 +22,11 @@ import org.firstinspires.ftc.teamcode.controllers.LanderNoEncoder;
  */
 
 @TeleOp(name="Mecanum: Arm Extend", group="TestingMecanum")
-
+@Disabled
 public class MecanumArmExtend_Teleop extends OpMode {
 
     /* Declare OpMode members. */
     private HardwareMecanumBase robot = new HardwareMecanumBase(); // use the class created to define a Mencanums 's hardware
-    private LanderNoEncoder lander = new LanderNoEncoder();
     private ArmExtend armExtend = new ArmExtend();
 
     /*
@@ -35,7 +35,6 @@ public class MecanumArmExtend_Teleop extends OpMode {
     @Override
     public void init() {
         robot.init(hardwareMap);
-        this.lander.init(robot, telemetry);
         this.armExtend.init(robot, telemetry);
 
 
@@ -47,7 +46,6 @@ public class MecanumArmExtend_Teleop extends OpMode {
     @Override
     public void loop () {
 
-        // this moves the right front wheel; You need to press the left up
         if (gamepad2.dpad_up) {
             robot.ArmExtend.setDirection(DcMotor.Direction.FORWARD);
             armExtend.ExtendingArm(100, 0.1);

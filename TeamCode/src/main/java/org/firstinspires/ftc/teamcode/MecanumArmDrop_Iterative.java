@@ -5,6 +5,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -12,8 +13,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.HardwareMecanumBase;
 import org.firstinspires.ftc.teamcode.controllers.ArmDropNoEncoder;
-import org.firstinspires.ftc.teamcode.controllers.ArmDropNoEncoder;
-import org.firstinspires.ftc.teamcode.controllers.LanderNoEncoder;
 
 /**
  * This file provides basic Telop driving for the testing Mencanum robot.
@@ -27,6 +26,7 @@ import org.firstinspires.ftc.teamcode.controllers.LanderNoEncoder;
  */
 
 @TeleOp(name="TestingMecanum: ArmDrop", group="TestingMecanum")
+@Disabled
 public class MecanumArmDrop_Iterative extends OpMode{
 
     /* Declare OpMode members. */

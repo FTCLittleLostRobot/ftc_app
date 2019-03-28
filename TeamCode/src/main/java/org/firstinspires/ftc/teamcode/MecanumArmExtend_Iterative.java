@@ -5,6 +5,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.teamcode.controllers.ArmExtend;
 import org.firstinspires.ftc.teamcode.StateMachines.SamplingStateMachine;
@@ -12,6 +13,8 @@ import org.firstinspires.ftc.teamcode.controllers.ColorFinder;
 import org.firstinspires.ftc.teamcode.controllers.MecanumMove;
 
 @Autonomous(name="Mecanum: Arm Extend Autonomous", group="Mecanum")
+@Disabled
+
 public class MecanumArmExtend_Iterative extends OpMode {
 
     HardwareMecanumBase robot;

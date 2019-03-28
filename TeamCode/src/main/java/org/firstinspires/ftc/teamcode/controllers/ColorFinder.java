@@ -95,7 +95,7 @@ public class ColorFinder {
         for (int column = 0; column < 5; column++) {
             int columnCounter = 0;
 
-            for (int i = 100; i < height; i += 3) {
+            for (int i = 50; i < height; i += 3) {
                 for (int j = column * columnWidth; j < (column + 1) * columnWidth; j += 3) {
                     cur_color_int = bm_img.getPixel(j, i);
 

@@ -46,7 +46,7 @@ public class LanderNoEncoder {
         if (hwBase.lift != null)
         {
             hwBase.lift.setPower(0);
-            telemetry.addData("Lift", " Lift is complete");
+            //telemetry.addData("Lift", " Lift is complete");
 
         }
     }

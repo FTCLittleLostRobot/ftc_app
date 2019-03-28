@@ -15,7 +15,6 @@ public class MecanumLift_Teleop extends OpMode{
 
     HardwareMecanumBase robot       = new HardwareMecanumBase(); // use the class created to define a Mencanum's hardware
 
-    static final double FORWARD_SPEED = 0.1;
 
 
     @Override

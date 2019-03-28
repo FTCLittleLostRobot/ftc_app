@@ -34,10 +34,10 @@ public class MecanumSetup_Teleop extends OpMode {
     private HardwareMecanumBase robot = new HardwareMecanumBase(); // use the class created to define a Mencanums 's hardware
     private LanderNoEncoder lander = new LanderNoEncoder();
     private boolean ButtonCheck = false;      //left and right bumper; faster, slower
-    public DcMotor left_front_drive = null;   //front left wheel
-    public DcMotor right_front_drive = null;  //front right wheel
-    public DcMotor left_back_drive = null;    //back left wheel
-    public DcMotor right_back_drive = null;   //back right wheel
+    private DcMotor left_front_drive = null;   //front left wheel
+    private DcMotor right_front_drive = null;  //front right wheel
+    private DcMotor left_back_drive = null;    //back left wheel
+    private DcMotor right_back_drive = null;   //back right wheel
     private ArmExtend armExtend = new ArmExtend();
 
     private void CheckMotor(DcMotor motor, String  motorName)
