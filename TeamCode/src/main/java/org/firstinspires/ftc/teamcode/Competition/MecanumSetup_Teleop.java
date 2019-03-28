@@ -11,6 +11,8 @@ import android.graphics.Bitmap;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.teamcode.controllers.ArmExtend;
 import org.firstinspires.ftc.teamcode.controllers.LanderNoEncoder;
 
 
@@ -36,6 +38,7 @@ public class MecanumSetup_Teleop extends OpMode {
     public DcMotor right_front_drive = null;  //front right wheel
     public DcMotor left_back_drive = null;    //back left wheel
     public DcMotor right_back_drive = null;   //back right wheel
+    private ArmExtend armExtend = new ArmExtend();
 
     private void CheckMotor(DcMotor motor, String  motorName)
     {
@@ -53,6 +56,7 @@ public class MecanumSetup_Teleop extends OpMode {
     public void init() {
         robot.init(hardwareMap);
         this.lander.init(robot, telemetry);
+        this.armExtend.init(robot, telemetry);
 
         // Is every motor on correctly? This checks each motor and lift.
         this.CheckMotor(robot.left_front_drive, "left_front");
@@ -120,6 +124,25 @@ public class MecanumSetup_Teleop extends OpMode {
         else {
             lander.Complete();
         }
+        if (gamepad2.dpad_up) {
+            robot.ArmExtend.setDirection(DcMotor.Direction.FORWARD);
+            armExtend.ExtendingArm(100, 0.1);
+            telemetry.addData("Testing:", "Bringing arm up");
+
+        }
+        else{
+            robot.ArmExtend.setDirection(DcMotor.Direction.FORWARD);
+            robot.ArmExtend.setPower(0);
+
+        }
+
+        if (gamepad2.dpad_down){
+            robot.ArmExtend.setDirection(DcMotor.Direction.REVERSE);
+            armExtend.ExtendingArm(100, 0.1);
+            telemetry.addData("Testing:", "Bringing arm down; pull spring release and push down;");
+
+        }
+
 
     }
 }
