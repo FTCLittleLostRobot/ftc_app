@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.javatest;
 
-//import java.util.SplashScreen;
+import java.util.Scanner;
 
 public class TicTacToe {
     private void DisplayScreen() {
@@ -13,18 +13,13 @@ public class TicTacToe {
         GameBoard gameboard = new GameBoard();
         gameboard.DisplayBoard();
 
+        //player takes turn
+        Scanner input = new Scanner(System.in);
+        int square = Integer.parseInt(input.nextLine());
+
+        gameboard.TicTacTurn("x", square);
 
 
-
-
-       //  if (IsGameOver True) {
-
-      //  }
-        //print splash screen
-
-        // loop
-        //display board
-       //player takes turn
         //IsGameOver
         //If true display : Winner _ Player
         //If false continue with game
