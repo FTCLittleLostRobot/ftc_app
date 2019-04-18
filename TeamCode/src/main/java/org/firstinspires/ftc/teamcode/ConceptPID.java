@@ -11,30 +11,47 @@ public class ConceptPID extends LinearOpMode {
         // our DC motor.
         private HardwareMecanumBase robot;
 
-    DcMotorEx motorExLeft;
+        DcMotorEx motorExLeft;
 
-        public static final double NEW_P = 2.5;
-        public static final double NEW_I = 0.1;
-        public static final double NEW_D = 0.2;
+
+        public static final double NEW_P = 3.0;
+        public static final double NEW_I = 0.05;
+        public static final double NEW_D = 0.0;
+        int startValue = 0;
+
+
 
         public void runOpMode() {
             // get reference to DC motor.
             // since we are using the Expansion Hub,
             // cast this motor to a DcMotorEx object.
-            motorExLeft = (DcMotorEx)hardwareMap.get(DcMotor.class, "left_drive");
+            motorExLeft = (DcMotorEx)hardwareMap.get(DcMotor.class, "ArmDropLeft");
+
+            startValue = motorExLeft.getCurrentPosition();
+
+
+
+            motorExLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorExLeft.setTargetPosition(-120 + startValue );
+            int encoderRangeValue = motorExLeft.getCurrentPosition();
+            motorExLeft.setPower(0.8);
 
             // wait for start command.
             waitForStart();
 
             // get the PID coefficients for the RUN_USING_ENCODER  modes.
-            PIDCoefficients pidOrig = motorExLeft.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+           PIDCoefficients pidOrig = motorExLeft.getPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION);
 
             // change coefficients using methods included with DcMotorEx class.
             PIDCoefficients pidNew = new PIDCoefficients(NEW_P, NEW_I, NEW_D);
-            motorExLeft.setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidNew);
+            motorExLeft.setPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION, pidNew);
 
             // re-read coefficients and verify change.
-            PIDCoefficients pidModified = motorExLeft.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
+            PIDCoefficients pidModified = motorExLeft.getPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+            motorExLeft.setTargetPosition(-440 + startValue );
+            motorExLeft.setPower(0.1);
 
             // display info to user.
             while(opModeIsActive()) {
@@ -44,6 +61,8 @@ public class ConceptPID extends LinearOpMode {
                 telemetry.addData("P,I,D (modified)", "%.04f, %.04f, %.04f",
                         pidModified.p, pidModified.i, pidModified.d);
                 telemetry.update();
+
+
             }
         }
     }

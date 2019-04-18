@@ -108,7 +108,6 @@ public class ArmDropEncoderShift {
         {
             arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             arm.setTargetPosition(newPosition);
-            //arm.setPower(0.1);
             arm.setPower(0.1);
         }
 
