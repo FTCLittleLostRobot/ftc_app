@@ -11,17 +11,23 @@ public class TicTacToe {
         DisplayScreen();
 
         GameBoard gameboard = new GameBoard();
-        gameboard.DisplayBoard();
+        String player = "x";
+        do {
 
-        //player takes turn
-        Scanner input = new Scanner(System.in);
-        int square = Integer.parseInt(input.nextLine());
+            gameboard.DisplayBoard();
 
-        gameboard.TicTacTurn("x", square);
+            //player takes turn
+            Scanner input = new Scanner(System.in);
+            int square = Integer.parseInt(input.nextLine());
 
+            gameboard.TicTacTurn("x", square);
+            player = "y";
+        } while (gameboard.IsGameOver() == false);
+        //IsGameOveR
+        gameboard.DisplayEndGame();
 
-        //IsGameOver
-        //If true display : Winner _ Player
-        //If false continue with game
     }
+
+    //If false continue with game
 }
+
