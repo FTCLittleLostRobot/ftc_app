@@ -120,8 +120,6 @@ public class MecanumTeleop_Iterative extends OpMode{
         //armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
         armDropEncoderShiftLeft.ArmDrop(gamepad2.left_stick_y);
 
-
-
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
         left_stick_x = -gamepad1.left_stick_x - starting_left_x;
         left_stick_y = gamepad1.left_stick_y - starting_left_y;
@@ -135,7 +133,6 @@ public class MecanumTeleop_Iterative extends OpMode{
             if (ButtonCheck == false){
                 robot.ResetSpeed();
                 ButtonCheck = true;
-
             }
         }
         else if (left_bumper) {
@@ -143,7 +140,6 @@ public class MecanumTeleop_Iterative extends OpMode{
                 robot.DecreaseSpeed();
                 ButtonCheck = true;
             }
-
         }
         else if (right_bumper) {
             if (ButtonCheck == false) {
@@ -164,56 +160,56 @@ public class MecanumTeleop_Iterative extends OpMode{
             lander.GoUp();
         }
         else {
-            robot.lift.setPower(0);
-        }
-        if (gamepad2.dpad_up) {
-            robot.ArmExtend.setDirection(DcMotor.Direction.FORWARD);
-            armExtend.ExtendingArm(100, 0.1);
-        }
-        else{
-            robot.ArmExtend.setDirection(DcMotor.Direction.FORWARD);
-            robot.ArmExtend.setPower(0);
-
-        }
-
-        if (gamepad2.dpad_down){
-            robot.ArmExtend.setDirection(DcMotor.Direction.REVERSE);
-            armExtend.ExtendingArm(100, 0.1);
-        }
-
-
-
-        if (gamepad2.left_bumper) {
-            servoLeftDirectionActual = servoLeftDirection;
-            if (servoLeftDirectionActual) {
-                servoLeft.setPosition(servoLeft.getPosition() - (double)0.4);
-            } else
-            {
-                servoLeft.setPosition(servoLeft.getPosition() + (double)0.4);
+            if (robot.lift != null) {
+                robot.lift.setPower(0);
             }
-            telemetry.addData("Say", "Left Servo is moving");
-        }
-        else
-        {
-            servoLeftDirection = !servoLeftDirectionActual;
         }
 
-
-        if (gamepad2.right_bumper) {
-            servoRightDirectionActual = servoRightDirection;
-            if (servoRightDirectionActual){
-                servoRight.setPosition(servoRight.getPosition() - (double)0.5);
-            }else {
-
-                servoRight.setPosition(servoRight.getPosition() + (double)0.5);
+        if (robot.ArmExtend != null) {
+            if (gamepad2.dpad_up) {
+                robot.ArmExtend.setDirection(DcMotor.Direction.FORWARD);
+                armExtend.ExtendingArm(100, 0.1);
             }
-            telemetry.addData("Say", "Right Servo is moving");
+            else{
+               robot.ArmExtend.setDirection(DcMotor.Direction.FORWARD);
+               robot.ArmExtend.setPower(0);
+            }
 
-        }else
-        {
-            servoRightDirection = !servoRightDirectionActual;
+            if (gamepad2.dpad_down){
+                robot.ArmExtend.setDirection(DcMotor.Direction.REVERSE);
+                armExtend.ExtendingArm(100, 0.1);
+            }
         }
 
+        if (servoLeft != null) {
+            if (gamepad2.left_bumper) {
+                servoLeftDirectionActual = servoLeftDirection;
+                if (servoLeftDirectionActual) {
+                    servoLeft.setPosition(servoLeft.getPosition() - (double) 0.4);
+                } else {
+                    servoLeft.setPosition(servoLeft.getPosition() + (double) 0.4);
+                }
+                telemetry.addData("Say", "Left Servo is moving");
+            } else {
+                servoLeftDirection = !servoLeftDirectionActual;
+            }
+        }
+
+        if (servoRight != null) {
+            if (gamepad2.right_bumper) {
+                servoRightDirectionActual = servoRightDirection;
+                if (servoRightDirectionActual) {
+                    servoRight.setPosition(servoRight.getPosition() - (double) 0.5);
+                } else {
+
+                    servoRight.setPosition(servoRight.getPosition() + (double) 0.5);
+                }
+                telemetry.addData("Say", "Right Servo is moving");
+
+            } else {
+                servoRightDirection = !servoRightDirectionActual;
+            }
+        }
         //armDropEncoderLeft.ArmDrop(gamepad2.left_stick_y);
         //armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
         //    public void init(DcMotor armToMove, Telemetry telemetry, boolean recordReadings){
