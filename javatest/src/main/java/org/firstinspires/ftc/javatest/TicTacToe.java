@@ -20,14 +20,23 @@ public class TicTacToe {
             Scanner input = new Scanner(System.in);
             int square = Integer.parseInt(input.nextLine());
 
-            gameboard.TicTacTurn("x", square);
-            player = "y";
+            gameboard.TicTacTurn(player, square);
+            player = "O";
         } while (gameboard.IsGameOver() == false);
         //IsGameOveR
         gameboard.DisplayEndGame();
-
+        /*
+        gameboard.GameBoard(
+                if grid[][column] = val
+        );
+        */
     }
 
     //If false continue with game
+    /*
+    If 3 in a row
+    DisplayEndGame
+    */
+
 }
 
