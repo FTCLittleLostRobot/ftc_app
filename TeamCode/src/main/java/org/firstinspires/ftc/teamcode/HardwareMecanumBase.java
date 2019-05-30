@@ -7,6 +7,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -45,7 +46,9 @@ public class HardwareMecanumBase {
         LeftBackDrive,
         RightBackDrive,
         ArmDropRight,
-        ArmDropLeft
+        ArmDropLeft,
+        servoLeft,
+        servoRight,
     }
 
     /* Public OpMode members. */
@@ -58,6 +61,8 @@ public class HardwareMecanumBase {
     public DcMotor ArmExtend = null;
     public DcMotor ArmDropRight = null;
     public DcMotor ArmDropLeft = null;
+    public Servo servoLeft = null;
+    public Servo servoRight = null;
 
 
     /* local OpMode members. */
@@ -128,6 +133,17 @@ public class HardwareMecanumBase {
             ArmDropLeft.setDirection(DcMotor.Direction.REVERSE);
         }
 
+        servoLeft = hardwareMap.tryGet(Servo.class, "servoLeft");
+        if (servoLeft != null) {
+            servoLeft.setDirection(Servo.Direction.FORWARD);
+        }
+
+        servoRight = hardwareMap.tryGet(Servo.class, "servoRight");
+        if (servoRight != null) {
+            servoRight.setDirection(Servo.Direction.FORWARD);
+        }
+
+
         ResetMotors();
     }
 
@@ -174,6 +190,8 @@ public class HardwareMecanumBase {
             case ArmDropRight:
                 ArmDropRight.setPower(power * ((double) SpeedMultiplier / 100));
                 break;
+
+
             default:
                 break;
 

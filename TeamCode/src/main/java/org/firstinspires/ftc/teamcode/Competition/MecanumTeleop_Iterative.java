@@ -34,7 +34,7 @@ public class MecanumTeleop_Iterative extends OpMode{
 
     /* Declare OpMode members. */
     private HardwareMecanumBase robot = null;
-    //private ArmDropEncoder armDropEncoderRight = null;
+    private ArmDropEncoderShift armDropEncoderShiftRight = null;
     private ArmDropEncoderShift armDropEncoderShiftLeft = null;
     private ArmDropEncoder armDropEncoderLeft = null;
     private ArmDropNoEncoder ArmDropNoEncoder = null;
@@ -63,9 +63,12 @@ public class MecanumTeleop_Iterative extends OpMode{
         //armDropEncoderRight = new ArmDropEncoder();
         //armDropEncoderLeft = new ArmDropEncoder();
         armDropEncoderShiftLeft = new ArmDropEncoderShift();
+        armDropEncoderShiftRight = new ArmDropEncoderShift();
+
         lander = new LanderNoEncoder();
         armExtend = new ArmExtend();
         robot = new HardwareMecanumBase();
+
 
         /* Step 2: Setup of hardware  */
         robot.init(hardwareMap);
@@ -76,9 +79,13 @@ public class MecanumTeleop_Iterative extends OpMode{
         // armDropEncoderLeft.init(robot.ArmDropLeft, telemetry, false);
         //armDropEncoderRight.init(robot.ArmDropRight, telemetry, true);
         //armDropEncoderShift.init(robot.ArmDropRight, telemetry, true);
-        armDropEncoderShiftLeft.init(robot.ArmDropLeft, telemetry, true);
-        servoLeft = hardwareMap.servo.get("servoLeft");
-        servoRight = hardwareMap.servo.get("servoRight");
+        armDropEncoderShiftLeft.init(robot.ArmDropLeft, telemetry, false);
+        armDropEncoderShiftRight.init(robot.ArmDropRight, telemetry, true);
+
+
+
+        servoLeft = robot.servoLeft;
+        servoRight = robot.servoRight;
 
         /* Step 4: Setup of state machines  */
         // NONE
@@ -119,8 +126,7 @@ public class MecanumTeleop_Iterative extends OpMode{
         //armDropEncoderLeft.ArmDrop(gamepad2.left_stick_y);
         //armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
         armDropEncoderShiftLeft.ArmDrop(gamepad2.left_stick_y);
-
-
+        armDropEncoderShiftRight.ArmDrop(gamepad2.right_stick_y);
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
         left_stick_x = -gamepad1.left_stick_x - starting_left_x;
@@ -135,7 +141,6 @@ public class MecanumTeleop_Iterative extends OpMode{
             if (ButtonCheck == false){
                 robot.ResetSpeed();
                 ButtonCheck = true;
-
             }
         }
         else if (left_bumper) {
@@ -143,7 +148,6 @@ public class MecanumTeleop_Iterative extends OpMode{
                 robot.DecreaseSpeed();
                 ButtonCheck = true;
             }
-
         }
         else if (right_bumper) {
             if (ButtonCheck == false) {
@@ -164,56 +168,56 @@ public class MecanumTeleop_Iterative extends OpMode{
             lander.GoUp();
         }
         else {
-            robot.lift.setPower(0);
-        }
-        if (gamepad2.dpad_up) {
-            robot.ArmExtend.setDirection(DcMotor.Direction.FORWARD);
-            armExtend.ExtendingArm(100, 0.1);
-        }
-        else{
-            robot.ArmExtend.setDirection(DcMotor.Direction.FORWARD);
-            robot.ArmExtend.setPower(0);
-
-        }
-
-        if (gamepad2.dpad_down){
-            robot.ArmExtend.setDirection(DcMotor.Direction.REVERSE);
-            armExtend.ExtendingArm(100, 0.1);
-        }
-
-
-
-        if (gamepad2.left_bumper) {
-            servoLeftDirectionActual = servoLeftDirection;
-            if (servoLeftDirectionActual) {
-                servoLeft.setPosition(servoLeft.getPosition() - (double)0.4);
-            } else
-            {
-                servoLeft.setPosition(servoLeft.getPosition() + (double)0.4);
+            if (robot.lift != null) {
+                robot.lift.setPower(0);
             }
-            telemetry.addData("Say", "Left Servo is moving");
-        }
-        else
-        {
-            servoLeftDirection = !servoLeftDirectionActual;
         }
 
-
-        if (gamepad2.right_bumper) {
-            servoRightDirectionActual = servoRightDirection;
-            if (servoRightDirectionActual){
-                servoRight.setPosition(servoRight.getPosition() - (double)0.5);
-            }else {
-
-                servoRight.setPosition(servoRight.getPosition() + (double)0.5);
+        if (robot.ArmExtend != null) {
+            if (gamepad2.dpad_up) {
+                robot.ArmExtend.setDirection(DcMotor.Direction.FORWARD);
+                armExtend.ExtendingArm(100, 0.1);
             }
-            telemetry.addData("Say", "Right Servo is moving");
+            else{
+               robot.ArmExtend.setDirection(DcMotor.Direction.FORWARD);
+               robot.ArmExtend.setPower(0);
+            }
 
-        }else
-        {
-            servoRightDirection = !servoRightDirectionActual;
+            if (gamepad2.dpad_down){
+                robot.ArmExtend.setDirection(DcMotor.Direction.REVERSE);
+                armExtend.ExtendingArm(100, 0.1);
+            }
         }
 
+        if (servoLeft != null) {
+            if (gamepad2.left_bumper) {
+                servoLeftDirectionActual = servoLeftDirection;
+                if (servoLeftDirectionActual) {
+                    servoLeft.setPosition(servoLeft.getPosition() - (double) 0.4);
+                } else {
+                    servoLeft.setPosition(servoLeft.getPosition() + (double) 0.4);
+                }
+                telemetry.addData("Say", "Left Servo is moving");
+            } else {
+                servoLeftDirection = !servoLeftDirectionActual;
+            }
+        }
+
+        if (servoRight != null) {
+            if (gamepad2.right_bumper) {
+                servoRightDirectionActual = servoRightDirection;
+                if (servoRightDirectionActual) {
+                    servoRight.setPosition(servoRight.getPosition() - (double) 0.5);
+                } else {
+
+                    servoRight.setPosition(servoRight.getPosition() + (double) 0.5);
+                }
+                telemetry.addData("Say", "Right Servo is moving");
+
+            } else {
+                servoRightDirection = !servoRightDirectionActual;
+            }
+        }
         //armDropEncoderLeft.ArmDrop(gamepad2.left_stick_y);
         //armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
         //    public void init(DcMotor armToMove, Telemetry telemetry, boolean recordReadings){
@@ -230,8 +234,6 @@ public class MecanumTeleop_Iterative extends OpMode{
         //telemetry.addData("left_bumper", left_bumper);
         //telemetry.addData("right_bumper", right_bumper);
         telemetry.addData("SpeedMultplier", robot.SpeedMultiplier);
-        telemetry.addData("Left Servo is at", servoLeft.getPosition());
-        telemetry.addData("Right Servo is at", servoRight.getPosition());
 
 
     }
