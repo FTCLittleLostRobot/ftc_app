@@ -34,7 +34,7 @@ public class MecanumTeleop_Iterative extends OpMode{
 
     /* Declare OpMode members. */
     private HardwareMecanumBase robot = null;
-    //private ArmDropEncoder armDropEncoderRight = null;
+    private ArmDropEncoderShift armDropEncoderShiftRight = null;
     private ArmDropEncoderShift armDropEncoderShiftLeft = null;
     private ArmDropEncoder armDropEncoderLeft = null;
     private ArmDropNoEncoder ArmDropNoEncoder = null;
@@ -63,9 +63,12 @@ public class MecanumTeleop_Iterative extends OpMode{
         //armDropEncoderRight = new ArmDropEncoder();
         //armDropEncoderLeft = new ArmDropEncoder();
         armDropEncoderShiftLeft = new ArmDropEncoderShift();
+        armDropEncoderShiftRight = new ArmDropEncoderShift();
+
         lander = new LanderNoEncoder();
         armExtend = new ArmExtend();
         robot = new HardwareMecanumBase();
+
 
         /* Step 2: Setup of hardware  */
         robot.init(hardwareMap);
@@ -76,9 +79,13 @@ public class MecanumTeleop_Iterative extends OpMode{
         // armDropEncoderLeft.init(robot.ArmDropLeft, telemetry, false);
         //armDropEncoderRight.init(robot.ArmDropRight, telemetry, true);
         //armDropEncoderShift.init(robot.ArmDropRight, telemetry, true);
-        armDropEncoderShiftLeft.init(robot.ArmDropLeft, telemetry, true);
-        servoLeft = hardwareMap.servo.get("servoLeft");
-        servoRight = hardwareMap.servo.get("servoRight");
+        armDropEncoderShiftLeft.init(robot.ArmDropLeft, telemetry, false);
+        armDropEncoderShiftRight.init(robot.ArmDropRight, telemetry, true);
+
+
+
+        servoLeft = robot.servoLeft;
+        servoRight = robot.servoRight;
 
         /* Step 4: Setup of state machines  */
         // NONE
@@ -119,6 +126,7 @@ public class MecanumTeleop_Iterative extends OpMode{
         //armDropEncoderLeft.ArmDrop(gamepad2.left_stick_y);
         //armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
         armDropEncoderShiftLeft.ArmDrop(gamepad2.left_stick_y);
+        armDropEncoderShiftRight.ArmDrop(gamepad2.right_stick_y);
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
         left_stick_x = -gamepad1.left_stick_x - starting_left_x;
@@ -226,8 +234,6 @@ public class MecanumTeleop_Iterative extends OpMode{
         //telemetry.addData("left_bumper", left_bumper);
         //telemetry.addData("right_bumper", right_bumper);
         telemetry.addData("SpeedMultplier", robot.SpeedMultiplier);
-        telemetry.addData("Left Servo is at", servoLeft.getPosition());
-        telemetry.addData("Right Servo is at", servoRight.getPosition());
 
 
     }

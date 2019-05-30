@@ -36,56 +36,56 @@ public class ArmDropEncoderShift {
     }
 
     public void ArmDrop(double yPosition ) {
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        int encoderRangeValue = arm.getCurrentPosition();
 
-       if (yPosition > -.75 && yPosition < .75) {
-           isShifting = false;
-           return;
-       }
+        if (arm != null) {
+            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            int encoderRangeValue = arm.getCurrentPosition();
 
-       if (isShifting == false) {
+            if (yPosition > -.75 && yPosition < .75) {
+                isShifting = false;
+                return;
+            }
 
-           if (yPosition >= .75) {
-               isShifting = true;
-               shiftValue = (shiftValue + 1);
+            if (isShifting == false) {
 
-           } else if (yPosition <= -0.75) {
-               isShifting = true;
-               shiftValue = (shiftValue - 1);
-           }
-       }
+                if (yPosition >= .75) {
+                    isShifting = true;
+                    shiftValue = (shiftValue + 1);
 
-     if (shiftValue >= 5){
-           shiftValue = 4;
-     }
+                } else if (yPosition <= -0.75) {
+                    isShifting = true;
+                    shiftValue = (shiftValue - 1);
+                }
+            }
 
-     if (shiftValue <= 0){
-           shiftValue = 1;
-     }
+            if (shiftValue >= 5) {
+                shiftValue = 4;
+            }
 
-
-
-
-        if (shiftValue == 4) {
-            encoderRangeValue = -530;
-
-        }
-
-        if (shiftValue == 3) {
-            encoderRangeValue = -440;
-
-        }
+            if (shiftValue <= 0) {
+                shiftValue = 1;
+            }
 
 
-        if (shiftValue == 2) {
-            encoderRangeValue = -120;
+            if (shiftValue == 4) {
+                encoderRangeValue = -530;
 
-        }
-        if (shiftValue == 1) {
-            encoderRangeValue = -50;
+            }
 
-        }
+            if (shiftValue == 3) {
+                encoderRangeValue = -440;
+
+            }
+
+
+            if (shiftValue == 2) {
+                encoderRangeValue = -120;
+
+            }
+            if (shiftValue == 1) {
+                encoderRangeValue = -50;
+
+            }
 
     /*    // Convert the joystick -1 to 1 range to a # of units of movement from 0 to 2.
         double positionInUnits = yPosition + 1.0;
@@ -94,31 +94,30 @@ public class ArmDropEncoderShift {
         // treating this like two ratios and solving for x (in this case, y)
         int encoderRangeValue = (int) ((positionInUnits * this.maxValue) / 2.0); */
 
-        // The target value expected is now determined, but the motor is always inc/decreasing
-        // so we need to shift the target value to be the motor's initial  starting position -
-        // the new value
-        int newPosition = encoderRangeValue + this.startValue;
+            // The target value expected is now determined, but the motor is always inc/decreasing
+            // so we need to shift the target value to be the motor's initial  starting position -
+            // the new value
+            int newPosition = encoderRangeValue + this.startValue;
 
-        if (yPosition <= 0.1 && yPosition >= -0.1) {
-            arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            arm.setPower(0);
-            // do nothing
-        }
-        else
-        {
-            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            arm.setTargetPosition(newPosition);
-            arm.setPower(0.1);
-        }
+            if (yPosition <= 0.1 && yPosition >= -0.1) {
+                arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                arm.setPower(0);
+                // do nothing
+            } else {
+                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                arm.setTargetPosition(newPosition);
+                arm.setPower(0.1);
+            }
 
-        if (recordReadings) {
-            telemetry.addData("Y Position", yPosition);
-            telemetry.addData("Get Current Postion", arm.getCurrentPosition());
-            telemetry.addData("Shift value", shiftValue);
-            telemetry.addData("isShifting", isShifting);
-            //telemetry.addData("1 - Position in Units", positionInUnits);
-           // telemetry.addData("2 - Encoder Range Value", encoderRangeValue);
-          //  telemetry.addData("3 - New Position", newPosition);
+            if (recordReadings) {
+                telemetry.addData("Y Position", yPosition);
+                telemetry.addData("Get Current Postion", arm.getCurrentPosition());
+                telemetry.addData("Shift value", shiftValue);
+                telemetry.addData("isShifting", isShifting);
+                //telemetry.addData("1 - Position in Units", positionInUnits);
+                // telemetry.addData("2 - Encoder Range Value", encoderRangeValue);
+                //  telemetry.addData("3 - New Position", newPosition);
+            }
         }
     }
 
