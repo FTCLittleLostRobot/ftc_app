@@ -38,7 +38,7 @@ public class ArmDropEncoder {
         int encoderRangeValue = arm.getCurrentPosition();
 
         if (yPosition <= -0.75) {
-            encoderRangeValue = -530;
+            encoderRangeValue = -630;
       //      encoderRangeValue = 3500;
 
         }
@@ -51,12 +51,12 @@ public class ArmDropEncoder {
 
 
         if (yPosition <= 0.75 && yPosition > 0.1) {
-            encoderRangeValue = -160;
+            encoderRangeValue = 60;
        //      encoderRangeValue = 340;
 
         }
         if (yPosition > 0.75) {
-            encoderRangeValue = -50;
+            encoderRangeValue = 1600;
        //     encoderRangeValue = 150;
 
         }

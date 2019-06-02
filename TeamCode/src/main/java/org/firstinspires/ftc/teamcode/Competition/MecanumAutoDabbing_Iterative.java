@@ -39,4 +39,25 @@ public class MecanumAutoDabbing_Iterative extends OpMode {
         telemetry.addData("Say", "Hello Driver");
     }
 
+
+    @Override
+    public void start() {
+        landingStateMachine.Start();
+    }
+
+    /*
+     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
+     */
+    @Override
+    public void loop()
+    {
+        //this goes into the StateMachine, "LandingStateMachine" and then goes through all the states it needs
+
+    }
+    /*
+     * Code to run ONCE after the driver hits STOP
+     */
+    @Override
+    public void stop() {
+    }
 }

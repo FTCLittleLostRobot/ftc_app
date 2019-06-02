@@ -36,7 +36,7 @@ public class MecanumTeleop_Iterative extends OpMode{
     private HardwareMecanumBase robot = null;
     private ArmDropEncoderShift armDropEncoderShiftRight = null;
     private ArmDropEncoderShift armDropEncoderShiftLeft = null;
-    private ArmDropEncoder armDropEncoderLeft = null;
+    private ArmDropEncoder armDropEncoderRight = null;
     private ArmDropNoEncoder ArmDropNoEncoder = null;
     private ArmExtend armExtend = null;
     private LanderNoEncoder lander = null;//used for lifting and droping

@@ -18,7 +18,7 @@ public class ArmDropEncoderShift {
     Telemetry telemetry;
     int startValue = 0;
     boolean recordReadings = false;
-    int shiftValue = 1;
+    int shiftValue = 4;
     boolean isShifting = false;
 
     public void init(DcMotor armToMove, Telemetry telemetry, boolean recordReadings){
@@ -68,22 +68,22 @@ public class ArmDropEncoderShift {
 
 
             if (shiftValue == 4) {
-                encoderRangeValue = -530;
+                encoderRangeValue = 100;
 
             }
 
             if (shiftValue == 3) {
-                encoderRangeValue = -440;
+                encoderRangeValue = 330;
 
             }
 
 
             if (shiftValue == 2) {
-                encoderRangeValue = -120;
+                encoderRangeValue = 1250;
 
             }
             if (shiftValue == 1) {
-                encoderRangeValue = -50;
+                encoderRangeValue = 1350;
 
             }
 
@@ -109,7 +109,7 @@ public class ArmDropEncoderShift {
                 arm.setPower(0.1);
             }
 
-            if (recordReadings) {
+
                 telemetry.addData("Y Position", yPosition);
                 telemetry.addData("Get Current Postion", arm.getCurrentPosition());
                 telemetry.addData("Shift value", shiftValue);
@@ -117,7 +117,7 @@ public class ArmDropEncoderShift {
                 //telemetry.addData("1 - Position in Units", positionInUnits);
                 // telemetry.addData("2 - Encoder Range Value", encoderRangeValue);
                 //  telemetry.addData("3 - New Position", newPosition);
-            }
+
         }
     }
 

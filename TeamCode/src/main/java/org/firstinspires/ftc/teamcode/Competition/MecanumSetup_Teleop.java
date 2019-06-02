@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.controllers.ArmDropEncoder;
 import org.firstinspires.ftc.teamcode.controllers.ArmExtend;
 import org.firstinspires.ftc.teamcode.controllers.LanderNoEncoder;
 
@@ -38,6 +39,8 @@ public class MecanumSetup_Teleop extends OpMode {
     private DcMotor right_front_drive = null;  //front right wheel
     private DcMotor left_back_drive = null;    //back left wheel
     private DcMotor right_back_drive = null;   //back right wheel
+    private ArmDropEncoder armDropEncoderRight = null;
+
     private ArmExtend armExtend = new ArmExtend();
 
     private void CheckMotor(DcMotor motor, String  motorName)
@@ -54,9 +57,15 @@ public class MecanumSetup_Teleop extends OpMode {
      */
     @Override
     public void init() {
+
+        armDropEncoderRight = new ArmDropEncoder();
+
+
         robot.init(hardwareMap);
         this.lander.init(robot, telemetry);
         this.armExtend.init(robot, telemetry);
+        armDropEncoderRight.init(robot.ArmDropRight, telemetry, true);
+
 
         // Is every motor on correctly? This checks each motor and lift.
         this.CheckMotor(robot.left_front_drive, "left_front");
@@ -72,6 +81,9 @@ public class MecanumSetup_Teleop extends OpMode {
 
     @Override
     public void loop () {
+
+        armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
+
 
         // this moves the right front wheel; You need to press the left up
         if (gamepad1.left_stick_y == -1) {
