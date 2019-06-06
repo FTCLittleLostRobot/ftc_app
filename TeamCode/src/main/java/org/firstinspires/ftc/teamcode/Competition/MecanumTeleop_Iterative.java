@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.controllers.ArmDropEncoderShift;
+import org.firstinspires.ftc.teamcode.controllers.ArmDropEncoderShiftLeft;
+import org.firstinspires.ftc.teamcode.controllers.ArmDropEncoderShiftRight;
 import org.firstinspires.ftc.teamcode.controllers.ArmDropEncoder;
 import org.firstinspires.ftc.teamcode.controllers.ArmDropNoEncoder;
 import org.firstinspires.ftc.teamcode.controllers.ArmExtend;
@@ -34,8 +34,8 @@ public class MecanumTeleop_Iterative extends OpMode{
 
     /* Declare OpMode members. */
     private HardwareMecanumBase robot = null;
-    private ArmDropEncoderShift armDropEncoderShiftRight = null;
-    private ArmDropEncoderShift armDropEncoderShiftLeft = null;
+    private ArmDropEncoderShiftRight armDropEncoderShiftRight = null;
+    private ArmDropEncoderShiftLeft armDropEncoderShiftLeft = null;
     private ArmDropEncoder armDropEncoderRight = null;
     private ArmDropNoEncoder ArmDropNoEncoder = null;
     private ArmExtend armExtend = null;
@@ -62,8 +62,8 @@ public class MecanumTeleop_Iterative extends OpMode{
         /* Step 1: Setup of variables  */
         //armDropEncoderRight = new ArmDropEncoder();
         //armDropEncoderLeft = new ArmDropEncoder();
-        armDropEncoderShiftLeft = new ArmDropEncoderShift();
-        armDropEncoderShiftRight = new ArmDropEncoderShift();
+        armDropEncoderShiftLeft = new ArmDropEncoderShiftLeft();
+        armDropEncoderShiftRight = new ArmDropEncoderShiftRight();
 
         lander = new LanderNoEncoder();
         armExtend = new ArmExtend();

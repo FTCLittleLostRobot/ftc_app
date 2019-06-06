@@ -71,7 +71,7 @@ public class ArmDropEncoder {
         // The target value expected is now determined, but the motor is always inc/decreasing
         // so we need to shift the target value to be the motor's initial  starting position -
         // the new value
-        int newPosition = encoderRangeValue + this.startValue;
+        int newPosition = encoderRangeValue - this.startValue;
 
         if (yPosition <= 0.1 && yPosition >= -0.1) {
             arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

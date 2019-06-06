@@ -126,7 +126,7 @@ public class TestingBaseFindBlock_Iterative extends OpMode {
                 break;
 
             case Start:
-                NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
+/*                NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
 
                 telemetry.addLine()
                         .addData("a", "%.3f", colors.alpha)
@@ -142,7 +142,7 @@ public class TestingBaseFindBlock_Iterative extends OpMode {
 
 
                 }
-
+*/
 
 
                 break;

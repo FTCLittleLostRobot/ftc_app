@@ -130,7 +130,7 @@ public class HardwareMecanumBase {
 
         ArmDropLeft = hardwareMap.tryGet(DcMotor.class, "ArmDropLeft");
         if (ArmDropLeft != null) {
-            ArmDropLeft.setDirection(DcMotor.Direction.REVERSE);
+            ArmDropLeft.setDirection(DcMotor.Direction.FORWARD);
         }
 
         servoLeft = hardwareMap.tryGet(Servo.class, "servoLeft");

@@ -72,7 +72,6 @@ public class HardwareTestingBase
     /* Public OpMode members. */
     public DcMotor  left_drive   = null;
     public DcMotor  right_drive  = null;
-    public NormalizedColorSensor colorSensor = null;
 
     /* local OpMode members. */
     HardwareMap hardwareMap           =  null;
@@ -101,9 +100,6 @@ public class HardwareTestingBase
 
         left_drive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         right_drive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-
-        // Get a reference to our sensor object.
-        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorsensor");
 
         // Set all motors to zero power
         left_drive.setPower(0);

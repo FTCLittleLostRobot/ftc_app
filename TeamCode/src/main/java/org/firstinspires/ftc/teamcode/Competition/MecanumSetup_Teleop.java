@@ -40,6 +40,8 @@ public class MecanumSetup_Teleop extends OpMode {
     private DcMotor left_back_drive = null;    //back left wheel
     private DcMotor right_back_drive = null;   //back right wheel
     private ArmDropEncoder armDropEncoderRight = null;
+    private ArmDropEncoder armDropEncoderLeft = null;
+
 
     private ArmExtend armExtend = new ArmExtend();
 
@@ -59,19 +61,22 @@ public class MecanumSetup_Teleop extends OpMode {
     public void init() {
 
         armDropEncoderRight = new ArmDropEncoder();
+        armDropEncoderLeft = new ArmDropEncoder ();
 
 
         robot.init(hardwareMap);
         this.lander.init(robot, telemetry);
         this.armExtend.init(robot, telemetry);
         armDropEncoderRight.init(robot.ArmDropRight, telemetry, true);
+        armDropEncoderLeft.init(robot.ArmDropLeft, telemetry, true);
+
 
 
         // Is every motor on correctly? This checks each motor and lift.
         this.CheckMotor(robot.left_front_drive, "left_front");
         this.CheckMotor(robot.right_front_drive, "right_front");
         this.CheckMotor(robot.left_back_drive, "left_back");
-        this.CheckMotor(robot.right_back_drive, "right_back");
+            this.CheckMotor(robot.right_back_drive, "right_back");
         this.CheckMotor(robot.lift, "lift");
 
 
@@ -83,6 +88,8 @@ public class MecanumSetup_Teleop extends OpMode {
     public void loop () {
 
         armDropEncoderRight.ArmDrop(gamepad2.right_stick_y);
+        armDropEncoderLeft.ArmDrop(gamepad2.left_stick_y);
+
 
 
         // this moves the right front wheel; You need to press the left up

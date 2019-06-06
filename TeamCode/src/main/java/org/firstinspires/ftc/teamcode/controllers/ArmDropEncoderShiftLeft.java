@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class ArmDropEncoderShift {
+public class ArmDropEncoderShiftLeft {
 
 
     DcMotor arm = null;
@@ -68,22 +68,22 @@ public class ArmDropEncoderShift {
 
 
             if (shiftValue == 4) {
-                encoderRangeValue = 100;
+                encoderRangeValue = 600;
 
             }
 
             if (shiftValue == 3) {
-                encoderRangeValue = 330;
+                encoderRangeValue = 240;
 
             }
 
 
             if (shiftValue == 2) {
-                encoderRangeValue = 1250;
+                encoderRangeValue = -540;
 
             }
             if (shiftValue == 1) {
-                encoderRangeValue = 1350;
+                encoderRangeValue = -540;
 
             }
 
@@ -97,7 +97,7 @@ public class ArmDropEncoderShift {
             // The target value expected is now determined, but the motor is always inc/decreasing
             // so we need to shift the target value to be the motor's initial  starting position -
             // the new value
-            int newPosition = encoderRangeValue + this.startValue;
+            int newPosition = encoderRangeValue - this.startValue;
 
             if (yPosition <= 0.1 && yPosition >= -0.1) {
                 arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
