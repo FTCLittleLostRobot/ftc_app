@@ -105,8 +105,8 @@ public class TestingBaseTeleop_Iterative extends OpMode{
         left = -gamepad1.left_stick_y - starting_left;
         right = -gamepad1.right_stick_y - starting_right;
 
-        robot.left_drive.setPower(left);
-        robot.right_drive.setPower(right);
+        robot.left_drive.setPower(left * 0.25);
+        robot.right_drive.setPower(right * 0.25);
 
         // Send telemetry message to signify robot running;
         telemetry.addData("left",  "%.2f", left);
