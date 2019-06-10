@@ -39,7 +39,7 @@ public class MecanumTeleop_Iterative extends OpMode{
     private ArmDropEncoder armDropEncoderRight = null;
     private ArmDropNoEncoder ArmDropNoEncoder = null;
     private ArmExtend armExtend = null;
-    private LanderNoEncoder lander = null;//used for lifting and droping
+    private LanderNoEncoder lander = null;//used for lifting and dropping
 
     private float starting_left_x = 0;  //this makes the robot strafe right and left
     private float starting_left_y = 0;  //this makes the robot go forwards and backwards
