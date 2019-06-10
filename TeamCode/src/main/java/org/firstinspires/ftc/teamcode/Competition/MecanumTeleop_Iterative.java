@@ -160,7 +160,7 @@ public class MecanumTeleop_Iterative extends OpMode{
             ButtonCheck = false;
         }
 
-
+/*
         if (gamepad2.a){
             lander.DoLand();
         }
@@ -172,7 +172,7 @@ public class MecanumTeleop_Iterative extends OpMode{
                 robot.lift.setPower(0);
             }
         }
-
+*/
         if (robot.ArmExtend != null) {
             if (gamepad2.dpad_up) {
                 robot.ArmExtend.setDirection(DcMotor.Direction.FORWARD);

@@ -16,7 +16,7 @@ public class ArmDropEncoderShiftLeft {
 
     DcMotor arm = null;
     Telemetry telemetry;
-    int startValue = 0;
+    int startValue = 1445;
     boolean recordReadings = false;
     int shiftValue = 4;
     boolean isShifting = false;
@@ -68,22 +68,22 @@ public class ArmDropEncoderShiftLeft {
 
 
             if (shiftValue == 4) {
-                encoderRangeValue = 600;
+                encoderRangeValue = 1445;
 
             }
 
             if (shiftValue == 3) {
-                encoderRangeValue = 240;
+                encoderRangeValue = 1143;
 
             }
 
 
             if (shiftValue == 2) {
-                encoderRangeValue = -540;
+                encoderRangeValue = 533;
 
             }
             if (shiftValue == 1) {
-                encoderRangeValue = -540;
+                encoderRangeValue = 530;
 
             }
 
